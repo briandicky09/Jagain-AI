@@ -1,0 +1,51 @@
+{
+    "version": 2,
+    "framework": null,
+    "buildCommand": "npm run build",
+    "outputDirectory": "public",
+    "regions": ["sin1"],
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.8.0",
+            "maxDuration": 60
+        }
+    },
+    "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/build/$1"
+        },
+        {
+            "src": "/(favicon\\.(ico|svg)|apple-touch-icon\\.png|robots\\.txt)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(images|img|storage)/(.*)",
+            "dest": "/$1/$2"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_NAME": "JAGAIN",
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_KEY": "base64:celOyOoQNWNHunYcIiUXHhABxL7opx9/rA5Mvl22Bv0=",
+        "LOG_CHANNEL": "stderr",
+        "LARAVEL_STORAGE_PATH": "/tmp/storage",
+        "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
+        "CACHE_STORE": "file",
+        "SESSION_DRIVER": "cookie",
+        "SESSION_SECURE_COOKIE": "true",
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "aws-0-ap-northeast-2.pooler.supabase.com",
+        "DB_PORT": "6543",
+        "DB_DATABASE": "postgres",
+        "DB_USERNAME": "postgres.zlukvcaeukjgvncmcppx",
+        "DB_PASSWORD": "JANCOK12345678@!",
+        "DB_SSLMODE": "require",
+        "INERTIA_SSR_ENABLED": "false"
+    }
+}

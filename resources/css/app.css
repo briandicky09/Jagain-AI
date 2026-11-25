@@ -1,0 +1,961 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'leaflet/dist/leaflet.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Hyper-Saturated Fluid Tokens (The High-Impact Palette) */
+    --color-cyber-green: #10e57a;
+    --color-cyber-green-neon: #00f575;
+    --color-cyber-green-glow: #22ea65;
+    --color-cyber-green-dark: #0ba856;
+    --color-deep-onyx: #0a0a0a;
+    --color-surface-charcoal: #171717;
+    --color-deep-gray: #262626;
+
+    /* Legacy compatibility tokens */
+    --color-slate-dark: #141413;
+    --color-ivory-medium: #f0eee6;
+    --color-ivory-light: #faf9f5;
+    --color-cloud-medium: #b0aea5;
+    --color-cloud-dark: #87867f;
+    --color-stone: #cccbc8;
+    --color-slate-medium: #3d3d3a;
+    --color-oat-warm: #e3dacc;
+    --color-manilla: #f5e3c7;
+    --color-clay: #10e57a;
+    --color-clay-deep: #0ba856;
+
+    /* Clean geometric sans-serif (Poppins as universal font) */
+    --font-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-poppins: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-inter: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Typography scale */
+    --text-caption: 12px;
+    --leading-caption: 1.4;
+    --tracking-caption: -0.24px;
+    --text-body-sm: 16px;
+    --leading-body-sm: 1;
+    --tracking-body-sm: -0.08px;
+    --text-body: 20px;
+    --leading-body: 1.4;
+    --tracking-body: 0px;
+    --text-subheading: 24px;
+    --leading-subheading: 1.3;
+    --tracking-subheading: -0.05px;
+    --text-heading: 61px;
+    --leading-heading: 1.1;
+    --tracking-heading: -0.12px;
+    --text-display: 68px;
+    --leading-display: 1.1;
+    --tracking-display: 0px;
+
+    /* Border Radius from design.md */
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-3xl: 24px;
+
+    /* Semantic UI Component mapping */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    /* JAGAIN Design System Tokens */
+    --color-forest-green: #174b35;
+    --color-primary-green: #216b49;
+    --color-leaf-green: #39845c;
+    --color-soft-green: #e8f1eb;
+    --color-pale-green: #f3f7f4;
+    --color-jagain-black: #171c19;
+    --color-dark-neutral: #343b36;
+    --color-gray-neutral: #68716b;
+    --color-border-neutral: #dde3de;
+}
+
+:root {
+    /* Colors from design.md */
+    --color-slate-dark: #141413;
+    --color-ivory-medium: #f0eee6;
+    --color-ivory-light: #faf9f5;
+    --color-cloud-medium: #b0aea5;
+    --color-cloud-dark: #87867f;
+    --color-stone: #cccbc8;
+    --color-slate-medium: #3d3d3a;
+    --color-oat-warm: #e3dacc;
+    --color-manilla: #f5e3c7;
+    --color-clay: #d97757;
+    --color-clay-deep: #c6613f;
+
+    /* Typography — Font Families (Unified to Poppins) */
+    --font-anthropic-serif: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-anthropic-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-anthropic-mono: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Typography — Scale */
+    --text-caption: 12px;
+    --leading-caption: 1.4;
+    --tracking-caption: -0.24px;
+    --text-body-sm: 16px;
+    --leading-body-sm: 1;
+    --tracking-body-sm: -0.08px;
+    --text-body: 20px;
+    --leading-body: 1.4;
+    --tracking-body: 0px;
+    --text-subheading: 24px;
+    --leading-subheading: 1.3;
+    --tracking-subheading: -0.05px;
+    --text-heading: 61px;
+    --leading-heading: 1.1;
+    --tracking-heading: -0.12px;
+    --text-display: 68px;
+    --leading-display: 1.1;
+    --tracking-display: 0px;
+
+    /* Typography — Weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Spacing */
+    --spacing-unit: 4px;
+    --spacing-4: 4px;
+    --spacing-8: 8px;
+    --spacing-12: 12px;
+    --spacing-16: 16px;
+    --spacing-24: 24px;
+    --spacing-32: 32px;
+    --spacing-76: 76px;
+    --spacing-100: 100px;
+
+    /* Layout */
+    --page-max-width: 1280px;
+    --section-gap: 80px;
+    --card-padding: 24px;
+    --element-gap: 8px;
+
+    /* Border Radius */
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-3xl: 24px;
+
+    /* Named Radii */
+    --radius-nav: 0px;
+    --radius-cards: 24px;
+    --radius-links: 0px;
+    --radius-badges: 0px;
+    --radius-buttons: 8px;
+
+    /* Surfaces from design.md */
+    --surface-canvas: #f8faf9;
+    --surface-card-surface: #ffffff;
+    --surface-warm-feature-surface: #e8f1eb;
+    --surface-deep-warm-surface: #e8f1eb;
+    --surface-inversion-surface: #171c19;
+
+    /* Canonical Semantic Tokens mapping to JAGAIN Forest/Primary Green & Neutrals */
+    --background: #f8faf9;
+    --foreground: #171c19;
+    --card: #ffffff;
+    --card-foreground: #171c19;
+    --popover: #ffffff;
+    --popover-foreground: #171c19;
+    --primary: #216b49;
+    --primary-foreground: #ffffff;
+    --secondary: #e8f1eb;
+    --secondary-foreground: #174b35;
+    --muted: #f3f7f4;
+    --muted-foreground: #68716b;
+    --accent: #e8f1eb;
+    --accent-foreground: #174b35;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --border: #dde3de;
+    --input: #dde3de;
+    --ring: #216b49;
+    --radius: 0.5rem;
+
+    --sidebar: #ffffff;
+    --sidebar-foreground: #171c19;
+    --sidebar-primary: #216b49;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #e8f1eb;
+    --sidebar-accent-foreground: #174b35;
+    --sidebar-border: #dde3de;
+    --sidebar-ring: #216b49;
+}
+
+.dark {
+    --background: #0d120f;
+    --foreground: #f3f7f4;
+    --card: #141a16;
+    --card-foreground: #f3f7f4;
+    --popover: #141a16;
+    --popover-foreground: #f3f7f4;
+    --primary: #10e57a;
+    --primary-foreground: #0d120f;
+    --secondary: #1a241e;
+    --secondary-foreground: #e8f1eb;
+    --muted: #1a241e;
+    --muted-foreground: #9ca3af;
+    --accent: #1a241e;
+    --accent-foreground: #10e57a;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #232e27;
+    --input: #232e27;
+    --ring: #10e57a;
+    --sidebar: #101512;
+    --sidebar-foreground: #f3f7f4;
+    --sidebar-primary: #10e57a;
+    --sidebar-primary-foreground: #0d120f;
+    --sidebar-accent: #1a241e;
+    --sidebar-accent-foreground: #10e57a;
+    --sidebar-border: #232e27;
+    --sidebar-ring: #10e57a;
+}
+
+@layer base {
+    *, *::before, *::after {
+        @apply border-border;
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html, body {
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-rendering: optimizeLegibility;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+    }
+
+    p {
+        font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-wrap: pretty;
+    }
+}
+
+@utility no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Leaflet Map Refinements for JAGAIN */
+.leaflet-bar {
+    border: 1px solid var(--color-border-neutral, #DDE3DE) !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.leaflet-bar a {
+    background-color: #FFFFFF !important;
+    color: #343B36 !important;
+    border-bottom: 1px solid var(--color-border-neutral, #DDE3DE) !important;
+}
+
+.leaflet-bar a:hover {
+    background-color: #F3F7F4 !important;
+    color: #174B35 !important;
+}
+
+/* Bootstrap Badge Styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3em 0.55em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    border: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.badge-light {
+    color: #212529;
+    background-color: #f1f3f5;
+    border: none;
+}
+
+/* Hide global scrollbar per user request while retaining smooth scroll functionality */
+html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    height: 0px;
+}
+
+/* Subtle scrollbar only for specific high-density scroll areas if needed */
+.custom-scrollbar::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+    height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 9999px;
+}
+
+/* ==========================================================================
+   HYPER-SATURATED FLUID DESIGN SYSTEM UTILITIES
+   ========================================================================== */
+
+@keyframes floatSlow {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(0.5deg);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+.animate-float {
+    animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   KALIMANTAN RAINFOREST BREEZE ANIMATIONS
+   Organic wind swaying with multi-layered phase shifts & GPU transforms
+   ========================================================================== */
+
+@keyframes treeBreezeLeft {
+    0%, 100% {
+        transform: rotate(0deg) skewX(0deg);
+    }
+    28% {
+        transform: rotate(1.4deg) skewX(-0.5deg);
+    }
+    60% {
+        transform: rotate(-0.6deg) skewX(0.3deg);
+    }
+    82% {
+        transform: rotate(0.9deg) skewX(-0.3deg);
+    }
+}
+
+@keyframes treeBreezeRight {
+    0%, 100% {
+        transform: rotate(0deg) skewX(0deg);
+    }
+    26% {
+        transform: rotate(-1.5deg) skewX(0.6deg);
+    }
+    58% {
+        transform: rotate(0.7deg) skewX(-0.3deg);
+    }
+    84% {
+        transform: rotate(-0.8deg) skewX(0.4deg);
+    }
+}
+
+@keyframes branchSwayGentle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    35% {
+        transform: rotate(2.8deg);
+    }
+    72% {
+        transform: rotate(-1.5deg);
+    }
+}
+
+@keyframes branchSwayLively {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    30% {
+        transform: rotate(-3.5deg) scale(1.015, 0.985);
+    }
+    75% {
+        transform: rotate(2.2deg) scale(0.985, 1.015);
+    }
+}
+
+@keyframes vinePendulum {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    60% {
+        transform: rotate(-4deg);
+    }
+    85% {
+        transform: rotate(2deg);
+    }
+}
+
+@keyframes leafFlutter {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.03, 0.97) rotate(2deg);
+    }
+}
+
+@keyframes floatingLeafDrift1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+    18% {
+        opacity: 0.85;
+    }
+    82% {
+        opacity: 0.85;
+    }
+    100% {
+        transform: translate(95px, 50px) rotate(190deg);
+        opacity: 0;
+    }
+}
+
+@keyframes floatingLeafDrift2 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.85;
+    }
+    80% {
+        opacity: 0.85;
+    }
+    100% {
+        transform: translate(-95px, 45px) rotate(-180deg);
+        opacity: 0;
+    }
+}
+
+.animate-tree-left {
+    transform-origin: 10% 100%;
+    animation: treeBreezeLeft 7.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+.animate-tree-right {
+    transform-origin: 90% 100%;
+    animation: treeBreezeRight 8.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+.animate-tree-bg-left {
+    transform-origin: 15% 100%;
+    animation: treeBreezeLeft 9.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) -2.5s infinite;
+    will-change: transform;
+}
+
+.animate-tree-bg-right {
+    transform-origin: 85% 100%;
+    animation: treeBreezeRight 9.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) -3s infinite;
+    will-change: transform;
+}
+
+.animate-branch-1 {
+    animation: branchSwayGentle 5.2s ease-in-out infinite;
+    will-change: transform;
+}
+
+.animate-branch-2 {
+    animation: branchSwayLively 4.5s ease-in-out -1.5s infinite;
+    will-change: transform;
+}
+
+.animate-branch-3 {
+    animation: branchSwayGentle 6.1s ease-in-out -2.8s infinite;
+    will-change: transform;
+}
+
+.animate-vine-1 {
+    transform-origin: top center;
+    animation: vinePendulum 6.4s ease-in-out infinite;
+    will-change: transform;
+}
+
+.animate-vine-2 {
+    transform-origin: top center;
+    animation: vinePendulum 5.5s ease-in-out -2s infinite;
+    will-change: transform;
+}
+
+.animate-foliage-rustle {
+    animation: leafFlutter 3.4s ease-in-out infinite;
+    will-change: transform;
+}
+
+.animate-floating-leaf-1 {
+    animation: floatingLeafDrift1 10s ease-in-out infinite;
+}
+
+.animate-floating-leaf-2 {
+    animation: floatingLeafDrift2 11.5s ease-in-out -4.5s infinite;
+}
+
+/* Tropical Meadow & Reeds Wind Breeze Keyframes */
+@keyframes grassBreezeWave1 {
+    0%, 100% {
+        transform: rotate(0deg) skewX(0deg);
+    }
+    35% {
+        transform: rotate(2.5deg) skewX(-1.2deg);
+    }
+    72% {
+        transform: rotate(-1.5deg) skewX(0.8deg);
+    }
+}
+
+@keyframes grassBreezeWave2 {
+    0%, 100% {
+        transform: rotate(0deg) skewX(0deg);
+    }
+    38% {
+        transform: rotate(-2.8deg) skewX(1.4deg);
+    }
+    75% {
+        transform: rotate(1.5deg) skewX(-0.8deg);
+    }
+}
+
+@keyframes grassBreezeWave3 {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    45% {
+        transform: rotate(2.2deg);
+    }
+    80% {
+        transform: rotate(-1.5deg);
+    }
+}
+
+.animate-grass-1 {
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: grassBreezeWave1 4.4s ease-in-out infinite;
+    will-change: transform;
+}
+
+.animate-grass-2 {
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: grassBreezeWave2 5.2s ease-in-out -1.6s infinite;
+    will-change: transform;
+}
+
+.animate-grass-3 {
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: grassBreezeWave3 6.0s ease-in-out -3.2s infinite;
+    will-change: transform;
+}
+
+.animate-grass-4 {
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: grassBreezeWave1 3.8s ease-in-out -2.1s infinite;
+    will-change: transform;
+}
+
+/* Glassmorphism Styles per Design System */
+.glass-panel-clean {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.05);
+}
+
+.glass-card-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06);
+}
+
+.glass-panel-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+}
+
+.glass-panel-dark {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.glass-panel-subtle {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Pill CTA Buttons */
+.btn-pill-primary {
+    background-color: #10e57a;
+    color: #0a0a0a;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 14px 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 30px -5px rgba(16, 229, 122, 0.4);
+    cursor: pointer;
+}
+.btn-pill-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 16px 36px -4px rgba(16, 229, 122, 0.55);
+}
+.btn-pill-primary:active {
+    transform: scale(0.95);
+}
+
+.btn-pill-dark {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 14px 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+}
+.btn-pill-dark:hover {
+    transform: scale(1.05);
+    background-color: #171717;
+    box-shadow: 0 18px 36px -4px rgba(0, 0, 0, 0.65);
+}
+.btn-pill-dark:active {
+    transform: scale(0.95);
+}
+
+.btn-pill-outline {
+    border: 2px solid rgba(0, 0, 0, 0.25);
+    color: #0a0a0a;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 12px 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+}
+.btn-pill-outline:hover {
+    transform: scale(1.05);
+    border-color: #0a0a0a;
+}
+.btn-pill-outline:active {
+    transform: scale(0.95);
+}
+
+.btn-pill-outline-dark {
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 12px 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+}
+.btn-pill-outline-dark:hover {
+    transform: scale(1.05);
+    border-color: #10e57a;
+    color: #10e57a;
+    box-shadow: 0 0 20px rgba(16, 229, 122, 0.2);
+}
+.btn-pill-outline-dark:active {
+    transform: scale(0.95);
+}
+
+/* Hero Section Transitions */
+.liquid-wave-hero {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.btn-ivory {
+    background-color: var(--color-ivory-light);
+    color: var(--color-slate-dark);
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 12px 31px;
+    font-family: var(--font-anthropic-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-ivory:hover {
+    background-color: var(--color-oat-warm);
+}
+
+.btn-clay {
+    background-color: var(--color-clay);
+    color: #faf9f5;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 12px 31px;
+    font-family: var(--font-anthropic-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-clay:hover {
+    background-color: var(--color-clay-deep);
+}
+
+.btn-outline-dark {
+    background-color: transparent;
+    color: #faf9f5;
+    border: 1px solid var(--color-cloud-dark);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-family: var(--font-anthropic-sans);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-outline-dark:hover {
+    border-color: #faf9f5;
+    color: #ffffff;
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--color-slate-dark);
+    border-radius: 0px;
+    border: none;
+    padding: 12px 16px;
+    font-family: var(--font-anthropic-sans);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-text:hover {
+    text-decoration: underline;
+}
+
+/* Persistent inline underlined link from design.md */
+.link-editorial {
+    text-decoration: underline;
+    text-decoration-color: var(--color-slate-dark);
+    text-underline-offset: 4px;
+    color: var(--color-slate-dark);
+    transition: color 0.15s ease;
+}
+.link-editorial:hover {
+    color: var(--color-clay);
+}
+
+/* Paper card surfaces without box shadows */
+.card-standard {
+    background-color: var(--color-ivory-light);
+    border-radius: 24px;
+    border: 1px solid var(--color-stone);
+    padding: 24px;
+    box-shadow: none;
+}
+
+.card-featured {
+    background-color: var(--color-manilla);
+    border-radius: 24px;
+    border: none;
+    padding: 48px;
+    box-shadow: none;
+}
+
+.card-warm {
+    background-color: var(--color-oat-warm);
+    border-radius: 24px;
+    border: 1px solid var(--color-stone);
+    padding: 24px;
+    box-shadow: none;
+}
+
+/* Leaflet Map Styling with Anthropic Warm Palette */
+.leaflet-container {
+    font-family: inherit;
+    z-index: 10;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: none;
+    border: 1px solid var(--color-stone);
+    background: var(--color-ivory-light);
+    color: var(--color-slate-dark);
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-popup-content {
+    margin: 12px 14px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-tip {
+    background: var(--color-ivory-light);
+}
+
+/* iOS & Android Mobile Enhancements */
+@supports (-webkit-touch-callout: none) {
+    @media screen and (max-width: 767px) {
+        input:not([type="checkbox"]):not([type="radio"]),
+        select,
+        textarea {
+            font-size: 16px !important;
+        }
+    }
+}
+
+/* Momentum scrolling for scrollable containers on mobile */
+.overflow-x-auto,
+.overflow-y-auto,
+.no-scrollbar {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Touch-friendly manipulation */
+@media (pointer: coarse) {
+    button, a, input, select, textarea {
+        touch-action: manipulation;
+    }
+}
