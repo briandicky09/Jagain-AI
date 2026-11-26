@@ -193,7 +193,7 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                         Laporkan Kejadian Kebakaran Hutan & Lahan
                     </h1>
                     <p className="text-sm sm:text-base text-[#68716B] dark:text-neutral-300 leading-relaxed max-w-3xl">
-                        Laporan Anda memperoleh kode lacak unik dan diperiksa verifikator sebelum diteruskan ke instansi penanganan resmi di Kalimantan (BPBD, Manggala Agni, atau Damkar).
+                        Laporan Anda memperoleh kode lacak unik dan diperiksa petugas sebelum diteruskan ke instansi penanganan resmi di Kalimantan (BPBD, Manggala Agni, atau Damkar).
                     </p>
                 </div>
 
@@ -351,8 +351,8 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                                     <p
                                         role={gpsStatus.isError ? 'alert' : 'status'}
                                         className={`text-xs font-medium rounded-lg px-3 py-2 border ${gpsStatus.isError
-                                                ? 'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-300'
-                                                : 'bg-[#E8F1EB] border-emerald-200 text-[#174B35] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300'
+                                            ? 'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-300'
+                                            : 'bg-[#E8F1EB] border-emerald-200 text-[#174B35] dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300'
                                             }`}
                                     >
                                         {gpsStatus.message}
@@ -454,7 +454,7 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                                     Unggah Foto Bukti Kejadian (Opsional, Direkomendasikan)
                                 </label>
                                 <p className="text-xs text-[#68716B] dark:text-neutral-400">
-                                    Foto dari jarak aman membantu verifikator menelaah intensitas kebakaran. Metadata EXIF/GPS foto otomatis dibersihkan sebelum analisis AI. Format JPG/PNG/WEBP (Maks 5 MB).
+                                    Foto dari jarak aman membantu petugas memeriksa kondisi kebakaran. Data teknis tersembunyi pada foto otomatis dibersihkan demi keamanan pelapor. Format JPG/PNG/WEBP (Maks 5 MB).
                                 </p>
 
                                 <div className="relative border-2 border-dashed border-[#DDE3DE] dark:border-neutral-800 rounded-2xl p-6 sm:p-8 text-center hover:border-[#216B49] dark:hover:border-[#10e57a] transition-colors cursor-pointer bg-[#F8FAF9] dark:bg-neutral-900/50">

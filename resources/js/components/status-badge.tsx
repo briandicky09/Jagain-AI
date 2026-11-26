@@ -45,7 +45,7 @@ const statusConfig: Record<string, { label: string; bg: string; text: string; bo
         icon: Send,
     },
     RESOLUTION_REVIEW: {
-        label: 'Review Penanganan',
+        label: 'Pemeriksaan Hasil',
         bg: 'bg-neutral-100',
         text: 'text-neutral-800 font-semibold',
         border: 'border-neutral-200',
@@ -96,7 +96,7 @@ const statusConfig: Record<string, { label: string; bg: string; text: string; bo
         icon: Clock,
     },
     SUBMITTED_FOR_REVIEW: {
-        label: 'Diajukan Review',
+        label: 'Diajukan untuk Ditinjau',
         bg: 'bg-neutral-100',
         text: 'text-neutral-800 font-semibold',
         border: 'border-neutral-200',

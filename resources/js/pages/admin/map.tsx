@@ -46,7 +46,7 @@ export default function AdminMapPage({
                             }`}
                         >
                             <Satellite className="size-3.5 text-orange-500" />
-                            <span>Layer Satelit ({observations.length})</span>
+                            <span>Titik Panas Satelit ({observations.length})</span>
                             <span
                                 className={`relative inline-block h-3.5 w-6 rounded-full transition-colors ${
                                     showSatelliteHotspots ? 'bg-orange-500' : 'bg-neutral-300 dark:bg-neutral-600'

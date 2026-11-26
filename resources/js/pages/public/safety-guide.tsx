@@ -358,7 +358,7 @@ export default function SafetyGuide() {
                         ========================================================================= */}
                     <section className="mb-7">
                         <h3 className="text-sm font-bold uppercase text-neutral-950 border-b border-neutral-300 pb-1 mb-2.5">
-                            Pasal 6 — Alur Penanganan Laporan & Disposisi Satuan Tugas JAGAIN
+                            Pasal 6 — Alur Penanganan Laporan &amp; Penugasan Satuan Tugas JAGAIN
                         </h3>
                         <div className="border border-neutral-300 bg-neutral-50/50 p-4 rounded-sm">
                             <ol className="list-decimal list-inside space-y-2 text-neutral-800">
@@ -366,13 +366,13 @@ export default function SafetyGuide() {
                                     <strong className="text-neutral-950">Pengiriman Bukti oleh Warga:</strong> Warga mengakses menu Buat Laporan di portal JAGAIN, menyertakan koordinat GPS otomatis dan dokumentasi foto lokasi kejadian.
                                 </li>
                                 <li>
-                                    <strong className="text-neutral-950">Validasi Satelit & Verifikasi Tim:</strong> Admin JAGAIN melakukan validasi silang dengan data anomali termal satelit (NASA FIRMS / LAPAN) dalam waktu maksimal 15 menit.
+                                    <strong className="text-neutral-950">Pemeriksaan Satelit &amp; Verifikasi Tim:</strong> Admin JAGAIN melakukan pencocokan dengan data titik panas satelit (NASA FIRMS / LAPAN) dalam waktu maksimal 15 menit.
                                 </li>
                                 <li>
-                                    <strong className="text-neutral-950">Disposisi ke OPD Terdekat:</strong> Sistem secara otomatis memetakan dan menugaskan instansi terdekat (BPBD Kabupaten/Kota, Posko Manggala Agni, atau Damkar setempat).
+                                    <strong className="text-neutral-950">Penugasan ke OPD Terdekat:</strong> Sistem membantu memetakan dan menugaskan instansi terdekat (BPBD Kabupaten/Kota, Posko Manggala Agni, atau Damkar setempat).
                                 </li>
                                 <li>
-                                    <strong className="text-neutral-950">Pemberangkatan Regu Lapangan & Pemadaman:</strong> Regu patroli dan armada pemadam meluncur ke koordinat sasaran dengan audit trail perkembangan yang dapat dipantau langsung oleh pelapor.
+                                    <strong className="text-neutral-950">Pemberangkatan Regu Lapangan &amp; Pemadaman:</strong> Regu patroli dan armada pemadam meluncur ke titik lokasi dengan riwayat perkembangan yang dapat dipantau langsung oleh pelapor.
                                 </li>
                             </ol>
                         </div>

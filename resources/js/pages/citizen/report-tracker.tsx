@@ -3,6 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import StatusBadge from '@/components/status-badge';
 import FireConditionBadge from '@/components/fire-condition-badge';
 import KarhutlaMap from '@/components/karhutla-map';
+import { getOperationalUpdateTypeLabel } from '@/lib/ai-terminology';
 import {
     AlertCircle,
     ArrowLeft,
@@ -159,15 +160,15 @@ export default function ReportTracker({ report }: ReportTrackerProps) {
                                 <div
                                     key={item.step}
                                     className={`rounded-xl border p-3 text-xs transition-colors ${reached
-                                            ? 'border-emerald-200 bg-[#E8F1EB]/70 text-[#174B35] dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200'
-                                            : 'border-[#DDE3DE] bg-[#F8FAF9] text-[#68716B] dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400'
+                                        ? 'border-emerald-200 bg-[#E8F1EB]/70 text-[#174B35] dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200'
+                                        : 'border-[#DDE3DE] bg-[#F8FAF9] text-[#68716B] dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400'
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 font-bold">
                                         <span
                                             className={`size-5 rounded-full text-[11px] font-mono flex items-center justify-center shrink-0 ${reached
-                                                    ? 'bg-[#216B49] text-white'
-                                                    : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
+                                                ? 'bg-[#216B49] text-white'
+                                                : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
                                                 }`}
                                         >
                                             {reached ? <CheckCircle2 className="size-3.5" /> : item.step}
@@ -227,7 +228,7 @@ export default function ReportTracker({ report }: ReportTrackerProps) {
                                     Petugas Membutuhkan Informasi Tambahan untuk Memverifikasi Laporan
                                 </h2>
                                 <p className="text-xs text-[#68716B] dark:text-neutral-300 mt-0.5">
-                                    Lengkapi klarifikasi di bawah agar verifikator dapat meneruskan laporan ke instansi terkait. Data pribadi pada teks otomatis disaring jika dipublikasikan.
+                                    Lengkapi keterangan di bawah agar petugas pemeriksa dapat meneruskan laporan Anda ke instansi terkait. Data pribadi pada teks otomatis disaring jika dipublikasikan.
                                 </p>
                             </div>
                         </div>
@@ -369,7 +370,7 @@ export default function ReportTracker({ report }: ReportTrackerProps) {
                                             className="bg-[#E8F1EB]/50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 rounded-xl p-4 text-xs space-y-1.5"
                                         >
                                             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#174B35] dark:text-emerald-300 font-bold">
-                                                <span>Jenis Tindakan: {update.update_type}</span>
+                                                <span>Tindakan: {getOperationalUpdateTypeLabel(update.update_type)}</span>
                                                 <span className="font-mono text-[#68716B] dark:text-neutral-400">
                                                     {update.created_at ? new Date(update.created_at).toLocaleString('id-ID') : ''}
                                                 </span>
@@ -390,10 +391,10 @@ export default function ReportTracker({ report }: ReportTrackerProps) {
                     <div className="bg-[#E8F1EB]/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-6 space-y-2.5">
                         <div className="flex items-center gap-2 text-xs font-bold text-[#174B35] dark:text-emerald-300 uppercase tracking-wider">
                             <Lock className="size-4" />
-                            <span>Perlindungan Privasi Pelapor</span>
+                            <span>Perlindungan Data Pribadi Pelapor</span>
                         </div>
                         <p className="text-xs text-[#343B36] dark:text-neutral-300 leading-relaxed">
-                            Nama dan nomor kontak Anda hanya dapat dilihat oleh verifikator berwenang. Pada peta & halaman publik, detail identitas serta metadata EXIF foto otomatis dibersihkan.
+                            Nama dan nomor kontak Anda hanya dapat dilihat oleh petugas berwenang. Pada peta dan halaman publik, detail identitas serta data teknis tersembunyi pada foto otomatis dibersihkan.
                         </p>
                     </div>
 

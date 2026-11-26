@@ -16,12 +16,12 @@ enum ReportStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::SUBMITTED => 'Perlu Di Review',
-            self::UNDER_REVIEW => 'Perlu Di Review',
+            self::SUBMITTED => 'Perlu Ditinjau',
+            self::UNDER_REVIEW => 'Perlu Ditinjau',
             self::NEEDS_INFORMATION => 'Perlu Informasi',
             self::VERIFIED => 'Terverifikasi',
             self::DISPATCHED => 'Ditugaskan ke OPD',
-            self::RESOLUTION_REVIEW => 'Review Penanganan',
+            self::RESOLUTION_REVIEW => 'Pemeriksaan Hasil',
             self::RESOLVED_VERIFIED => 'Selesai Terverifikasi',
             self::CLOSED_WITH_REASON => 'Ditutup dengan Alasan',
         };

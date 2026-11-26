@@ -87,7 +87,7 @@ function AssignmentStatusBadge({ status }: { status: string }) {
             return (
                 <span className="inline-flex items-center gap-1.5 rounded-md border border-border-neutral bg-white px-2.5 py-0.5 text-xs font-medium text-dark-neutral">
                     <Send className="size-3.5 shrink-0 text-gray-neutral" />
-                    <span>Diajukan Review</span>
+                    <span>Menunggu Konfirmasi Selesai</span>
                 </span>
             );
         case 'COMPLETED':
@@ -236,7 +236,7 @@ export default function OpdDashboard({
                                 {agency.name}
                             </h1>
                             <p className="text-sm leading-relaxed text-white/90 sm:text-base sm:leading-relaxed">
-                                Wilayah Yurisdiksi: <strong className="text-white font-semibold">{agency.jurisdiction}</strong>. Kendalikan penanganan titik api di lapangan, koordinasikan satgas pemadam, dan perbarui linimasa penanganan secara terbuka.
+                                Wilayah Tugas: <strong className="text-white font-semibold">{agency.jurisdiction}</strong>. Kendalikan penanganan titik api di lapangan, koordinasikan tim pemadam, dan perbarui perkembangan penanganan secara terbuka.
                             </p>
                         </div>
 
@@ -305,7 +305,7 @@ export default function OpdDashboard({
                                     <Pill className="border-leaf-green/40 bg-soft-green/90 px-2 py-0.5 text-[10px] text-forest-green">
                                         <PillIndicator variant="warning" pulse />
                                         <span className="font-semibold text-forest-green">
-                                            butuh respon
+                                            perlu konfirmasi
                                         </span>
                                     </Pill>
                                 )}
@@ -354,7 +354,7 @@ export default function OpdDashboard({
                                 </span>
                             </div>
                             <p className="mt-1 text-xs leading-tight text-gray-neutral/90">
-                                Ground check & pembasahan aktif
+                                Pengecekan lapangan &amp; pembasahan aktif
                             </p>
                         </div>
 
@@ -377,7 +377,7 @@ export default function OpdDashboard({
                                 </span>
                             </div>
                             <p className="mt-1 text-xs leading-tight text-gray-neutral/90">
-                                {statusCounts.submitted_for_review} review, {statusCounts.completed} terverifikasi
+                                {statusCounts.submitted_for_review} menunggu konfirmasi, {statusCounts.completed} selesai
                             </p>
                         </div>
                     </div>
@@ -423,7 +423,7 @@ export default function OpdDashboard({
                         href="/opd/tugas?status=SUBMITTED_FOR_REVIEW"
                         className="shrink-0 rounded-lg border border-border-neutral bg-white px-3 py-1.5 font-medium text-dark-neutral transition-colors hover:border-gray-neutral/40 hover:bg-pale-green focus-visible:ring-2 focus-visible:ring-primary-green focus-visible:outline-hidden"
                     >
-                        Diajukan Review ({statusCounts.submitted_for_review})
+                        Menunggu Konfirmasi ({statusCounts.submitted_for_review})
                     </Link>
                     <Link
                         href="/opd/tugas?status=COMPLETED"
@@ -585,14 +585,14 @@ export default function OpdDashboard({
                                         <strong className="font-medium text-dark-neutral">
                                             Respon Cepat Konfirmasi:
                                         </strong>{' '}
-                                        Konfirmasi penerimaan tugas paling lambat 2 jam setelah disposisi masuk agar koordinasi lapangan segera terpetakan.
+                                        Konfirmasi penerimaan tugas paling lambat 2 jam setelah penugasan masuk agar koordinasi lapangan segera terpetakan.
                                     </span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary-green" />
                                     <span>
                                         <strong className="font-medium text-dark-neutral">
-                                            Ground Check & Sekat Basah:
+                                            Cek Lapangan &amp; Sekat Basah:
                                         </strong>{' '}
                                         Untuk kebakaran lahan gambut, pastikan pembuatan sekat parit basah guna memutus bara di lapisan bawah permukaan.
                                     </span>

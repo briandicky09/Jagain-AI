@@ -1,4 +1,5 @@
 import { ShieldCheck } from 'lucide-react';
+import { getAiPiiEntityLabel } from '@/lib/ai-terminology';
 
 interface PrivacyProtectionBadgeProps {
     sanitized?: boolean;
@@ -30,19 +31,25 @@ export function PrivacyProtectionBadge({
                     <span>
                         {mode === 'public'
                             ? sanitized
-                                ? 'Data Publik Disanitasi Guardrail Privasi AI'
-                                : 'Menunggu Pemeriksaan Sanitasi PII'
+                                ? 'Data Pribadi Pelapor Dilindungi'
+                                : 'Pemeriksaan Perlindungan Data Pribadi Sedang Berlangsung'
                             : redactionApplied
-                              ? `Guardrail Privasi Aktif (${totalEntities} entitas PII disensor pada tampilan publik/AI)`
-                              : 'Guardrail Privasi Aktif (Tidak ada PII terdeteksi di teks)'}
+                              ? `Perlindungan Data Pribadi Aktif (${totalEntities} data sensitif disamarkan pada tampilan publik)`
+                              : 'Perlindungan Data Pribadi Aktif (Tidak ada data pribadi sensitif terdeteksi pada teks)'}
                     </span>
                 </div>
-                {detectorVersion && (
+                {mode === 'admin' && detectorVersion && (
                     <span className="font-mono text-[11px] text-gray-neutral">
                         {detectorVersion}
                     </span>
                 )}
             </div>
+            {mode === 'public' && sanitized && (
+                <p className="mt-1 pl-6 text-[11px] text-forest-green/85">
+                    Informasi pribadi seperti nama, nomor telepon, dan alamat
+                    disamarkan otomatis agar keamanan pelapor tetap terjaga.
+                </p>
+            )}
             {mode === 'admin' && redactionApplied && entityCounts && (
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {Object.entries(entityCounts)
@@ -50,9 +57,9 @@ export function PrivacyProtectionBadge({
                         .map(([entityType, count]) => (
                             <span
                                 key={entityType}
-                                className="rounded-md border border-border-neutral bg-white px-2 py-0.5 font-mono text-[10px] font-medium text-dark-neutral"
+                                className="rounded-md border border-border-neutral bg-white px-2 py-0.5 text-[11px] font-medium text-dark-neutral"
                             >
-                                {entityType}: {count}
+                                {getAiPiiEntityLabel(entityType)}: {count}
                             </span>
                         ))}
                 </div>

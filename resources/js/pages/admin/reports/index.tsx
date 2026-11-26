@@ -216,10 +216,10 @@ export default function ReportsIndex({
                                 type="button"
                                 onClick={handleReset}
                                 className="inline-flex items-center gap-1 rounded-lg border border-transparent px-2.5 py-2 text-xs font-semibold text-[#68716B] hover:text-[#171C19] dark:text-neutral-400 dark:hover:text-white"
-                                title="Reset filter"
+                                title="Atur ulang filter"
                             >
                                 <RotateCcw className="size-3.5" />
-                                <span className="hidden sm:inline">Reset</span>
+                                <span className="hidden sm:inline">Atur Ulang</span>
                             </button>
                         )}
                     </div>
@@ -232,7 +232,7 @@ export default function ReportsIndex({
                             <EmptyState
                                 icon={FileText}
                                 title="Tidak ada laporan yang sesuai kriteria"
-                                description="Ubah kata kunci pencarian atau reset filter untuk menampilkan data lainnya."
+                                description="Ubah kata kunci pencarian atau atur ulang filter untuk menampilkan data lainnya."
                                 action={
                                     (search || status || categoryId) ? (
                                         <button
@@ -241,7 +241,7 @@ export default function ReportsIndex({
                                             className="inline-flex items-center gap-1.5 rounded-lg bg-[#216B49] px-4 py-2 text-xs font-semibold text-white hover:bg-[#174B35]"
                                         >
                                             <RotateCcw className="size-3.5" />
-                                            <span>Reset Semua Filter</span>
+                                            <span>Atur Ulang Filter</span>
                                         </button>
                                     ) : undefined
                                 }

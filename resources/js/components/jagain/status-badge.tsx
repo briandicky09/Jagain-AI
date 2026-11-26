@@ -21,14 +21,14 @@ const statusConfig: Record<
 > = {
     // Report statuses
     SUBMITTED: {
-        label: 'Perlu Di Review',
+        label: 'Perlu Ditinjau',
         bg: 'bg-[#E8F1EB] dark:bg-emerald-950/40',
         text: 'text-[#174B35] dark:text-emerald-300',
         border: 'border-[#39845C]/30 dark:border-emerald-800/50',
         icon: Clock,
     },
     UNDER_REVIEW: {
-        label: 'Perlu Di Review',
+        label: 'Perlu Ditinjau',
         bg: 'bg-[#E8F1EB] dark:bg-emerald-950/40',
         text: 'text-[#174B35] dark:text-emerald-300',
         border: 'border-[#39845C]/30 dark:border-emerald-800/50',
@@ -107,7 +107,7 @@ const statusConfig: Record<
         icon: Flame,
     },
     SUBMITTED_FOR_REVIEW: {
-        label: 'Diajukan untuk Review',
+        label: 'Menunggu Pemeriksaan Selesai',
         bg: 'bg-[#E8F1EB] dark:bg-emerald-950/40',
         text: 'text-[#216B49] dark:text-emerald-300',
         border: 'border-[#39845C] dark:border-emerald-800/50',

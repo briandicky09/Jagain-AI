@@ -11,6 +11,11 @@ import {
     ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+    AI_MODEL_MODULE_LABELS,
+    AI_MODEL_STATUS_LABELS,
+    formatWibDateTime,
+} from '@/lib/ai-terminology';
 
 interface DashboardProps {
     serviceHealth: {
@@ -132,7 +137,7 @@ export default function AiIntelligenceDashboard({
 
     return (
         <>
-            <Head title="AI Intelligence & Evaluasi - JAGAIN Admin" />
+            <Head title="Kinerja & Evaluasi AI — Admin JAGAIN" />
 
             <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                 {flash?.success && (
@@ -158,15 +163,15 @@ export default function AiIntelligenceDashboard({
                     <div className="space-y-1">
                         <div className="flex items-center gap-2 text-xs font-semibold text-primary-green">
                             <Bot className="size-4" />
-                            <span>JAGAIN AI OBSERVABILITY &amp; BENCHMARK</span>
+                            <span>PEMANTAUAN &amp; EVALUASI KINERJA AI</span>
                         </div>
                         <h1 className="text-xl font-bold tracking-tight text-dark-neutral sm:text-2xl">
-                            AI System Health &amp; Evaluation Dashboard
+                            Kinerja &amp; Evaluasi Sistem AI
                         </h1>
                         <p className="text-xs text-gray-neutral">
-                            Menampilkan metrik terukur dari model dan dataset
-                            benchmark aktual. Nilai yang belum diukur ditandai
-                            secara eksplisit.
+                            Menampilkan kesiapan layanan AI dan hasil pengujian
+                            nyata pada data uji. Setiap metrik teknis disertai
+                            penjelasan singkat dalam bahasa Indonesia.
                         </p>
                     </div>
 
@@ -179,8 +184,8 @@ export default function AiIntelligenceDashboard({
                         <Play className="mr-1.5 size-3.5" />
                         <span>
                             {runningEval
-                                ? 'Menjalankan Benchmark...'
-                                : 'Jalankan Benchmark Evaluasi'}
+                                ? 'Sedang Menjalankan Uji Evaluasi...'
+                                : 'Jalankan Uji Evaluasi AI'}
                         </span>
                     </Button>
                 </header>
@@ -189,40 +194,43 @@ export default function AiIntelligenceDashboard({
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between text-xs font-semibold text-gray-neutral">
-                            <span>Status Microservice AI</span>
+                            <span>Status Layanan AI</span>
                             <Activity className="size-4 text-primary-green" />
                         </div>
-                        <div className="mt-2 text-lg font-bold text-dark-neutral uppercase">
-                            {serviceHealth.status}
+                        <div className="mt-2 text-lg font-bold text-dark-neutral">
+                            {serviceHealth.status === 'ok'
+                                ? 'Aktif & Normal'
+                                : 'Sedang Tidak Aktif'}
                         </div>
                         <p className="mt-1 text-xs text-gray-neutral">
                             {serviceHealth.status === 'ok'
-                                ? 'FastAPI merespons normal'
-                                : 'Microservice offline — fallback privasi Laravel aktif'}
+                                ? 'Layanan analisis AI siap menerima permintaan'
+                                : 'Layanan AI offline — perlindungan privasi dasar tetap aktif di Laravel'}
                         </p>
                     </div>
 
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between text-xs font-semibold text-gray-neutral">
-                            <span>Analisis Laporan Tercatat</span>
+                            <span>Status Analisis Laporan</span>
                             <Bot className="size-4 text-primary-green" />
                         </div>
                         <div className="mt-2 text-lg font-bold text-dark-neutral">
-                            {stats.completed_analyses} / {stats.total_analyses}
+                            {stats.completed_analyses} / {stats.total_analyses}{' '}
+                            selesai
                         </div>
                         <p className="mt-1 text-xs text-gray-neutral">
-                            Gagal: {stats.failed_analyses} &bull; Rata-rata:{' '}
-                            {formatMs(stats.avg_duration_ms)}
+                            Gagal: {stats.failed_analyses} &bull; Rata-rata
+                            waktu: {formatMs(stats.avg_duration_ms)}
                         </p>
                     </div>
 
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between text-xs font-semibold text-gray-neutral">
-                            <span>Kandidat Duplikat</span>
+                            <span>Deteksi Laporan Serupa</span>
                             <BarChart3 className="size-4 text-primary-green" />
                         </div>
                         <div className="mt-2 text-lg font-bold text-dark-neutral">
-                            {stats.total_duplicate_candidates}
+                            {stats.total_duplicate_candidates} terdeteksi
                         </div>
                         <p className="mt-1 text-xs text-gray-neutral">
                             Dikonfirmasi Admin: {stats.confirmed_duplicates}
@@ -231,7 +239,7 @@ export default function AiIntelligenceDashboard({
 
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between text-xs font-semibold text-gray-neutral">
-                            <span>Guardrail Privasi PII</span>
+                            <span>Perlindungan Data Pribadi</span>
                             <ShieldCheck className="size-4 text-primary-green" />
                         </div>
                         <div className="mt-2 text-lg font-bold text-dark-neutral">
@@ -239,7 +247,7 @@ export default function AiIntelligenceDashboard({
                             {stats.total_privacy_checks}
                         </div>
                         <p className="mt-1 text-xs text-gray-neutral">
-                            Laporan terdeteksi &amp; disensor pada output publik
+                            Laporan terdeteksi &amp; disamarkan data pribadinya
                         </p>
                     </div>
                 </div>
@@ -249,7 +257,7 @@ export default function AiIntelligenceDashboard({
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs sm:p-6">
                         <div className="flex items-center gap-2 text-sm font-bold text-dark-neutral">
                             <Cpu className="size-4 text-primary-green" />
-                            <span>Status Model &amp; Adapter Aktif</span>
+                            <span>Status Modul AI Aktif</span>
                         </div>
                         <div className="mt-4 grid gap-3 md:grid-cols-3">
                             {Object.entries(serviceHealth.models).map(
@@ -258,12 +266,15 @@ export default function AiIntelligenceDashboard({
                                         key={key}
                                         className="rounded-xl border border-border-neutral bg-pale-green/30 p-3.5 text-xs"
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-bold text-forest-green uppercase">
-                                                {key}
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="font-bold text-forest-green">
+                                                {AI_MODEL_MODULE_LABELS[key] ??
+                                                    key.toUpperCase()}
                                             </span>
-                                            <span className="rounded border border-border-neutral bg-white px-2 py-0.5 font-mono text-[10px]">
-                                                {model.status}
+                                            <span className="rounded border border-border-neutral bg-white px-2 py-0.5 text-[11px] font-medium text-dark-neutral">
+                                                {AI_MODEL_STATUS_LABELS[
+                                                    model.status
+                                                ] ?? model.status}
                                             </span>
                                         </div>
                                         <div className="mt-1.5 font-mono text-[11px] font-semibold break-all text-dark-neutral">
@@ -281,17 +292,17 @@ export default function AiIntelligenceDashboard({
                             <div className="mt-4 grid gap-2.5 border-t border-border-neutral pt-4 text-xs sm:grid-cols-2 lg:grid-cols-5">
                                 <div className="rounded-lg border border-border-neutral bg-pale-green/20 px-3 py-2">
                                     <div className="text-[11px] text-gray-neutral">
-                                        Uptime Service
+                                        Lama Layanan Aktif
                                     </div>
                                     <div className="font-mono font-bold text-dark-neutral">
                                         {serviceHealth.telemetry
-                                            .uptime_seconds ?? 0}
-                                        s
+                                            .uptime_seconds ?? 0}{' '}
+                                        detik
                                     </div>
                                 </div>
                                 <div className="rounded-lg border border-border-neutral bg-pale-green/20 px-3 py-2">
                                     <div className="text-[11px] text-gray-neutral">
-                                        Total Inferensi / Error
+                                        Total Analisis AI / Gagal
                                     </div>
                                     <div className="font-mono font-bold text-dark-neutral">
                                         {serviceHealth.telemetry
@@ -306,7 +317,7 @@ export default function AiIntelligenceDashboard({
                                 </div>
                                 <div className="rounded-lg border border-border-neutral bg-pale-green/20 px-3 py-2">
                                     <div className="text-[11px] text-gray-neutral">
-                                        Latensi Rata / P95
+                                        Kecepatan (Rata-rata / P95)
                                     </div>
                                     <div className="font-mono font-bold text-dark-neutral">
                                         {formatMs(
@@ -322,7 +333,7 @@ export default function AiIntelligenceDashboard({
                                 </div>
                                 <div className="rounded-lg border border-border-neutral bg-pale-green/20 px-3 py-2">
                                     <div className="text-[11px] text-gray-neutral">
-                                        Memori RSS
+                                        Penggunaan Memori (RSS)
                                     </div>
                                     <div className="font-mono font-bold text-dark-neutral">
                                         {typeof serviceHealth.telemetry
@@ -333,7 +344,7 @@ export default function AiIntelligenceDashboard({
                                 </div>
                                 <div className="rounded-lg border border-border-neutral bg-pale-green/20 px-3 py-2">
                                     <div className="text-[11px] text-gray-neutral">
-                                        Inferensi Sukses Terakhir
+                                        Analisis Sukses Terakhir
                                     </div>
                                     <div
                                         className="truncate font-mono text-[11px] font-semibold text-dark-neutral"
@@ -366,22 +377,23 @@ export default function AiIntelligenceDashboard({
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-neutral pb-3.5">
                         <div>
                             <h2 className="text-base font-bold text-dark-neutral">
-                                Hasil Evaluasi Benchmark AI
+                                Hasil Pengujian Kinerja AI
                             </h2>
                             {activeMeta ? (
                                 <p className="mt-0.5 text-xs text-gray-neutral">
                                     {activeMeta.datasetName} (v
                                     {activeMeta.datasetVersion}) &bull;{' '}
                                     {activeMeta.isSimulated
-                                        ? 'Dataset Kurasi/Simulasi'
-                                        : 'Dataset Produksi'}{' '}
-                                    &bull; Dieksekusi: {activeMeta.executedAt}
+                                        ? 'Dataset Uji Terkurasi'
+                                        : 'Dataset Operasional'}{' '}
+                                    &bull; Dijalankan:{' '}
+                                    {formatWibDateTime(activeMeta.executedAt)}
                                 </p>
                             ) : (
                                 <p className="mt-0.5 text-xs text-gray-neutral">
-                                    Belum ada hasil benchmark yang dijalankan.
-                                    Jalankan skrip evaluasi atau klik tombol di
-                                    atas.
+                                    Belum ada pengujian kinerja AI yang
+                                    dijalankan. Klik &ldquo;Jalankan Uji
+                                    Evaluasi AI&rdquo; di atas untuk mengukur.
                                 </p>
                             )}
                         </div>
@@ -389,20 +401,21 @@ export default function AiIntelligenceDashboard({
 
                     {!activeMetrics ? (
                         <div className="mt-4 rounded-xl border border-dashed border-border-neutral bg-pale-green/40 p-6 text-center text-xs text-gray-neutral">
-                            Belum ada metrik terukur. Sistem tidak menampilkan
-                            angka evaluasi palsu sebelum benchmark dijalankan.
+                            Belum Ada Data. Sistem hanya menampilkan angka hasil
+                            pengujian nyata setelah uji evaluasi dijalankan.
                         </div>
                     ) : (
                         <div className="mt-4 grid gap-4 md:grid-cols-2">
                             {/* Triage */}
                             <div className="rounded-xl border border-border-neutral bg-pale-green/25 p-4 text-xs">
                                 <div className="font-bold text-dark-neutral">
-                                    1. Multimodal Triage (Severity Rule/NLP)
+                                    1. Perkiraan Tingkat Keparahan &amp;
+                                    Pengelompokan Laporan
                                 </div>
                                 {activeMetrics.triage?.measured ? (
                                     <div className="mt-2 space-y-1.5">
                                         <div>
-                                            Ukuran uji:{' '}
+                                            Jumlah data uji:{' '}
                                             <strong>
                                                 {
                                                     activeMetrics.triage
@@ -412,7 +425,8 @@ export default function AiIntelligenceDashboard({
                                             kasus
                                         </div>
                                         <div>
-                                            Macro Precision:{' '}
+                                            Ketepatan Hasil AI (Macro
+                                            Precision):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.triage
@@ -421,7 +435,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            Macro Recall:{' '}
+                                            Kemampuan Menemukan Laporan (Macro
+                                            Recall):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.triage.recall,
@@ -429,7 +444,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            Macro F1-Score:{' '}
+                                            Skor Gabungan Ketepatan &amp;
+                                            Cakupan (Macro F1-Score):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.triage
@@ -438,7 +454,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            Latensi Median / P95:{' '}
+                                            Kecepatan Analisis (Latensi Median /
+                                            P95):{' '}
                                             <strong>
                                                 {formatMs(
                                                     activeMetrics.triage.latency
@@ -464,19 +481,20 @@ export default function AiIntelligenceDashboard({
                             {/* Deduplication */}
                             <div className="rounded-xl border border-border-neutral bg-pale-green/25 p-4 text-xs">
                                 <div className="font-bold text-dark-neutral">
-                                    2. Semantic &amp; Geospatial Deduplication
+                                    2. Deteksi Laporan Serupa (Kemiripan Teks
+                                    &amp; Lokasi)
                                 </div>
                                 {activeMetrics.deduplication?.measured ? (
                                     <div className="mt-2 space-y-1.5">
                                         <div>
-                                            Ukuran uji:{' '}
+                                            Jumlah data uji:{' '}
                                             <strong>
                                                 {
                                                     activeMetrics.deduplication
                                                         .dataset_size
                                                 }
                                             </strong>{' '}
-                                            pasangan
+                                            pasangan laporan
                                         </div>
                                         <div>
                                             Model:{' '}
@@ -488,14 +506,15 @@ export default function AiIntelligenceDashboard({
                                             </span>
                                         </div>
                                         <div>
-                                            Precision@1:{' '}
+                                            Ketepatan Hasil AI (Precision@1):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.deduplication
                                                         .precision_at_1,
                                                 )}
                                             </strong>{' '}
-                                            &bull; Recall@1:{' '}
+                                            &bull; Kemampuan Menemukan Laporan
+                                            (Recall@1):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.deduplication
@@ -511,7 +530,8 @@ export default function AiIntelligenceDashboard({
                                                         .f1_score,
                                                 )}
                                             </strong>{' '}
-                                            &bull; FPR:{' '}
+                                            &bull; Hasil Terdeteksi Keliru
+                                            (FPR):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.deduplication
@@ -520,7 +540,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            Latensi Median / P95:{' '}
+                                            Kecepatan Analisis (Latensi Median /
+                                            P95):{' '}
                                             <strong>
                                                 {formatMs(
                                                     activeMetrics.deduplication
@@ -546,12 +567,13 @@ export default function AiIntelligenceDashboard({
                             {/* Privacy */}
                             <div className="rounded-xl border border-border-neutral bg-pale-green/25 p-4 text-xs">
                                 <div className="font-bold text-dark-neutral">
-                                    3. Privacy Guardrails &amp; PII Redaction
+                                    3. Perlindungan &amp; Penyensoran Data
+                                    Pribadi (PII)
                                 </div>
                                 {activeMetrics.privacy?.measured ? (
                                     <div className="mt-2 space-y-1.5">
                                         <div>
-                                            Ukuran uji:{' '}
+                                            Jumlah data uji:{' '}
                                             <strong>
                                                 {
                                                     activeMetrics.privacy
@@ -561,14 +583,15 @@ export default function AiIntelligenceDashboard({
                                             kasus
                                         </div>
                                         <div>
-                                            Precision:{' '}
+                                            Ketepatan Hasil AI (Precision):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.privacy
                                                         .precision,
                                                 )}
                                             </strong>{' '}
-                                            &bull; Recall:{' '}
+                                            &bull; Kemampuan Menemukan Data
+                                            Pribadi (Recall):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.privacy
@@ -584,7 +607,7 @@ export default function AiIntelligenceDashboard({
                                                         .f1_score,
                                                 )}
                                             </strong>{' '}
-                                            &bull; Kelengkapan Redaksi:{' '}
+                                            &bull; Kelengkapan Penyensoran:{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.privacy
@@ -593,7 +616,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            False Positive Rate:{' '}
+                                            Hasil Terdeteksi Keliru (False
+                                            Positive Rate):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.privacy
@@ -612,20 +636,19 @@ export default function AiIntelligenceDashboard({
                             {/* Vision */}
                             <div className="rounded-xl border border-border-neutral bg-pale-green/25 p-4 text-xs">
                                 <div className="font-bold text-dark-neutral">
-                                    4. Vision Adapter (CLIP Zero-Shot Sanity
-                                    Check)
+                                    4. Analisis Foto Bukti (CLIP Zero-Shot)
                                 </div>
                                 {activeMetrics.vision?.measured ? (
                                     <div className="mt-2 space-y-1.5">
                                         <div>
-                                            Ukuran uji:{' '}
+                                            Jumlah data uji:{' '}
                                             <strong>
                                                 {
                                                     activeMetrics.vision
                                                         .dataset_size
                                                 }
                                             </strong>{' '}
-                                            citra sintetis
+                                            gambar sintetis
                                         </div>
                                         <div>
                                             Model:{' '}
@@ -637,14 +660,16 @@ export default function AiIntelligenceDashboard({
                                             </span>
                                         </div>
                                         <div>
-                                            Macro Precision:{' '}
+                                            Ketepatan Hasil AI (Macro
+                                            Precision):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.vision
                                                         .precision,
                                                 )}
                                             </strong>{' '}
-                                            &bull; Recall:{' '}
+                                            &bull; Kemampuan Menemukan Laporan
+                                            (Recall):{' '}
                                             <strong>
                                                 {formatPct(
                                                     activeMetrics.vision.recall,
@@ -652,7 +677,8 @@ export default function AiIntelligenceDashboard({
                                             </strong>
                                         </div>
                                         <div>
-                                            Latensi Median / P95:{' '}
+                                            Kecepatan Analisis (Latensi Median /
+                                            P95):{' '}
                                             <strong>
                                                 {formatMs(
                                                     activeMetrics.vision.latency
@@ -671,10 +697,11 @@ export default function AiIntelligenceDashboard({
                                             {activeMetrics.vision.note}
                                         </p>
                                         <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-[11px] font-medium text-amber-900">
-                                            Status Validasi Visi Dunia Nyata:
-                                            Belum Diukur (baru uji sanitasi
-                                            citra sintetis; foto karhutla
-                                            berlisensi diperlukan).
+                                            Status Pengujian Foto Lapangan Asli:
+                                            Belum Diukur (saat ini baru diuji
+                                            pada gambar contoh sintetis; masih
+                                            membutuhkan dataset foto kebakaran
+                                            asli yang berlisensi).
                                         </div>
                                     </div>
                                 ) : (
@@ -692,7 +719,7 @@ export default function AiIntelligenceDashboard({
                 {evaluationRuns.length > 0 && (
                     <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs sm:p-6">
                         <h3 className="text-sm font-bold text-dark-neutral">
-                            Riwayat Eksekusi Evaluasi
+                            Riwayat Pengujian Kinerja AI
                         </h3>
                         <div className="mt-3 divide-y divide-border-neutral rounded-xl border border-border-neutral">
                             {evaluationRuns.map((run) => (
@@ -712,8 +739,9 @@ export default function AiIntelligenceDashboard({
                                         </span>
                                     </div>
                                     <div className="text-gray-neutral">
-                                        {run.triggered_by?.name ?? 'System'}{' '}
-                                        &bull; {run.executed_at}
+                                        {run.triggered_by?.name ?? 'Sistem'}{' '}
+                                        &bull;{' '}
+                                        {formatWibDateTime(run.executed_at)}
                                     </div>
                                 </div>
                             ))}

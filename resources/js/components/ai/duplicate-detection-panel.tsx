@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import { Check, CopyCheck, MapPin, Clock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+    AI_DUPLICATE_ADMIN_DECISION_LABELS,
+    AI_DUPLICATE_RECOMMENDATION_LABELS,
+    formatPercentScore,
+} from '@/lib/ai-terminology';
 import { show as reportShow } from '@/routes/admin/reports';
 import type {
     AiDuplicateCandidateRecord,
@@ -12,13 +17,6 @@ interface DuplicateDetectionPanelProps {
     reportId: number;
     candidates: AiDuplicateCandidateRecord[];
 }
-
-const recLabels: Record<AiDuplicateRecommendation, string> = {
-    LIKELY_DUPLICATE: 'Sangat Mungkin Duplikat',
-    POSSIBLE_DUPLICATE: 'Kemungkinan Duplikat',
-    UNRELATED: 'Tidak Berkaitan',
-    INSUFFICIENT_INFORMATION: 'Informasi Kurang',
-};
 
 const recStyles: Record<AiDuplicateRecommendation, string> = {
     LIKELY_DUPLICATE: 'border-amber-300 bg-amber-50 text-amber-900',
@@ -70,7 +68,7 @@ export function DuplicateDetectionPanel({
 
     return (
         <section
-            aria-label="Panel Deteksi Duplikasi Semantik dan Geospasial"
+            aria-label="Panel Deteksi Laporan Serupa"
             className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs sm:p-6"
         >
             <div className="flex items-start gap-2.5 border-b border-border-neutral pb-3.5">
@@ -79,21 +77,21 @@ export function DuplicateDetectionPanel({
                 </div>
                 <div>
                     <h2 className="text-base font-bold tracking-tight text-dark-neutral">
-                        Deteksi Duplikasi Semantik &amp; Geospasial AI
+                        Deteksi Laporan Serupa
                     </h2>
                     <p className="mt-0.5 text-xs text-gray-neutral">
-                        Kandidat laporan terkait berdasarkan kemiripan
-                        deskripsi, jarak koordinat, selisih waktu, dan kategori.
-                        Laporan asli tidak pernah digabung atau dihapus
-                        otomatis.
+                        Menampilkan laporan lain yang memiliki kemiripan cerita,
+                        lokasi berdekatan, waktu kejadian hampir sama, atau
+                        kategori yang sama. Laporan asli tidak pernah digabung
+                        atau dihapus otomatis.
                     </p>
                 </div>
             </div>
 
             {candidates.length === 0 ? (
                 <div className="mt-4 rounded-xl border border-dashed border-border-neutral bg-pale-green/40 p-5 text-center text-xs text-gray-neutral">
-                    Tidak ada kandidat duplikat yang terdeteksi dari analisis AI
-                    terbaru.
+                    Belum ditemukan laporan lain yang mirip dari hasil analisis
+                    AI terbaru.
                 </div>
             ) : (
                 <div className="mt-4 space-y-3">
@@ -114,21 +112,21 @@ export function DuplicateDetectionPanel({
                                                     ] ?? recStyles.UNRELATED
                                                 }`}
                                             >
-                                                {recLabels[
+                                                {AI_DUPLICATE_RECOMMENDATION_LABELS[
                                                     cand.recommendation
                                                 ] ?? cand.recommendation}
                                             </span>
-                                            <span className="font-mono text-xs font-bold text-forest-green">
-                                                Skor Gabungan:{' '}
-                                                {Math.round(
-                                                    cand.duplicate_probability *
-                                                        100,
+                                            <span className="text-xs font-bold text-forest-green">
+                                                Tingkat Kemiripan Gabungan:{' '}
+                                                {formatPercentScore(
+                                                    cand.duplicate_probability,
                                                 )}
-                                                %
                                             </span>
-                                            <span className="rounded border border-border-neutral bg-white px-2 py-0.5 font-mono text-[10px] text-dark-neutral">
-                                                Keputusan Admin:{' '}
-                                                {cand.admin_decision}
+                                            <span className="rounded border border-border-neutral bg-white px-2 py-0.5 text-[11px] font-medium text-dark-neutral">
+                                                Status:{' '}
+                                                {AI_DUPLICATE_ADMIN_DECISION_LABELS[
+                                                    cand.admin_decision
+                                                ] ?? cand.admin_decision}
                                             </span>
                                         </div>
 
@@ -168,7 +166,7 @@ export function DuplicateDetectionPanel({
                                             className="inline-flex items-center gap-1 rounded-xl border border-leaf-green/40 bg-soft-green px-2.5 py-1.5 text-xs font-semibold text-forest-green hover:bg-leaf-green/20"
                                         >
                                             <Check className="size-3.5" />
-                                            <span>Konfirmasi Terkait</span>
+                                            <span>Tandai Laporan Serupa</span>
                                         </button>
                                         <button
                                             type="button"
@@ -181,24 +179,23 @@ export function DuplicateDetectionPanel({
                                             className="inline-flex items-center gap-1 rounded-xl border border-border-neutral bg-white px-2.5 py-1.5 text-xs font-semibold text-dark-neutral hover:bg-zinc-100"
                                         >
                                             <X className="size-3.5" />
-                                            <span>Tolak</span>
+                                            <span>Bukan Laporan Serupa</span>
                                         </button>
                                     </div>
                                 </div>
 
                                 <div className="mt-2.5 flex flex-wrap gap-3 text-[11px] text-gray-neutral">
                                     <span>
-                                        Kemiripan Teks:{' '}
+                                        Tingkat Kemiripan Teks:{' '}
                                         <strong className="text-dark-neutral">
-                                            {Math.round(
-                                                cand.semantic_similarity * 100,
+                                            {formatPercentScore(
+                                                cand.semantic_similarity,
                                             )}
-                                            %
                                         </strong>
                                     </span>
                                     <span className="inline-flex items-center gap-1">
                                         <MapPin className="size-3 text-primary-green" />
-                                        Jarak:{' '}
+                                        Jarak Lokasi:{' '}
                                         <strong className="text-dark-neutral">
                                             {cand.distance_meters >= 1000
                                                 ? `${(cand.distance_meters / 1000).toFixed(2)} km`
@@ -207,7 +204,7 @@ export function DuplicateDetectionPanel({
                                     </span>
                                     <span className="inline-flex items-center gap-1">
                                         <Clock className="size-3 text-primary-green" />
-                                        Selisih waktu:{' '}
+                                        Selisih Waktu:{' '}
                                         <strong className="text-dark-neutral">
                                             {Math.round(
                                                 cand.time_difference_minutes,
@@ -226,7 +223,7 @@ export function DuplicateDetectionPanel({
                                 {cand.decision_reason && (
                                     <div className="mt-2 rounded-lg border border-border-neutral bg-white p-2 text-xs text-dark-neutral">
                                         <span className="font-semibold">
-                                            Alasan Keputusan Terakhir:
+                                            Alasan Keputusan Admin:
                                         </span>{' '}
                                         {cand.decision_reason}
                                     </div>
@@ -241,8 +238,8 @@ export function DuplicateDetectionPanel({
                                             Alasan Keputusan (
                                             {pendingDecision ===
                                             'CONFIRMED_DUPLICATE'
-                                                ? 'Konfirmasi Terkait'
-                                                : 'Tolak Rekomendasi Duplikat'}
+                                                ? 'Tandai sebagai Laporan Serupa'
+                                                : 'Bukan Laporan Serupa'}
                                             ) *
                                         </label>
                                         <input
@@ -254,7 +251,7 @@ export function DuplicateDetectionPanel({
                                                     e.target.value,
                                                 )
                                             }
-                                            placeholder="Catat alasan keputusan Anda untuk audit trail..."
+                                            placeholder="Catat alasan keputusan Anda untuk riwayat pemeriksaan..."
                                             className="w-full rounded-xl border border-border-neutral px-3 py-1.5 text-xs text-dark-neutral"
                                         />
                                         {decisionForm.errors.reason && (

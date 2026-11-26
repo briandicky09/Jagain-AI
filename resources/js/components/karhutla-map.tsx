@@ -268,8 +268,8 @@ export default function KarhutlaMap({
                     ? `${reportUrlPrefix}/${rep.id}`
                     : `/laporan-publik/${rep.tracking_code}`;
                 const reportButtonLabel = reportUrlPrefix
-                    ? 'Review Laporan Admin →'
-                    : 'Lihat Register Publik →';
+                    ? 'Periksa Laporan →'
+                    : 'Lihat Detail Laporan →';
 
                 const popupContent = `
                 <div style="min-width: 240px; font-family: Poppins, sans-serif; font-size: 12px; color: #111827; background: #ffffff; padding: 14px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);">
@@ -311,6 +311,16 @@ export default function KarhutlaMap({
                    </div>`
                     : '';
 
+                const satelliteConfidenceMap: Record<string, string> = {
+                    high: 'Tinggi',
+                    nominal: 'Sedang',
+                    low: 'Rendah',
+                };
+                const confidenceText =
+                    satelliteConfidenceMap[
+                        (obs.confidence_level || '').toLowerCase()
+                    ] || obs.confidence_level;
+
                 const popupContent = `
                 <div style="min-width: 230px; font-family: Poppins, sans-serif; font-size: 12px; color: #111827; background: #ffffff; padding: 14px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);">
                     ${simulationBadge}
@@ -318,11 +328,11 @@ export default function KarhutlaMap({
                         Titik Panas Satelit • ${obs.satellite_instrument}
                     </div>
                     <div style="font-size: 13px; font-weight: 800; color: #111827; margin-bottom: 8px;">
-                        Deteksi Suhu Termal Radiatif
+                        Titik Panas Terdeteksi Satelit
                     </div>
                     <div style="background: #f9fafb; border: 1px solid #f3f4f6; padding: 8px; border-radius: 12px; margin-bottom: 8px; font-size: 11px; color: #374151;">
-                        <div>Tingkat Kepercayaan: <strong style="color: #111827;">${obs.confidence_level}</strong></div>
-                        ${obs.frp_mw ? `<div>Daya Radiasi (FRP): <strong>${obs.frp_mw} MW</strong></div>` : ''}
+                        <div>Tingkat Keyakinan Satelit: <strong style="color: #111827;">${confidenceText}</strong></div>
+                        ${obs.frp_mw ? `<div>Intensitas Panas (FRP): <strong>${obs.frp_mw} MW</strong></div>` : ''}
                         ${obs.brightness_kelvin ? `<div>Suhu Kecerahan: <strong>${obs.brightness_kelvin} K</strong></div>` : ''}
                         <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Waktu: ${new Date(obs.observed_at).toLocaleString('id-ID')}</div>
                     </div>
@@ -455,7 +465,7 @@ export default function KarhutlaMap({
                         <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-100/80 px-2.5 py-1">
                             <span className="size-2 rounded-full bg-[#f97316]" />
                             <span className="text-[11px] font-semibold text-neutral-800">
-                                Hotspot Satelit
+                                Titik Panas Satelit
                             </span>
                         </div>
                     </div>

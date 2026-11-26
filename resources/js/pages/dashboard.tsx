@@ -104,7 +104,7 @@ export default function Dashboard({
 
     return (
         <>
-            <Head title="Dashboard Masyarakat - JAGAIN" />
+            <Head title="Beranda Warga — JAGAIN" />
 
             <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                 {/* Flash Success & Error Notification */}
@@ -146,7 +146,7 @@ export default function Dashboard({
                                         Klarifikasi
                                     </BannerTitle>
                                     <p className="text-xs leading-relaxed text-dark-neutral/85">
-                                        Tim verifikator memerlukan konfirmasi
+                                        Petugas pemeriksa memerlukan konfirmasi
                                         titik lokasi atau foto tambahan untuk
                                         memproses laporan Anda. Respons cepat
                                         membantu percepatan koordinasi
@@ -196,7 +196,7 @@ export default function Dashboard({
                     <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                         <div className="max-w-2xl space-y-2">
                             <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                                Dasbor Pelaporan & Pengawasan Karhutla
+                                Beranda Pelaporan &amp; Pemantauan Karhutla
                             </h1>
                             <p className="text-sm leading-relaxed text-white/85">
                                 Pantau laporan karhutla Anda, lengkapi data jika
@@ -291,10 +291,10 @@ export default function Dashboard({
                                                         2. Koordinasi Satuan OPD
                                                     </strong>
                                                     <p className="text-gray-neutral">
-                                                        Data valid
-                                                        didisposisikan ke BPBD,
-                                                        Manggala Agni, atau
-                                                        Damkar setempat.
+                                                        Data laporan yang
+                                                        valid diteruskan ke
+                                                        BPBD, Manggala Agni,
+                                                        atau Damkar setempat.
                                                     </p>
                                                 </div>
                                             </div>
@@ -420,12 +420,11 @@ export default function Dashboard({
                                                 <FileText className="mt-0.5 size-4 shrink-0 text-primary-green" />
                                                 <div>
                                                     <strong className="font-semibold text-forest-green">
-                                                        Akses Catatan
-                                                        Verifikator
+                                                        Akses Catatan Petugas
                                                     </strong>
                                                     <p className="text-gray-neutral">
                                                         Setiap catatan
-                                                        verifikasi, disposisi
+                                                        pemeriksaan, penugasan
                                                         dinas terkait, hingga
                                                         bukti tindak lanjut
                                                         dapat dipantau di
@@ -876,7 +875,8 @@ export default function Dashboard({
                                         </strong>{' '}
                                         Status administratif selesai penanganan
                                         tidak otomatis berarti api telah padam
-                                        tanpa observasi lapangan terverifikasi.
+                                        tanpa pengecekan langsung petugas di
+                                        lapangan.
                                     </span>
                                 </li>
                             </ul>

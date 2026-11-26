@@ -23,7 +23,7 @@ const conditionConfig: Record<string, { label: string; bg: string; text: string;
         icon: Flame,
     },
     OBSERVED_ACTIVE: {
-        label: 'Terobservasi Api Aktif Lapangan',
+        label: 'Api Masih Aktif (Cek Lapangan)',
         bg: 'bg-neutral-900',
         text: 'text-white font-bold',
         border: 'border-neutral-800',
@@ -37,7 +37,7 @@ const conditionConfig: Record<string, { label: string; bg: string; text: string;
         icon: ShieldAlert,
     },
     OBSERVED_EXTINGUISHED: {
-        label: 'Terobservasi Padam / Asap Sisa',
+        label: 'Api Padam / Sisa Asap (Cek Lapangan)',
         bg: 'bg-[#10e57a]',
         text: 'text-black font-bold',
         border: 'border-[#10e57a]',

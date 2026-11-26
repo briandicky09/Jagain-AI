@@ -199,7 +199,7 @@ export function FireConditionBadge({
                 title = 'Kondisi kebakaran berdasarkan pengamatan pelapor';
                 break;
             case 'OBSERVED_ACTIVE':
-                label = 'Terobservasi: Api Aktif';
+                label = 'Cek Lapangan: Api Aktif';
                 Icon = ShieldAlert;
                 title =
                     'Kondisi kebakaran terkonfirmasi aktif oleh petugas di lapangan';
@@ -210,10 +210,10 @@ export function FireConditionBadge({
                 title = 'Api telah disekat / terkendali';
                 break;
             case 'OBSERVED_EXTINGUISHED':
-                label = 'Terobservasi: Padam';
+                label = 'Cek Lapangan: Padam';
                 Icon = CheckCircle2;
                 title =
-                    'Kondisi kebakaran terobservasi telah padam oleh petugas berwenang';
+                    'Kondisi kebakaran telah dipastikan padam oleh petugas berwenang';
                 break;
             case 'UNKNOWN':
             default:
@@ -248,7 +248,7 @@ export function FireConditionBadge({
                     title="Kondisi kebakaran terkonfirmasi aktif oleh petugas di lapangan"
                 >
                     <ShieldAlert className="size-3.5 shrink-0 text-primary-green" />
-                    <span>Terobservasi: Api Aktif</span>
+                    <span>Cek Lapangan: Api Aktif</span>
                 </span>
             );
         case 'OBSERVED_CONTAINED':
@@ -265,10 +265,10 @@ export function FireConditionBadge({
             return (
                 <span
                     className={`inline-flex items-center gap-1.5 rounded-md border border-leaf-green/30 bg-soft-green/40 px-2.5 py-0.5 text-xs font-medium text-forest-green dark:border-leaf-green/40 dark:bg-soft-green ${className}`}
-                    title="Kondisi kebakaran terobservasi telah padam oleh petugas berwenang"
+                    title="Kondisi kebakaran telah dipastikan padam oleh petugas berwenang"
                 >
                     <CheckCircle2 className="size-3.5 shrink-0 text-forest-green" />
-                    <span>Terobservasi: Padam</span>
+                    <span>Cek Lapangan: Padam</span>
                 </span>
             );
         case 'UNKNOWN':

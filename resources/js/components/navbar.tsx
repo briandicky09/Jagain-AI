@@ -265,7 +265,7 @@ export default function Navbar() {
                                         <DropdownMenuItem asChild>
                                             <Link href="/opd/dashboard" className="cursor-pointer text-xs flex items-center gap-2 px-3 py-2 rounded-xl text-neutral-700 hover:text-black hover:bg-neutral-100">
                                                 <LayoutDashboard className="size-3.5 text-emerald-600" />
-                                                <span>Dashboard OPD</span>
+                                                <span>Beranda OPD</span>
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem asChild>
@@ -314,13 +314,13 @@ export default function Navbar() {
                                         : 'text-neutral-950 hover:text-black bg-black/5 hover:bg-black/10 border-black/20 backdrop-blur-xs'
                                 }`}
                             >
-                                Sign In
+                                Masuk
                             </Link>
                             <Link
                                 href="/register"
                                 className="h-9 px-4.5 text-xs xl:text-sm font-bold rounded-full inline-flex items-center justify-center transition-all duration-200 bg-black text-white hover:bg-neutral-800 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
                             >
-                                Sign Up
+                                Daftar
                             </Link>
                         </div>
                     )}
@@ -337,7 +337,7 @@ export default function Navbar() {
                                     : 'bg-black/10 text-neutral-950 border-black/20 backdrop-blur-xs'
                             }`}
                         >
-                            Sign In
+                            Masuk
                         </Link>
                     )}
                     <button
@@ -420,7 +420,7 @@ export default function Navbar() {
                                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-800 hover:bg-neutral-100"
                             >
                                 <LayoutDashboard className="size-3.5 text-emerald-600" />
-                                <span>Dashboard Admin</span>
+                                <span>Pusat Kendali Admin</span>
                             </Link>
                             <Link
                                 href="/admin/reports"
@@ -436,7 +436,7 @@ export default function Navbar() {
                                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-800 hover:bg-neutral-100"
                             >
                                 <Building2 className="size-3.5 text-neutral-600" />
-                                <span>Instansi & OPD Kewenangan</span>
+                                <span>Instansi & OPD</span>
                             </Link>
                             <Link
                                 href="/admin/categories"
@@ -452,7 +452,7 @@ export default function Navbar() {
                                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-800 hover:bg-neutral-100"
                             >
                                 <History className="size-3.5 text-neutral-600" />
-                                <span>Audit Trail Logs</span>
+                                <span>Riwayat Aktivitas</span>
                             </Link>
                         </div>
                     )}
@@ -469,7 +469,7 @@ export default function Navbar() {
                                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-neutral-800 hover:bg-neutral-100"
                             >
                                 <LayoutDashboard className="size-3.5 text-emerald-600" />
-                                <span>Dashboard Operasi OPD</span>
+                                <span>Beranda OPD</span>
                             </Link>
                             <Link
                                 href="/opd/tugas"
@@ -522,7 +522,7 @@ export default function Navbar() {
                                 className="w-full py-2.5 px-4 text-xs font-bold text-center text-neutral-900 bg-neutral-100 hover:bg-neutral-200/80 rounded-full flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
                             >
                                 <LogIn className="size-3.5" />
-                                <span>Sign In</span>
+                                <span>Masuk</span>
                             </Link>
                             <Link
                                 href="/register"
@@ -530,7 +530,7 @@ export default function Navbar() {
                                 className="w-full py-2.5 px-4 text-xs font-bold text-center text-white bg-black hover:bg-neutral-900 rounded-full flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 shadow-xs"
                             >
                                 <PlusCircle className="size-3.5" />
-                                <span>Sign Up</span>
+                                <span>Daftar</span>
                             </Link>
                         </div>
                     )}

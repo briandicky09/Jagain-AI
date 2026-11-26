@@ -288,7 +288,7 @@ export default function Home({
                                 </span>
                                 <span className="inline-flex items-center gap-2 text-neutral-700 font-medium">
                                     <span className="size-2.5 rounded-full bg-[#10e57a] inline-block" />
-                                    <span>Anomali Termal Satelit ({displayedObservations.length})</span>
+                                    <span>Titik Panas Satelit ({displayedObservations.length})</span>
                                 </span>
                             </div>
                             <span className="text-neutral-400 text-[11px]">Sumber: NASA FIRMS, BMKG & Warga</span>
@@ -303,7 +303,7 @@ export default function Home({
                                     Rekap Penanganan
                                 </h3>
                                 <p className="mt-1 text-xs text-neutral-500 leading-relaxed font-sans">
-                                    Ringkasan publik seluruh laporan yang tercatat dalam register terbuka.
+                                    Ringkasan publik seluruh laporan yang tercatat dalam daftar laporan terbuka.
                                 </p>
                             </div>
 
@@ -314,7 +314,7 @@ export default function Home({
                                         Total Laporan Masuk
                                     </span>
                                     <span className="text-xs font-semibold text-neutral-700 mt-0.5 block">
-                                        Register Resmi Kalimantan
+                                        Catatan Resmi Kalimantan
                                     </span>
                                 </div>
                                 <div className="text-3xl sm:text-4xl font-black text-neutral-950 tabular-nums">
@@ -326,8 +326,8 @@ export default function Home({
                             <div className="mt-5 space-y-4">
                                 {[
                                     { label: 'Terverifikasi', value: stats.verified_reports, delay: 0.1, color: 'bg-[#10e57a]' },
-                                    { label: 'Disposisi regu OPD', value: stats.active_dispatched, delay: 0.2, color: 'bg-emerald-600' },
-                                    { label: 'Tuntas diaudit', value: stats.resolved_reports, delay: 0.3, color: 'bg-neutral-900' },
+                                    { label: 'Ditangani petugas OPD', value: stats.active_dispatched, delay: 0.2, color: 'bg-emerald-600' },
+                                    { label: 'Selesai diperiksa', value: stats.resolved_reports, delay: 0.3, color: 'bg-neutral-900' },
                                 ].map((row) => {
                                     const pct = stats.total_reports > 0 ? Math.round((row.value / stats.total_reports) * 100) : 0;
                                     return (
@@ -360,7 +360,7 @@ export default function Home({
                                 href="#transparansi"
                                 className="group flex items-center justify-between text-xs font-bold text-neutral-800 hover:text-black transition-colors"
                             >
-                                <span>Metodologi audit & transparansi</span>
+                                <span>Cara kerja &amp; keterbukaan data</span>
                                 <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1 text-neutral-600" />
                             </a>
                         </div>
@@ -584,13 +584,13 @@ export default function Home({
                     <AnimatedContent distance={40} duration={0.9} threshold={0.1} initialOpacity={1}>
                         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
                             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-950 text-xs font-bold uppercase tracking-wider">
-                                <span>Observasi Geospasial & Rekapitulasi</span>
+                                <span>Peta Sebaran &amp; Ringkasan Laporan</span>
                             </div>
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-950 tracking-tight leading-snug">
-                                Peta Sebaran & Rekap Penanganan Karhutla
+                                Peta Sebaran &amp; Rekap Penanganan Karhutla
                             </h2>
                             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-2xl mx-auto">
-                                Pemantauan titik api terpadu dari anomali termal satelit dan laporan warga terverifikasi se-Kalimantan.
+                                Pemantauan titik api terpadu dari titik panas satelit dan laporan warga terverifikasi se-Kalimantan.
                             </p>
                         </div>
 
@@ -837,13 +837,13 @@ export default function Home({
                     <AnimatedContent distance={30} duration={0.8} threshold={0.1} initialOpacity={1}>
                         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-2.5">
                             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-950 text-xs font-bold uppercase tracking-wider">
-                                <span>Transparansi & Provenance Data</span>
+                                <span>Transparansi &amp; Sumber Data</span>
                             </div>
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-950 tracking-tight leading-snug">
-                                Prinsip Keterbukaan & Privasi Warga
+                                Prinsip Keterbukaan &amp; Privasi Warga
                             </h2>
                             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-2xl mx-auto">
-                                Setiap laporan diaudit secara publik, identitas pelapor dienkripsi penuh, dan batas kewenangan sistem ditegaskan secara transparan.
+                                Setiap laporan dapat dipantau perkembangannya secara terbuka, identitas pelapor dilindungi penuh, dan batas peran sistem dijelaskan secara terbuka.
                             </p>
                         </div>
 
@@ -853,7 +853,7 @@ export default function Home({
                                 <div className="text-2xl sm:text-3xl font-black text-neutral-900 tabular-nums">
                                     <CountUp to={100} duration={1.5} />%
                                 </div>
-                                <span className="text-[11px] font-semibold text-neutral-500 block mt-1">Audit Trail Publik</span>
+                                <span className="text-[11px] font-semibold text-neutral-500 block mt-1">Riwayat Penanganan Terbuka</span>
                             </div>
                             <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 shadow-xs text-center sm:text-left">
                                 <div className="text-2xl sm:text-3xl font-black text-emerald-800 tabular-nums">
@@ -871,7 +871,7 @@ export default function Home({
                                 <div className="text-2xl sm:text-3xl font-black text-[#10e57a] tabular-nums">
                                     24/7
                                 </div>
-                                <span className="text-[11px] font-semibold text-neutral-400 block mt-1">Akses Bebas Tanpa Paywall</span>
+                                <span className="text-[11px] font-semibold text-neutral-400 block mt-1">Akses Gratis untuk Publik</span>
                             </div>
                         </div>
 
@@ -883,14 +883,14 @@ export default function Home({
                                         <CheckCircle2 className="size-5" />
                                     </div>
                                     <h3 className="text-lg font-bold text-neutral-950">
-                                        Register Terbuka & Permanen
+                                        Catatan Terbuka &amp; Permanen
                                     </h3>
                                     <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-sans">
-                                        Seluruh koordinat dan kronologi penanganan laporan tercatat permanen di basis data publik dengan timestamp terverifikasi.
+                                        Seluruh lokasi dan urutan penanganan laporan tercatat permanen di daftar publik dengan waktu pencatatan yang jelas.
                                     </p>
                                 </div>
                                 <div className="text-[11px] font-semibold text-emerald-700 pt-2 border-t border-neutral-100">
-                                    Anti-Manipulasi Data
+                                    Mencegah Manipulasi Data
                                 </div>
                             </div>
 
@@ -903,7 +903,7 @@ export default function Home({
                                         Privasi Pelapor Terlindungi
                                     </h3>
                                     <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-sans">
-                                        Nama dan nomor kontak warga dienkripsi secara kriptografis (Zero-Knowledge). Petugas lapangan hanya menerima titik lokasi kejadian.
+                                        Nama dan nomor telepon pelapor disamarkan otomatis agar identitas tetap aman. Petugas lapangan hanya menerima titik lokasi kejadian.
                                     </p>
                                 </div>
                                 <div className="text-[11px] font-semibold text-emerald-700 pt-2 border-t border-neutral-100">
@@ -920,7 +920,7 @@ export default function Home({
                                         Batas Tanggung Jawab Sistem
                                     </h3>
                                     <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-sans">
-                                        JAGAIN adalah register pemantauan independen masyarakat sipil. Untuk keadaan darurat yang mengancam nyawa, warga wajib menghubungi 112 atau posko pemadam terdekat.
+                                        JAGAIN adalah platform pemantauan terbuka masyarakat sipil. Untuk keadaan darurat yang mengancam nyawa, warga wajib menghubungi 112 atau posko pemadam terdekat.
                                     </p>
                                 </div>
                                 <div className="text-[11px] font-semibold text-amber-700 pt-2 border-t border-neutral-100">

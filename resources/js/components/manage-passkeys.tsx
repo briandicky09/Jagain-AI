@@ -17,9 +17,10 @@ const EmptyState = () => {
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-muted">
                 <KeyRound className="h-7 w-7 text-muted-foreground" />
             </div>
-            <p className="font-medium">No passkeys yet</p>
+            <p className="font-medium">Belum ada passkey</p>
             <p className="mt-1 text-sm text-muted-foreground">
-                Add a passkey to sign in without a password
+                Tambahkan passkey untuk masuk dengan sidik jari atau kunci
+                perangkat tanpa kata sandi
             </p>
         </div>
     );
@@ -47,8 +48,8 @@ export default function ManagePasskeys(props: Props) {
         <div className="space-y-6">
             <Heading
                 variant="small"
-                title="Passkeys"
-                description="Manage your passkeys for passwordless sign-in"
+                title="Passkey"
+                description="Kelola passkey Anda untuk masuk tanpa kata sandi"
             />
 
             <div className="overflow-hidden rounded-lg border border-border">

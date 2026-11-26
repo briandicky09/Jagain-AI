@@ -75,7 +75,7 @@ export function AppSidebarHeader({
                                         <p className="text-[11px] text-neutral-500 mt-0.5 leading-snug">
                                             {isAdmin
                                                 ? 'Terdapat laporan warga yang memerlukan telaah dan verifikasi satgas.'
-                                                : 'Pantau riwayat progres verifikasi dan disposisi petugas lapangan.'}
+                                                : 'Pantau riwayat perkembangan pemeriksaan dan penugasan petugas lapangan.'}
                                         </p>
                                         <span className="text-[10px] font-semibold text-[#0c4e33] dark:text-emerald-400 mt-1.5 inline-block">
                                             {isAdmin ? 'Buka antrean laporan →' : 'Lihat status laporan →'}

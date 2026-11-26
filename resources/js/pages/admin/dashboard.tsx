@@ -681,7 +681,7 @@ export default function AdminDashboard({
 
     return (
         <>
-            <Head title="Dashboard - JAGAIN" />
+            <Head title="Pusat Kendali — Admin JAGAIN" />
 
             <div className="min-h-screen bg-[#f8faf9] px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 sm:gap-9">
@@ -722,13 +722,13 @@ export default function AdminDashboard({
                                         <BannerTitle className="text-sm font-bold tracking-tight text-neutral-900 sm:text-base">
                                             Tindakan Diperlukan:{' '}
                                             {pendingReviewTotal} Laporan
-                                            Menunggu Telaah
+                                            Menunggu Pemeriksaan
                                         </BannerTitle>
                                         <p className="text-xs text-neutral-500 sm:text-[13px]">
                                             {statusCounts.submitted} laporan
-                                            baru & {statusCounts.under_review}{' '}
-                                            dalam telaah siap untuk validasi GPS
-                                            dan disposisi OPD.
+                                            baru &amp; {statusCounts.under_review}{' '}
+                                            sedang diperiksa untuk validasi lokasi
+                                            dan penugasan OPD.
                                         </p>
                                     </div>
                                 </div>
@@ -764,7 +764,7 @@ export default function AdminDashboard({
                     <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
-                                Dashboard
+                                Pusat Kendali Admin
                             </h1>
                         </div>
 
@@ -847,7 +847,7 @@ export default function AdminDashboard({
                                         </div>
                                         <div>
                                             <h3 className="text-sm font-bold text-neutral-900">
-                                                Perlu Review Awal
+                                                Perlu Pemeriksaan Awal
                                             </h3>
                                         </div>
                                     </div>
@@ -926,7 +926,7 @@ export default function AdminDashboard({
                         <div className="flex flex-col justify-between gap-4 border-b border-neutral-200/80 pb-4 sm:flex-row sm:items-center">
                             <div>
                                 <h2 className="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl">
-                                    Data Geospasial & Pemulihan Hutan
+                                    Peta Lokasi & Pemulihan Hutan
                                 </h2>
                                 <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
                                     Pantauan luasan kebakaran, status pemulihan,

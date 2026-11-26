@@ -114,7 +114,7 @@ class AdminAiDashboardController extends Controller
                 reason: 'Menjalankan pipeline evaluasi model AI JAGAIN',
             );
 
-            return back()->with('success', 'Evaluasi benchmark AI selesai dijalankan dan hasil pengukuran disimpan.');
+            return back()->with('success', 'Uji evaluasi kinerja AI selesai dijalankan dan hasil terbaru telah disimpan.');
         } catch (\Throwable $e) {
             Log::warning('AI evaluation execution failed', [
                 'exception' => $e::class,

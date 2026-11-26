@@ -30,7 +30,7 @@ export default function AboutPage() {
 
     return (
         <div className="min-h-screen bg-[#eaeeeb] text-neutral-900 font-sans antialiased selection:bg-[#10e57a] selection:text-black">
-            <Head title="Dokumen Resmi Transparansi & Provenance Data — JAGAIN" />
+            <Head title="Dokumen Transparansi & Sumber Data — JAGAIN" />
 
             {/* Print Styles */}
             <style>{`
@@ -71,7 +71,7 @@ export default function AboutPage() {
                     <div className="flex items-center gap-2">
                         <ShieldCheck className="size-4 text-emerald-700 shrink-0" />
                         <span className="text-xs font-bold text-neutral-900 tracking-tight">
-                            DOKUMEN RESMI KETERBUKAAN INFORMASI PUBLIK (KIP) & PROVENANCE DATA
+                            DOKUMEN KETERBUKAAN INFORMASI PUBLIK &amp; SUMBER DATA
                         </span>
                         <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-neutral-100 text-neutral-700 border border-neutral-200">
                             DOC/JGN-KIP/2026/XI
@@ -111,7 +111,7 @@ export default function AboutPage() {
                             </div>
                         </div>
                         <p className="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
-                            Pusat Komando Geospasial, Integritas Audit Trail & Keterbukaan Informasi Publik
+                            Pusat Pemantauan Wilayah, Catatan Riwayat Permanen &amp; Keterbukaan Informasi Publik
                         </p>
 
                         {/* Document Classification & Metadata Grid */}
@@ -138,10 +138,10 @@ export default function AboutPage() {
                     {/* Document Title Banner */}
                     <div className="mb-8 pb-3 border-b border-neutral-200">
                         <h2 className="text-lg sm:text-xl font-bold uppercase text-neutral-950 tracking-tight">
-                            DOKUMEN TRANSPARANSI PLATFORM, PROVENANCE DATA & AKUNTABILITAS PUBLIK
+                            DOKUMEN TRANSPARANSI PLATFORM, SUMBER DATA &amp; AKUNTABILITAS PUBLIK
                         </h2>
                         <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                            Dokumen resmi keterbukaan publik mengenai tata kelola data, metodologi satelit, protokol kerahasiaan identitas pelapor, serta standar operasional penugasan instansi teknis (OPD/BPBD) dalam penanggulangan karhutla di Kalimantan.
+                            Dokumen resmi keterbukaan publik mengenai pengelolaan data, sumber pantauan satelit, perlindungan identitas pelapor, serta standar waktu penanganan oleh instansi terkait (OPD/BPBD) di Kalimantan.
                         </p>
                     </div>
 
@@ -184,7 +184,7 @@ export default function AboutPage() {
                                             UU No. 27 Tahun 2022 (PDP)
                                         </td>
                                         <td className="p-2.5 leading-snug">
-                                            Kewajiban pelindungan data pribadi (PII) warga negara. Nomor telepon, email, dan nama asli pelapor wajib diredaksi dan disamarkan pada antarmuka publik.
+                                            Kewajiban pelindungan data pribadi warga negara. Nomor telepon, email, dan nama asli pelapor wajib disamarkan pada tampilan publik.
                                         </td>
                                     </tr>
                                     <tr>
@@ -192,7 +192,7 @@ export default function AboutPage() {
                                             UU No. 1 Tahun 2024 (ITE)
                                         </td>
                                         <td className="p-2.5 leading-snug">
-                                            Integritas catatan elektronik melalui audit trail permanen yang dapat dipertanggungjawabkan secara forensik digital.
+                                            Keutuhan catatan elektronik melalui riwayat pencatatan permanen yang dapat dipertanggungjawabkan.
                                         </td>
                                     </tr>
                                 </tbody>
@@ -207,46 +207,46 @@ export default function AboutPage() {
                             <span>2. Prinsip Utama Pengolahan Data Laporan Warga</span>
                         </h3>
                         <p className="text-xs text-neutral-800 leading-relaxed text-justify mb-3">
-                            Setiap laporan masyarakat yang masuk ke dalam sistem JAGAIN diproses melalui 4 prinsip akuntabilitas:
+                            Setiap laporan masyarakat yang masuk ke dalam sistem JAGAIN diproses melalui 4 prinsip keterbukaan:
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                             <div className="p-3 border border-neutral-300 rounded-sm bg-neutral-50/60">
                                 <div className="font-bold text-neutral-950 flex items-center gap-1.5 mb-1">
                                     <CheckCircle2 className="size-3.5 text-emerald-700" />
-                                    <span>Kode Pelacak Unik (Tracking Code)</span>
+                                    <span>Kode Pelacakan Unik</span>
                                 </div>
                                 <p className="text-[11px] text-neutral-600 leading-snug">
-                                    Setiap laporan diterbitkan nomor resi resmi format <code className="font-mono bg-neutral-200 px-1 py-0.5 rounded">JGN-YYYYMM-XXXXX</code> yang dapat dilacak progresnya oleh pelapor kapan saja.
+                                    Setiap laporan diterbitkan nomor pelacakan resmi dengan format <code className="font-mono bg-neutral-200 px-1 py-0.5 rounded">JGN-YYYYMM-XXXXX</code> untuk memantau perkembangannya kapan saja.
                                 </p>
                             </div>
 
                             <div className="p-3 border border-neutral-300 rounded-sm bg-neutral-50/60">
                                 <div className="font-bold text-neutral-950 flex items-center gap-1.5 mb-1">
                                     <Lock className="size-3.5 text-emerald-700" />
-                                    <span>Audit Trail Permanen (Append-Only)</span>
+                                    <span>Catatan Riwayat Permanen</span>
                                 </div>
                                 <p className="text-[11px] text-neutral-600 leading-snug">
-                                    Seluruh perubahan status, disposisi OPD, dan catatan telaah disimpan permanen ke dalam basis data audit trail yang tidak dapat dihapus atau dimanipulasi (*tamper-proof*).
+                                    Seluruh perubahan status, penugasan OPD, dan catatan pemeriksaan disimpan permanen dan tidak dapat dihapus atau diubah.
                                 </p>
                             </div>
 
                             <div className="p-3 border border-neutral-300 rounded-sm bg-neutral-50/60">
                                 <div className="font-bold text-neutral-950 flex items-center gap-1.5 mb-1">
                                     <EyeOff className="size-3.5 text-emerald-700" />
-                                    <span>Redaksi PII & Privasi Warga</span>
+                                    <span>Perlindungan Data Pribadi Warga</span>
                                 </div>
                                 <p className="text-[11px] text-neutral-600 leading-snug">
-                                    Identitas pribadi pelapor (nama asli, nomor kontak, IP address) disamarkan (*redacted*) dari publik guna mencegah intimidasi dari pihak pembakar lahan liar.
+                                    Identitas pribadi pelapor (nama asli, nomor telepon, alamat) disamarkan otomatis dari publik demi menjaga keselamatan pelapor.
                                 </p>
                             </div>
 
                             <div className="p-3 border border-neutral-300 rounded-sm bg-neutral-50/60">
                                 <div className="font-bold text-neutral-950 flex items-center gap-1.5 mb-1">
                                     <Building2 className="size-3.5 text-emerald-700" />
-                                    <span>Disposisi Terbuka ke Instansi Berwenang</span>
+                                    <span>Penugasan Terbuka ke Instansi Berwenang</span>
                                 </div>
                                 <p className="text-[11px] text-neutral-600 leading-snug">
-                                    Laporan terverifikasi diteruskan secara transparan ke BPBD, Manggala Agni KLHK, Dinas Damkar, atau TNI/Polri setempat dengan status tercatat jelas.
+                                    Laporan terverifikasi diteruskan secara terbuka ke BPBD, Manggala Agni KLHK, Dinas Damkar, atau TNI/Polri setempat dengan status tercatat jelas.
                                 </p>
                             </div>
                         </div>
@@ -256,40 +256,40 @@ export default function AboutPage() {
                     <section className="mb-8">
                         <h3 className="text-sm font-bold uppercase text-neutral-950 border-b border-neutral-300 pb-1 mb-3 flex items-center gap-2">
                             <Satellite className="size-4 text-emerald-800" />
-                            <span>3. Provenance Data Observasi Satelit Terbuka (NASA FIRMS)</span>
+                            <span>3. Sumber Data Pantauan Satelit Terbuka (NASA FIRMS)</span>
                         </h3>
                         <p className="text-xs text-neutral-800 leading-relaxed text-justify mb-3">
-                            Selain laporan warga langsung, peta publik JAGAIN mengintegrasikan data anomali termal *hotspot* dari instrumen antariksa NASA FIRMS (*Fire Information for Resource Management System*) dengan spesifikasi teknis berikut:
+                            Selain laporan warga langsung, peta publik JAGAIN menggabungkan data titik panas dari satelit NASA FIRMS (Fire Information for Resource Management System) dengan rincian berikut:
                         </p>
                         <div className="border border-neutral-300 rounded-sm overflow-hidden text-xs">
                             <table className="w-full text-left">
                                 <thead className="bg-neutral-100 border-b border-neutral-300 font-bold text-neutral-900">
                                     <tr>
-                                        <th className="p-2.5 border-r border-neutral-300">Parameter Sensor</th>
-                                        <th className="p-2.5 border-r border-neutral-300">Spesifikasi Instrumen</th>
-                                        <th className="p-2.5">Keterangan Penggunaan</th>
+                                        <th className="p-2.5 border-r border-neutral-300">Jenis Sensor</th>
+                                        <th className="p-2.5 border-r border-neutral-300">Keterangan Satelit</th>
+                                        <th className="p-2.5">Kegunaan</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-neutral-200 text-neutral-800">
                                     <tr>
                                         <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Sensor VIIRS</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Suomi-NPP & NOAA-20 (Resolusi 375m)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Deteksi anomali termal resolusi tinggi, mampu mendeteksi api kebakaran lahan skala kecil.</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Suomi-NPP &amp; NOAA-20 (Resolusi 375m)</td>
+                                        <td className="p-2.5 text-[11px] leading-snug">Deteksi titik panas resolusi tinggi, mampu mendeteksi kebakaran lahan skala kecil.</td>
                                     </tr>
                                     <tr>
                                         <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Sensor MODIS</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Terra & Aqua (Resolusi 1km)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Data historis dan perbandingan makro fluks energi radiasi api (FRP MW).</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Terra &amp; Aqua (Resolusi 1km)</td>
+                                        <td className="p-2.5 text-[11px] leading-snug">Data historis dan perbandingan energi panas api (FRP MW).</td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Latensi Pengolahan</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">± 1.5 s/d 3 Jam Pasca-Lintasan Orbit</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Diperlukan waktu transmisi orbit dari stasiun bumi sebelum data tersedia di sistem.</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Waktu Pembaruan Data</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">± 1,5 s/d 3 Jam Setelah Satelit Melintas</td>
+                                        <td className="p-2.5 text-[11px] leading-snug">Diperlukan waktu pengiriman data dari stasiun bumi sebelum tampil di sistem.</td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Derajat Kepercayaan</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Tingkat Keyakinan Satelit</td>
                                         <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Tinggi (&ge; 80%), Sedang (50-79%), Rendah (&lt; 50%)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Menandakan validitas spektral titik panas terhadap gangguan pantulan sinar matahari / atap seng.</td>
+                                        <td className="p-2.5 text-[11px] leading-snug">Menunjukkan keyakinan satelit bahwa titik panas benar-benar api, bukan pantulan matahari atau atap seng.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -300,10 +300,10 @@ export default function AboutPage() {
                     <section className="mb-8">
                         <h3 className="text-sm font-bold uppercase text-neutral-950 border-b border-neutral-300 pb-1 mb-3 flex items-center gap-2">
                             <FileText className="size-4 text-emerald-800" />
-                            <span>4. Standar Layanan (SLA) Verifikasi & Disposisi</span>
+                            <span>4. Standar Waktu Pemeriksaan &amp; Penugasan</span>
                         </h3>
                         <p className="text-xs text-neutral-800 leading-relaxed text-justify mb-3">
-                            Setiap laporan masyarakat melalui 4 tahapan status resmi yang dipantau durasi penanganannya:
+                            Setiap laporan masyarakat melalui 4 tahapan status resmi yang dipantau waktu penanganannya:
                         </p>
                         <div className="space-y-2 text-xs">
                             <div className="p-3 border border-neutral-300 rounded-sm flex items-start gap-3 bg-neutral-50/40">
@@ -311,9 +311,9 @@ export default function AboutPage() {
                                     TAHAP 1
                                 </span>
                                 <div>
-                                    <strong className="text-neutral-950">Laporan Baru Masuk (SUBMITTED) &bull; Target Telaah: &lt; 15 Menit</strong>
+                                    <strong className="text-neutral-950">Laporan Baru Masuk &bull; Target Pemeriksaan Awal: &lt; 15 Menit</strong>
                                     <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
-                                        Pemeriksaan otomatis kelengkapan koordinat batas wilayah 5 provinsi Kalimantan, validitas bukti foto, dan deduplikasi terhadap laporan pada radius 500 meter yang sama.
+                                        Pemeriksaan awal lokasi pada wilayah 5 provinsi Kalimantan, foto bukti, dan pencocokan dengan laporan lain di sekitar lokasi yang sama.
                                     </p>
                                 </div>
                             </div>
@@ -323,9 +323,9 @@ export default function AboutPage() {
                                     TAHAP 2
                                 </span>
                                 <div>
-                                    <strong className="text-blue-950">Sedang Ditinjau & Terverifikasi (UNDER_REVIEW & VERIFIED) &bull; Target: &lt; 30 Menit</strong>
+                                    <strong className="text-blue-950">Sedang Ditinjau &amp; Terverifikasi &bull; Target: &lt; 30 Menit</strong>
                                     <p className="text-[11px] text-blue-900/80 mt-0.5 leading-snug">
-                                        Admin memverifikasi kecocokan visual terhadap citra anomali termal satelit dan menetapkan tingkat keparahan (Ringan, Sedang, atau Berat).
+                                        Admin memeriksa kecocokan laporan dengan pantauan satelit dan menetapkan prioritas penanganan (Ringan, Sedang, atau Berat).
                                     </p>
                                 </div>
                             </div>
@@ -335,9 +335,9 @@ export default function AboutPage() {
                                     TAHAP 3
                                 </span>
                                 <div>
-                                    <strong className="text-amber-950">Disposisi & Penugasan ke OPD Terkait (DISPATCHED) &bull; Target: &lt; 60 Menit</strong>
+                                    <strong className="text-amber-950">Penugasan ke Instansi Terkait (OPD) &bull; Target: &lt; 60 Menit</strong>
                                     <p className="text-[11px] text-amber-900/80 mt-0.5 leading-snug">
-                                        Surat tugas digital diteruskan ke posko BPBD kabupaten/kota, regu Manggala Agni Daops, atau pos Damkar terdekat untuk pengerahan armada lapangan.
+                                        Penugasan diteruskan ke posko BPBD kabupaten/kota, regu Manggala Agni, atau pos Damkar terdekat untuk pengerahan petugas ke lapangan.
                                     </p>
                                 </div>
                             </div>
@@ -347,9 +347,9 @@ export default function AboutPage() {
                                     TAHAP 4
                                 </span>
                                 <div>
-                                    <strong className="text-emerald-950">Selesai Terverifikasi (RESOLVED_VERIFIED) &bull; Berita Acara Resmi</strong>
+                                    <strong className="text-emerald-950">Selesai Terverifikasi &bull; Laporan Penutupan Resmi</strong>
                                     <p className="text-[11px] text-emerald-900/80 mt-0.5 leading-snug">
-                                        Tim lapangan mengunggah dokumentasi pemadaman dan pendinginan bara gambut (*mop-up*). Laporan ditutup dengan riwayat lengkap yang dapat diaudit publik.
+                                        Tim lapangan mengunggah bukti pemadaman dan pendinginan bara gambut (pendinginan sisa api). Laporan ditutup dengan riwayat lengkap yang dapat diperiksa publik.
                                     </p>
                                 </div>
                             </div>
@@ -360,17 +360,17 @@ export default function AboutPage() {
                     <section className="mb-8">
                         <h3 className="text-sm font-bold uppercase text-neutral-950 border-b border-neutral-300 pb-1 mb-3 flex items-center gap-2">
                             <AlertCircle className="size-4 text-amber-700" />
-                            <span>5. Batasan Operasional & Peringatan Darurat</span>
+                            <span>5. Batasan Sistem &amp; Peringatan Darurat</span>
                         </h3>
                         <div className="p-4 border border-amber-300 bg-amber-50/60 rounded-sm text-xs leading-relaxed text-amber-950 space-y-2">
                             <p className="font-bold">
-                                PERHATIAN: JAGAIN Merupakan Sistem Informasi Geospasial & Pengawalan Koordinasi, Bukan Pengganti Saluran Darurat Jiwa.
+                                PERHATIAN: JAGAIN adalah sistem pemantauan dan pengawalan koordinasi, bukan pengganti layanan darurat penyelamatan jiwa.
                             </p>
                             <p className="text-[11px] text-amber-900">
                                 1. Jika kebakaran mengancam pemukiman, fasilitas umum, atau keselamatan jiwa secara langsung, warga <strong>WAJIB SEGERA MENGHUBUNGI</strong> nomor darurat darat: <strong>Pemadam Kebakaran (113)</strong>, <strong>Kedaruratan Bencana (112)</strong>, atau <strong>Polsek/Koramil setempat</strong>.
                             </p>
                             <p className="text-[11px] text-amber-900">
-                                2. Deteksi satelit dapat terhalang oleh awan tebal cumulonimbus atau kanopi hutan lebat. Ketiadaan *hotspot* pada peta satelit tidak berarti suatu wilayah 100% bebas dari titik api permukaan gambut.
+                                2. Pantauan satelit dapat terhalang oleh awan tebal atau tutupan hutan lebat. Tidak adanya titik panas pada peta satelit tidak menjamin suatu wilayah bebas dari kebakaran di permukaan gambut.
                             </p>
                         </div>
                     </section>
@@ -379,9 +379,9 @@ export default function AboutPage() {
                     <section className="pt-6 border-t-2 border-neutral-900">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-xs">
                             <div>
-                                <p className="font-bold text-neutral-900">Catatan Legalitas Dokumen:</p>
+                                <p className="font-bold text-neutral-900">Catatan Keaslian Dokumen:</p>
                                 <p className="text-[11px] text-neutral-600 mt-1 leading-relaxed">
-                                    Dokumen ini diterbitkan secara elektronik dan dilindungi oleh hash kriptografis SHA-256 pada pangkalan data audit sistem JAGAIN. Setiap pihak berhak menyebarluaskan dokumen ini untuk kepentingan perlindungan lingkungan hidup dan transparansi publik.
+                                    Dokumen ini diterbitkan secara elektronik dengan pencatatan riwayat permanen pada sistem JAGAIN. Setiap pihak berhak menyebarluaskan dokumen ini untuk kepentingan perlindungan lingkungan hidup dan transparansi publik.
                                 </p>
                             </div>
 

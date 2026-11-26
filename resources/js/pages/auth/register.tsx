@@ -161,7 +161,7 @@ export default function Register({ passwordRules }: Props) {
                                     {processing ? (
                                         <Spinner className="size-4 text-gray-950" />
                                     ) : (
-                                        'Sign Up'
+                                        'Daftar'
                                     )}
                                 </button>
 
@@ -170,7 +170,7 @@ export default function Register({ passwordRules }: Props) {
                                     tabIndex={6}
                                     className="h-11 sm:h-12 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-bold text-sm tracking-normal transition-all flex items-center justify-center text-center shadow-xs active:scale-[0.99]"
                                 >
-                                    Sign In
+                                    Masuk
                                 </Link>
                             </div>
 

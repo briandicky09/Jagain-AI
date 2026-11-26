@@ -142,7 +142,7 @@ export default function AuditLogsIndex({
 
     return (
         <>
-            <Head title="Jejak Audit Sistem (Audit Trail) - JAGAIN Admin" />
+            <Head title="Riwayat Aktivitas Sistem — Admin JAGAIN" />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full">
                 <FlashMessage />
@@ -150,10 +150,10 @@ export default function AuditLogsIndex({
                 {/* Header Title */}
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight text-[#171C19] dark:text-white">
-                        Jejak Audit Sistem JAGAIN
+                        Riwayat Aktivitas Sistem JAGAIN
                     </h1>
                     <p className="mt-1 text-sm text-[#68716B] dark:text-neutral-400">
-                        Seluruh mutasi status laporan, penugasan ke OPD, dan konfigurasi tercatat secara permanen dan tidak dapat diubah (append-only).
+                        Seluruh perubahan status laporan, penugasan ke OPD, dan pengaturan sistem tercatat secara permanen dan tidak dapat diubah.
                     </p>
                 </div>
 
@@ -163,7 +163,7 @@ export default function AuditLogsIndex({
                         <div className="rounded-xl border border-[#DDE3DE] bg-white p-4 shadow-2xs dark:border-neutral-800 dark:bg-neutral-900">
                             <div className="flex items-center justify-between">
                                 <span className="text-xs font-medium text-[#68716B] dark:text-neutral-400">
-                                    Total Aktivitas Log
+                                    Total Catatan Aktivitas
                                 </span>
                                 <div className="rounded-lg bg-neutral-100 p-2 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
                                     <Activity className="size-4" />
@@ -178,7 +178,7 @@ export default function AuditLogsIndex({
                         <div className="rounded-xl border border-[#DDE3DE] bg-white p-4 shadow-2xs dark:border-neutral-800 dark:bg-neutral-900">
                             <div className="flex items-center justify-between">
                                 <span className="text-xs font-medium text-[#68716B] dark:text-neutral-400">
-                                    Laporan & Telaah
+                                    Laporan &amp; Pemeriksaan
                                 </span>
                                 <div className="rounded-lg bg-emerald-50 p-2 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
                                     <Flame className="size-4" />
@@ -187,13 +187,13 @@ export default function AuditLogsIndex({
                             <div className="mt-2 text-2xl font-extrabold text-[#171C19] dark:text-white tabular-nums">
                                 {stats.report_actions}
                             </div>
-                            <span className="text-[11px] text-neutral-500">Mutasi & validasi status</span>
+                            <span className="text-[11px] text-neutral-500">Perubahan &amp; verifikasi status</span>
                         </div>
 
                         <div className="rounded-xl border border-[#DDE3DE] bg-white p-4 shadow-2xs dark:border-neutral-800 dark:bg-neutral-900">
                             <div className="flex items-center justify-between">
                                 <span className="text-xs font-medium text-[#68716B] dark:text-neutral-400">
-                                    Disposisi OPD
+                                    Penugasan ke OPD
                                 </span>
                                 <div className="rounded-lg bg-blue-50 p-2 text-blue-700 dark:bg-blue-950 dark:text-blue-400">
                                     <Building2 className="size-4" />
@@ -309,10 +309,10 @@ export default function AuditLogsIndex({
                                     type="button"
                                     onClick={handleReset}
                                     className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors cursor-pointer dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-                                    title="Reset seluruh filter"
+                                    title="Atur ulang seluruh filter"
                                 >
                                     <RotateCcw className="size-3.5" />
-                                    <span>Reset</span>
+                                    <span>Atur Ulang</span>
                                 </button>
                             )}
                         </div>
@@ -325,8 +325,8 @@ export default function AuditLogsIndex({
                         <div className="p-12">
                             <EmptyState
                                 icon={History}
-                                title="Tidak ada rekaman jejak audit"
-                                description="Tidak ada rekaman audit yang sesuai dengan kriteria penyaringan saat ini."
+                                title="Belum ada catatan riwayat aktivitas"
+                                description="Tidak ada catatan aktivitas yang sesuai dengan penyaringan saat ini."
                             />
                         </div>
                     ) : (
@@ -635,23 +635,23 @@ export default function AuditLogsIndex({
                                     <div className="grid gap-3 sm:grid-cols-2 pt-3">
                                         <div>
                                             <span className="text-xs font-bold text-neutral-500">
-                                                Sebelum (Before):
+                                                Data Sebelumnya:
                                             </span>
                                             <pre className="mt-1 max-h-56 overflow-auto rounded-lg bg-neutral-100 p-3 font-mono text-[11px] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 break-words whitespace-pre-wrap">
                                                 {selectedLog.before_snapshot
                                                     ? JSON.stringify(selectedLog.before_snapshot, null, 2)
-                                                    : 'null (Tidak Ada Data Sebelumnya)'}
+                                                    : 'Tidak ada data sebelumnya'}
                                             </pre>
                                         </div>
 
                                         <div>
                                             <span className="text-xs font-bold text-[#216B49] dark:text-emerald-400">
-                                                Sesudah (After):
+                                                Data Sesudahnya:
                                             </span>
                                             <pre className="mt-1 max-h-56 overflow-auto rounded-lg bg-neutral-100 p-3 font-mono text-[11px] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 break-words whitespace-pre-wrap">
                                                 {selectedLog.after_snapshot
                                                     ? JSON.stringify(selectedLog.after_snapshot, null, 2)
-                                                    : 'null'}
+                                                    : 'Tidak ada data'}
                                             </pre>
                                         </div>
                                     </div>

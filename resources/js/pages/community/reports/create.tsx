@@ -471,7 +471,7 @@ export default function ReportCreate() {
                             Dengan mengirimkan laporan, Anda menyatakan
                             informasi yang diberikan adalah benar sesuai
                             pengamatan Anda. Status awal laporan adalah{' '}
-                            <strong>Terkirim (SUBMITTED)</strong>.
+                            <strong>Baru Dikirim</strong>.
                         </div>
 
                         <div className="flex shrink-0 items-center gap-3">

@@ -78,13 +78,13 @@ export default function ReportsIndex({
                 <div className="space-y-1">
                     <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold tracking-wider uppercase text-[#87867f]">
                         <FileText className="size-3.5 text-[#d97757]" />
-                        <span>Pusat Review & Moderasi Admin</span>
+                        <span>Pusat Pemeriksaan & Moderasi Admin</span>
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-serif text-[#141413] flex items-center gap-2">
                         <span>Antrean Seluruh Laporan Karhutla ({reports.total} Total)</span>
                     </h1>
                     <p className="font-serif text-xs sm:text-sm text-[#87867f]">
-                        Tinjau keabsahan koordinat, periksa duplikasi, dan disposisikan laporan ke instansi terkait.
+                        Periksa keabsahan lokasi, cek laporan serupa, dan teruskan laporan ke instansi terkait.
                     </p>
                 </div>
 

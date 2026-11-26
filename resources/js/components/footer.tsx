@@ -82,7 +82,7 @@ export default function Footer() {
                                 <div>
                                     <strong className="font-bold text-neutral-950 text-xs block">Verifikasi Lapangan</strong>
                                     <p className="text-[11px] text-neutral-850 leading-relaxed font-medium mt-0.5">
-                                        Validasi foto koordinat sebelum disposisi regu tanggap.
+                                        Pemeriksaan foto dan lokasi sebelum penugasan regu lapangan.
                                     </p>
                                 </div>
                             </div>

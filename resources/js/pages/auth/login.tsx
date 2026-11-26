@@ -233,7 +233,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     htmlFor="password"
                                     className="block text-sm font-semibold text-gray-700"
                                 >
-                                    Password
+                                    Kata Sandi
                                 </label>
                                 <PasswordInput
                                     id="password"

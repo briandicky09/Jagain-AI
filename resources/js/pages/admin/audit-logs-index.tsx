@@ -49,20 +49,20 @@ export default function AuditLogsIndex({ logs, actions, filters }: AuditLogsInde
 
     return (
         <div className="min-h-screen bg-[#f0eee6] text-[#141413] p-4 sm:p-6 lg:p-8 space-y-6">
-            <Head title="Audit Trail Log Sistem — Admin JAGAIN" />
+            <Head title="Riwayat Aktivitas Sistem — Admin JAGAIN" />
 
             {/* Header Bar */}
             <div className="border-b border-[#cccbc8] pb-5 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div className="space-y-1">
                     <div className="inline-flex items-center gap-2 text-[11px] font-mono tracking-wider uppercase text-[#87867f]">
                         <Shield className="size-3.5 text-[#141413]" />
-                        <span>Akuntabilitas & Integritas Data Permanen</span>
+                        <span>Catatan Akuntabilitas Sistem</span>
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-serif font-normal text-[#141413]">
-                        Audit Trail Log Sistem
+                        Riwayat Aktivitas Sistem
                     </h1>
                     <p className="text-sm font-sans text-[#87867f]">
-                        Rekaman peristiwa mutasi data, otentikasi, dan aksi administratif yang tidak dapat dimanipulasi ({logs.total} total entri).
+                        Rekaman perubahan data, aktivitas masuk, dan tindakan admin yang tersimpan permanen ({logs.total} total catatan).
                     </p>
                 </div>
 

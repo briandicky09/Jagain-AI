@@ -14,6 +14,7 @@ import {
     type Range,
 } from '@/components/kibo-ui/gantt';
 import { Layers } from 'lucide-react';
+import { getOperationalUpdateTypeLabel } from '@/lib/ai-terminology';
 
 interface OperationalGanttTimelineProps {
     assignedAt: string;
@@ -32,7 +33,7 @@ interface OperationalGanttTimelineProps {
 const STATUS_CONFIG: Record<string, GanttStatus> = {
     ASSIGNED: { id: 'assigned', name: 'Penugasan Masuk', color: '#87867f' },
     IN_PROGRESS: { id: 'in_progress', name: 'Penanganan Aktif', color: '#d97757' },
-    REVIEW: { id: 'review', name: 'Pengajuan Review', color: '#3d3d3a' },
+    REVIEW: { id: 'review', name: 'Menunggu Konfirmasi Selesai', color: '#3d3d3a' },
     COMPLETED: { id: 'completed', name: 'Selesai Terverifikasi', color: '#141413' },
 };
 
@@ -68,12 +69,12 @@ export default function OperationalGanttTimeline({
                 const updateEnd = nextUpdate
                     ? new Date(nextUpdate.created_at)
                     : completedAt
-                    ? new Date(completedAt)
-                    : new Date(updateStart.getTime() + 6 * 3600 * 1000);
+                        ? new Date(completedAt)
+                        : new Date(updateStart.getTime() + 6 * 3600 * 1000);
 
                 list.push({
                     id: `feat-update-${u.id}`,
-                    name: `${index + 2}. Progres: ${u.update_type}`,
+                    name: `${index + 2}. ${getOperationalUpdateTypeLabel(u.update_type)}`,
                     startAt: updateStart,
                     endAt: updateEnd > updateStart ? updateEnd : new Date(updateStart.getTime() + 2 * 3600 * 1000),
                     status: STATUS_CONFIG.IN_PROGRESS,
@@ -115,11 +116,10 @@ export default function OperationalGanttTimeline({
                             key={r}
                             type="button"
                             onClick={() => setRange(r)}
-                            className={`px-3 py-1 text-[11px] font-sans font-medium rounded-md transition-colors capitalize ${
-                                range === r
+                            className={`px-3 py-1 text-[11px] font-sans font-medium rounded-md transition-colors capitalize ${range === r
                                     ? 'bg-[#141413] text-[#faf9f5]'
                                     : 'text-[#87867f] hover:text-[#141413]'
-                            }`}
+                                }`}
                         >
                             {r === 'daily' ? 'Harian' : 'Bulanan'}
                         </button>

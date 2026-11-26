@@ -79,7 +79,7 @@ class AdminAiReportController extends Controller
             );
         });
 
-        return back()->with('success', 'Tinjauan manusia terhadap analisis AI berhasil dicatat.');
+        return back()->with('success', 'Catatan pemeriksaan Anda terhadap hasil analisis AI telah disimpan.');
     }
 
     public function decideDuplicate(
@@ -130,6 +130,6 @@ class AdminAiReportController extends Controller
             );
         });
 
-        return back()->with('success', 'Keputusan duplikasi laporan telah dicatat tanpa menghapus laporan asli.');
+        return back()->with('success', 'Keputusan terkait laporan serupa telah disimpan tanpa menghapus laporan asli.');
     }
 }

@@ -191,10 +191,10 @@ export default function ReportShow({ report }: Props) {
                             <AlertCircle className="size-6 shrink-0 text-primary-green mt-0.5" />
                             <div className="space-y-2 flex-1">
                                 <h3 className="text-base font-bold text-forest-green">
-                                    Permintaan Informasi Tambahan dari Verifikator
+                                    Permintaan Informasi Tambahan dari Petugas Pemeriksa
                                 </h3>
                                 <p className="text-xs text-dark-neutral leading-relaxed">
-                                    Tim verifikator membutuhkan rincian tambahan untuk menindaklanjuti laporan Anda:
+                                    Tim pemeriksa membutuhkan keterangan tambahan untuk menindaklanjuti laporan Anda:
                                 </p>
 
                                 {report.information_requested && (
@@ -214,7 +214,7 @@ export default function ReportShow({ report }: Props) {
                                             rows={3}
                                             value={data.additional_information}
                                             onChange={(e) => setData('additional_information', e.target.value)}
-                                            placeholder="Tuliskan keterangan tambahan yang diminta verifikator..."
+                                            placeholder="Tuliskan keterangan tambahan yang diminta petugas pemeriksa..."
                                             className="mt-1 w-full rounded-md border border-border-neutral bg-white p-3 text-xs text-dark-neutral focus:border-primary-green focus:outline-none focus:ring-1 focus:ring-primary-green dark:border-border-neutral dark:bg-[#151c17] dark:text-foreground"
                                             required
                                         />
@@ -312,7 +312,7 @@ export default function ReportShow({ report }: Props) {
                     <div className="rounded-xl border border-border-neutral bg-white p-4 shadow-2xs dark:border-border-neutral dark:bg-card">
                         <h3 className="text-xs font-bold text-forest-green uppercase tracking-wider flex items-center gap-1.5">
                             <Info className="size-3.5 text-primary-green" />
-                            Catatan Resmi dari Tim Verifikator
+                            Catatan Resmi dari Tim Pemeriksa
                         </h3>
                         <p className="mt-2 text-xs text-dark-neutral leading-relaxed bg-soft-green/40 p-3 rounded-lg dark:bg-[#1a241e]">
                             {report.admin_notes}

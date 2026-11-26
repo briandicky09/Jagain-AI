@@ -51,7 +51,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
             href: adminDashboard(),
         },
         {
-            title: 'Instansi & OPD Yurisdiksi',
+            title: 'Instansi & OPD Penanganan',
             href: agenciesIndex(),
         },
     ];
@@ -227,7 +227,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
                                     <tr>
                                         <th scope="col" className="px-6 py-4 text-center">Nama Instansi</th>
                                         <th scope="col" className="px-6 py-4 text-center">Tipe Organisasi</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Wilayah Yurisdiksi</th>
+                                        <th scope="col" className="px-6 py-4 text-center">Wilayah Tugas</th>
                                         <th scope="col" className="px-6 py-4 text-center">Tugas Diterima</th>
                                         <th scope="col" className="px-6 py-4 text-center">Status</th>
                                         <th scope="col" className="px-6 py-4 text-center">Aksi</th>
@@ -634,7 +634,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
 
                             <div>
                                 <label className="mb-1.5 block text-xs font-semibold text-[#171C19] dark:text-neutral-200">
-                                    Wilayah Kewenangan (Yurisdiksi) *
+                                    Wilayah Tugas *
                                 </label>
                                 <input
                                     type="text"
@@ -736,7 +736,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
 
                             <div>
                                 <label className="mb-1.5 block text-xs font-semibold text-[#171C19] dark:text-neutral-200">
-                                    Wilayah Kewenangan (Yurisdiksi) *
+                                    Wilayah Tugas *
                                 </label>
                                 <input
                                     type="text"

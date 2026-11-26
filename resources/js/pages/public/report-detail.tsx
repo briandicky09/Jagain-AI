@@ -157,14 +157,14 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                                         Dilaporkan:{' '}
                                         {report.reported_occurrence_at
                                             ? new Date(
-                                                  report.reported_occurrence_at,
-                                              ).toLocaleString('id-ID', {
-                                                  day: '2-digit',
-                                                  month: 'short',
-                                                  year: 'numeric',
-                                                  hour: '2-digit',
-                                                  minute: '2-digit',
-                                              })
+                                                report.reported_occurrence_at,
+                                            ).toLocaleString('id-ID', {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })
                                             : 'Terkini'}
                                     </span>
                                 </div>
@@ -190,7 +190,7 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                                     <div className="flex items-center gap-2 font-mono text-xs font-bold tracking-wider text-amber-900 uppercase">
                                         <AlertTriangle className="size-4 text-amber-700" />
                                         <span>
-                                            Observasi Kondisi Kebakaran Aktual
+                                            Kondisi Kebakaran Terbaru di
                                             Lapangan
                                         </span>
                                     </div>
@@ -211,11 +211,11 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
 
                                 <p className="pt-1 font-sans text-xs leading-relaxed text-neutral-700 sm:text-sm">
                                     <strong className="font-bold text-neutral-950">
-                                        Catatan Integritas:
+                                        Catatan Pemeriksaan:
                                     </strong>{' '}
                                     Kondisi kebakaran di atas diverifikasi
                                     langsung oleh petugas regu darat. Laporan
-                                    yang berstatus administratif "Selesai" tetap
+                                    yang berstatus administratif &ldquo;Selesai&rdquo; tetap
                                     memuat bukti pemadaman dingin sebelum
                                     kondisi lahan dinyatakan tuntas aman.
                                 </p>
@@ -281,11 +281,11 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                                 <h2 className="flex items-center gap-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                     <Clock className="size-4 text-emerald-600" />
                                     <span>
-                                        Jejak Audit & Perjalanan Status Laporan
+                                        Riwayat Penanganan Laporan
                                     </span>
                                 </h2>
                                 <span className="font-mono text-xs text-neutral-500">
-                                    Rantai Audit Permanen
+                                    Tercatat Permanen
                                 </span>
                             </div>
 
@@ -308,17 +308,17 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                                                 <span className="font-mono text-xs text-neutral-400">
                                                     {hist.created_at
                                                         ? new Date(
-                                                              hist.created_at,
-                                                          ).toLocaleString(
-                                                              'id-ID',
-                                                              {
-                                                                  day: '2-digit',
-                                                                  month: 'short',
-                                                                  year: 'numeric',
-                                                                  hour: '2-digit',
-                                                                  minute: '2-digit',
-                                                              },
-                                                          )
+                                                            hist.created_at,
+                                                        ).toLocaleString(
+                                                            'id-ID',
+                                                            {
+                                                                day: '2-digit',
+                                                                month: 'short',
+                                                                year: 'numeric',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                            },
+                                                        )
                                                         : ''}
                                                 </span>
                                             </div>
@@ -367,9 +367,9 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                                 </div>
                             ) : (
                                 <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-xs leading-relaxed text-neutral-500">
-                                    Laporan berada dalam antrean peninjauan
-                                    verifikator sebelum penugasan diterbitkan ke
-                                    instansi operasional.
+                                    Laporan masih berada dalam antrean
+                                    pemeriksaan petugas sebelum diteruskan ke
+                                    instansi penanganan lapangan.
                                 </div>
                             )}
                         </div>
@@ -378,7 +378,7 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                         <div className="space-y-4 rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-sm">
                             <h3 className="flex items-center gap-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                 <MapPin className="size-4 text-emerald-600" />
-                                <span>Titik Koordinat Geospasial</span>
+                                <span>Lokasi &amp; Koordinat Peta</span>
                             </h3>
 
                             <div className="space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 font-mono text-xs">

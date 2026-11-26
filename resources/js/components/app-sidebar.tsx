@@ -47,7 +47,7 @@ export function AppSidebar() {
             },
             { title: 'Antrean & Laporan', href: '/admin/reports', icon: Flame },
             {
-                title: 'AI Intelligence',
+                title: 'Kinerja & Analisis AI',
                 href: '/admin/ai-intelligence',
                 icon: Bot,
             },
@@ -61,13 +61,13 @@ export function AppSidebar() {
                 href: '/admin/categories',
                 icon: Tags,
             },
-            { title: 'Audit Trail', href: '/admin/audit-logs', icon: History },
+            { title: 'Riwayat Aktivitas', href: '/admin/audit-logs', icon: History },
             { title: 'Peta Karhutla', href: '/admin/map', icon: Map },
         );
     } else if (isAgency) {
         navItems.push(
             {
-                title: 'Dashboard OPD',
+                title: 'Beranda OPD',
                 href: '/opd/dashboard',
                 icon: LayoutGrid,
             },
@@ -81,7 +81,7 @@ export function AppSidebar() {
     } else {
         navItems.push(
             {
-                title: 'Dasbor Masyarakat',
+                title: 'Beranda Warga',
                 href: '/dashboard',
                 icon: LayoutGrid,
             },
@@ -97,7 +97,7 @@ export function AppSidebar() {
     }
 
     const footerNavItems: NavItem[] = [
-        { title: 'Lihat SOP', href: '/panduan-keselamatan', icon: FileText },
+        { title: 'Panduan Keselamatan', href: '/panduan-keselamatan', icon: FileText },
         { title: 'Peta Publik', href: '/peta', icon: Map },
         { title: 'Transparansi', href: '/tentang-kami', icon: ShieldCheck },
     ];
