@@ -13,11 +13,11 @@ enum FireCondition: string
     public function label(): string
     {
         return match ($this) {
-            self::UNKNOWN => 'Kondisi Belum Terverifikasi Lapangan',
-            self::REPORTED_ACTIVE => 'Dilaporkan Masih Aktif',
-            self::OBSERVED_ACTIVE => 'Terobservasi Api Aktif',
-            self::OBSERVED_CONTAINED => 'Terobservasi Terkendali/Sekat Bakar',
-            self::OBSERVED_EXTINGUISHED => 'Terobservasi Padam/Asap Sisa',
+            self::UNKNOWN => 'Belum Dicek di Lapangan',
+            self::REPORTED_ACTIVE => 'Dilaporkan Ada Api Aktif',
+            self::OBSERVED_ACTIVE => 'Api Masih Aktif (Cek Lapangan)',
+            self::OBSERVED_CONTAINED => 'Terkendali / Sekat Dibuat',
+            self::OBSERVED_EXTINGUISHED => 'Api Padam / Sisa Asap',
         };
     }
 }

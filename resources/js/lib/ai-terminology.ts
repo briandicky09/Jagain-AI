@@ -101,6 +101,8 @@ export const AI_PII_ENTITY_LABELS: Record<string, string> = {
 };
 
 export const AI_VERIFICATION_FLAG_LABELS: Record<string, string> = {
+    LOCATION_REQUIRES_VERIFICATION:
+        'Koordinat dan lokasi kejadian tetap wajib diperiksa oleh petugas',
     POTENTIAL_NON_WILDFIRE_OR_TEST:
         'Perlu dicek apakah ini laporan uji coba atau bukan kebakaran hutan/lahan',
     INSUFFICIENT_DETAILS_FOR_TRIAGE:
@@ -122,11 +124,24 @@ export const AI_VERIFICATION_FLAG_LABELS: Record<string, string> = {
 export const AI_FIRE_INDICATOR_LABELS: Record<string, string> = {
     smoke_mentioned: 'Menyebutkan Asap',
     flames_mentioned: 'Menyebutkan Nyala Api',
+    embers_mentioned: 'Menyebutkan Bara Api',
+    ash_or_char_mentioned: 'Menyebutkan Abu / Bekas Terbakar',
+    rapid_spread_mentioned: 'Menyebutkan Api Cepat Meluas',
+    near_settlement_mentioned: 'Dekat Permukiman / Jalan',
+    visibility_or_health_impact: 'Asap Mengganggu Pandangan / Pernapasan',
     peatland_mentioned: 'Menyebutkan Lahan Gambut',
     forest_mentioned: 'Menyebutkan Area Hutan',
     settlement_near: 'Dekat Permukiman',
     spread_risk: 'Berisiko Meluas',
     urgent_wind: 'Kondisi Angin Kencang',
+};
+
+export const AI_MISSING_INFO_LABELS: Record<string, string> = {
+    fire_extent: 'perkiraan luas area terbakar',
+    occurrence_time: 'waktu kejadian',
+    specific_landmark: 'patokan lokasi sekitar',
+    evidence_photo: 'foto bukti kejadian',
+    wildfire_visual_or_sensory_details: 'rincian kondisi asap/api di lokasi',
 };
 
 export const AI_MODEL_MODULE_LABELS: Record<string, string> = {
@@ -188,6 +203,10 @@ export function getAiVerificationFlagLabel(flag: string): string {
 
 export function getAiFireIndicatorLabel(indicator: string): string {
     return AI_FIRE_INDICATOR_LABELS[indicator] ?? indicator.replace(/_/g, ' ');
+}
+
+export function getAiMissingInfoLabel(field: string): string {
+    return AI_MISSING_INFO_LABELS[field] ?? field.replace(/_/g, ' ');
 }
 
 export function getAiImageQualityLabel(quality?: string | null): string {

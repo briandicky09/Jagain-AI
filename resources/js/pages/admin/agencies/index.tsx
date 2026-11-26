@@ -169,7 +169,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight text-[#171C19] dark:text-white">
-                            Instansi & OPD Kewenangan
+                            Instansi &amp; OPD Penanganan
                         </h1>
                         <p className="mt-1 text-sm text-[#68716B] dark:text-neutral-400">
                             Kelola data master instansi penanganan karhutla dan buatkan akun login resmi petugas OPD.
@@ -641,7 +641,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
                                     required
                                     value={createForm.data.jurisdiction}
                                     onChange={(e) => createForm.setData('jurisdiction', e.target.value)}
-                                    placeholder="Wilayah kewenangan"
+                                    placeholder="Wilayah tugas"
                                     className="w-full rounded-lg border border-[#DDE3DE] bg-white px-3.5 py-2.5 text-xs text-[#171C19] placeholder-[#68716B]/60 focus:border-[#216B49] focus:ring-1 focus:ring-[#216B49] focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                                 />
                                 {createForm.errors.jurisdiction && (
@@ -743,7 +743,7 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
                                     required
                                     value={editForm.data.jurisdiction}
                                     onChange={(e) => editForm.setData('jurisdiction', e.target.value)}
-                                    placeholder="Wilayah kewenangan"
+                                    placeholder="Wilayah tugas"
                                     className="w-full rounded-lg border border-[#DDE3DE] bg-white px-3.5 py-2.5 text-xs text-[#171C19] placeholder-[#68716B]/60 focus:border-[#216B49] focus:ring-1 focus:ring-[#216B49] focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                                 />
                             </div>

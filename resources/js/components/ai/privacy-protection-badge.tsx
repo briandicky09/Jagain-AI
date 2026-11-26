@@ -39,8 +39,11 @@ export function PrivacyProtectionBadge({
                     </span>
                 </div>
                 {mode === 'admin' && detectorVersion && (
-                    <span className="font-mono text-[11px] text-gray-neutral">
-                        {detectorVersion}
+                    <span
+                        title={detectorVersion}
+                        className="text-[11px] font-medium text-gray-neutral"
+                    >
+                        Penyaring Privasi Otomatis
                     </span>
                 )}
             </div>

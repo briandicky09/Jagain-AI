@@ -70,9 +70,9 @@ export default function Footer() {
                             <div className="flex items-start gap-2.5">
                                 <CheckCircle2 className="size-4 text-black shrink-0 mt-0.5" />
                                 <div>
-                                    <strong className="font-bold text-neutral-950 text-xs block">Sensor Satelit Termal</strong>
+                                    <strong className="font-bold text-neutral-950 text-xs block">Pemantauan Titik Panas Satelit</strong>
                                     <p className="text-[11px] text-neutral-850 leading-relaxed font-medium mt-0.5">
-                                        Anomali radiasi NASA FIRMS & BMKG sebagai indikator awal.
+                                        Data titik panas NASA FIRMS &amp; BMKG sebagai petunjuk awal.
                                     </p>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@ export default function Footer() {
                             Panduan Krisis
                         </Link>
                         <Link href="/tentang-kami" className="text-neutral-900/80 hover:text-black transition-colors font-bold">
-                            Metodologi Audit
+                            Cara Kerja &amp; Keterbukaan Data
                         </Link>
                         <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-black/10 text-neutral-950 font-bold text-[10px]">
                             <span>Publik Terbuka</span>

@@ -239,7 +239,7 @@ export default function SafetyGuide() {
                             1.1. Standar Operasional Prosedur (SOP) ini diterbitkan sebagai pedoman resmi tata laksana kesiapsiagaan, mitigasi bahaya kabut asap, evakuasi dini, serta mekanisme pelaporan masyarakat berbasis sistem terintegrasi JAGAIN di seluruh bentang alam Pulau Kalimantan.
                         </p>
                         <p className="text-justify text-neutral-800">
-                            1.2. Tujuan utama prosedur ini adalah melindungi keselamatan jiwa warga negara, meminimalkan paparan gas beracun partikulat PM2.5, serta mempercepat waktu respon (*response time*) satuan tugas penanggulangan (BPBD, Manggala Agni, dan Dinas Pemadam Kebakaran) dalam memadamkan titik api kebakaran hutan dan lahan.
+                            1.2. Tujuan utama prosedur ini adalah melindungi keselamatan jiwa warga negara, meminimalkan paparan gas beracun partikulat PM2.5, serta mempercepat waktu tanggap satuan tugas penanggulangan (BPBD, Manggala Agni, dan Dinas Pemadam Kebakaran) dalam memadamkan titik api kebakaran hutan dan lahan.
                         </p>
                     </section>
 
@@ -313,10 +313,10 @@ export default function SafetyGuide() {
                         <div className="border-l-4 border-amber-600 bg-amber-50/60 p-4 rounded-r-sm text-neutral-900 space-y-2">
                             <div className="flex items-center gap-2 font-bold text-amber-900 text-xs uppercase tracking-wide">
                                 <AlertTriangle className="size-4 text-amber-700 shrink-0" />
-                                <span>Peringatan Bahaya Kebakaran Bawah Tanah (Smoldering Peat Fire)</span>
+                                <span>Peringatan Bahaya Kebakaran Bawah Tanah (Kebakaran Bawah Permukaan Gambut)</span>
                             </div>
                             <p className="text-justify text-neutral-800">
-                                Lahan gambut memiliki karakteristik pembakaran bawah permukaan tanpa nyala api terbuka (*smoldering*). Abu tipis di permukaan sering kali menyamarkan rongga pembakaran sedalam 1–3 meter yang bertemperatur lebih dari 400°C.
+                                Lahan gambut memiliki karakteristik pembakaran bawah permukaan tanpa nyala api terbuka (bara bawah permukaan). Abu tipis di permukaan sering kali menyamarkan rongga pembakaran sedalam 1–3 meter yang bertemperatur lebih dari 400°C.
                             </p>
                             <p className="font-semibold text-neutral-950">
                                 Ketentuan Wajib: Warga dan relawan dilarang keras menginjak atau mendekati area gambut berasap. Pengambilan dokumentasi visual harus dilakukan dari tepi jalan beraspal atau zona tanah padat yang aman.
@@ -333,9 +333,9 @@ export default function SafetyGuide() {
                         </h3>
                         <div className="space-y-3 text-neutral-800">
                             <div>
-                                <strong className="text-neutral-950 block">5.1. Protokol Melawan Arah Angin (Upwind Safety)</strong>
+                                <strong className="text-neutral-950 block">5.1. Protokol Melawan Arah Angin (Bergerak Melawan Arah Angin)</strong>
                                 <p className="text-justify">
-                                    Saat terdeteksi titik api atau kepulan asap, segera tentukan arah hembusan angin. Posisikan diri dan jalur penyelamatan selalu berlawanan arah dengan arah asap bergerak (*upwind*). Jangan pernah berlindung di daerah lembah atau parit gambut tertutup yang menjadi perangkap gas karbon monoksida.
+                                    Saat terdeteksi titik api atau kepulan asap, segera tentukan arah hembusan angin. Posisikan diri dan jalur penyelamatan selalu berlawanan arah dengan arah asap bergerak (melawan arah angin). Jangan pernah berlindung di daerah lembah atau parit gambut tertutup yang menjadi perangkap gas karbon monoksida.
                                 </p>
                             </div>
                             <div>
@@ -454,7 +454,7 @@ export default function SafetyGuide() {
                                 <div className="mt-4 flex flex-col items-center sm:items-end">
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-emerald-700 bg-emerald-50 text-emerald-900 font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
                                         <CheckCircle2 className="size-3 text-emerald-700" />
-                                        <span>VERIFIED & DIGITALLY APPROVED</span>
+                                        <span>TERVERIFIKASI &amp; DISETUJUI SECARA DIGITAL</span>
                                     </div>
                                     <p className="font-bold text-neutral-950 text-xs">Satgas Operasi Karhutla Terpadu</p>
                                     <p className="text-neutral-500 text-[10px]">Sistem Informasi Pemantauan JAGAIN</p>

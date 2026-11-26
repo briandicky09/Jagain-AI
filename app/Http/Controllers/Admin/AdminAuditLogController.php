@@ -31,7 +31,7 @@ class AdminAuditLogController extends Controller
             'icon' => 'FileCheck2',
         ],
         'REPORT_ASSIGNED_TO_AGENCY' => [
-            'label' => 'Disposisi OPD',
+            'label' => 'Penugasan OPD',
             'category' => 'DISPATCH',
             'badge_class' => 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800',
             'icon' => 'Building2',
@@ -43,7 +43,7 @@ class AdminAuditLogController extends Controller
             'icon' => 'Building2',
         ],
         'ASSIGNMENT_SUBMITTED_FOR_REVIEW' => [
-            'label' => 'Pengajuan Review',
+            'label' => 'Ajukan Konfirmasi Selesai',
             'category' => 'DISPATCH',
             'badge_class' => 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
             'icon' => 'CheckCircle2',
@@ -131,6 +131,36 @@ class AdminAuditLogController extends Controller
             'category' => 'SETTING',
             'badge_class' => 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
             'icon' => 'ToggleRight',
+        ],
+        'AI_ANALYSIS_EXECUTED' => [
+            'label' => 'Analisis AI Dijalankan',
+            'category' => 'REPORT',
+            'badge_class' => 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
+            'icon' => 'Bot',
+        ],
+        'AI_ANALYSIS_FAILED' => [
+            'label' => 'Analisis AI Gagal',
+            'category' => 'REPORT',
+            'badge_class' => 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800',
+            'icon' => 'AlertTriangle',
+        ],
+        'AI_ANALYSIS_REVIEWED' => [
+            'label' => 'Penilaian Hasil AI',
+            'category' => 'REPORT',
+            'badge_class' => 'bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800',
+            'icon' => 'FileCheck2',
+        ],
+        'AI_DUPLICATE_DECISION' => [
+            'label' => 'Keputusan Laporan Serupa',
+            'category' => 'REPORT',
+            'badge_class' => 'bg-cyan-50 text-cyan-800 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800',
+            'icon' => 'CopyCheck',
+        ],
+        'AI_EVALUATION_EXECUTED' => [
+            'label' => 'Evaluasi AI Dijalankan',
+            'category' => 'SETTING',
+            'badge_class' => 'bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800',
+            'icon' => 'BarChart3',
         ],
     ];
 
@@ -297,7 +327,7 @@ class AdminAuditLogController extends Controller
                         $agencyName = $log->after_snapshot['agency_name'] ?? 'Instansi Terkait';
                         $entitySummary = [
                             'name' => "Penugasan: {$agencyName}",
-                            'subtext' => 'Disposisi Penanganan Lapangan',
+                            'subtext' => 'Penugasan Penanganan Lapangan',
                             'url' => null,
                             'badge' => 'PENUGASAN',
                         ];
@@ -338,7 +368,7 @@ class AdminAuditLogController extends Controller
                     $agency = $agenciesMap->get($log->entity_id);
                     $entitySummary = [
                         'name' => $agency?->name ?? 'Instansi OPD',
-                        'subtext' => $agency?->jurisdiction ?? 'Yurisdiksi Daerah',
+                        'subtext' => $agency?->jurisdiction ?? 'Wilayah Tugas Daerah',
                         'url' => route('admin.agencies.index'),
                         'badge' => 'OPD',
                     ];
@@ -356,6 +386,27 @@ class AdminAuditLogController extends Controller
                         'subtext' => $log->action === 'REPORTS_EXPORTED_CSV' ? 'Unduhan Berkas Rekap CSV' : 'Konfigurasi Sistem',
                         'url' => null,
                         'badge' => 'SISTEM',
+                    ];
+                } elseif ($log->entity_type === 'AiAnalysis') {
+                    $entitySummary = [
+                        'name' => 'Analisis AI Laporan',
+                        'subtext' => 'Pemeriksaan awal berbasis AI',
+                        'url' => null,
+                        'badge' => 'AI',
+                    ];
+                } elseif ($log->entity_type === 'AiEvaluationRun') {
+                    $entitySummary = [
+                        'name' => 'Evaluasi Kinerja AI',
+                        'subtext' => 'Pengukuran ketepatan & kecepatan sistem AI',
+                        'url' => route('admin.ai.dashboard'),
+                        'badge' => 'EVALUASI AI',
+                    ];
+                } elseif ($log->entity_type === 'AiDuplicateCandidate') {
+                    $entitySummary = [
+                        'name' => 'Deteksi Laporan Serupa',
+                        'subtext' => 'Pemeriksaan kemiripan laporan',
+                        'url' => null,
+                        'badge' => 'AI',
                     ];
                 } else {
                     $entitySummary = [
@@ -385,6 +436,9 @@ class AdminAuditLogController extends Controller
                         'Agency' => 'Instansi OPD',
                         'Category' => 'Kategori Karhutla',
                         'System' => 'Sistem & Utilitas',
+                        'AiAnalysis' => 'Analisis AI',
+                        'AiEvaluationRun' => 'Evaluasi AI',
+                        'AiDuplicateCandidate' => 'Deteksi Laporan Serupa',
                         default => $log->entity_type,
                     },
                     'entity_id' => $log->entity_id,
@@ -399,7 +453,7 @@ class AdminAuditLogController extends Controller
                     'has_snapshot' => $hasSnapshot,
                     'created_at' => $log->created_at?->toIso8601String(),
                     'created_at_formatted' => $log->created_at?->translatedFormat('d M Y, H.i.s').' WIB',
-                    'created_at_human' => $log->created_at?->diffForHumans(),
+                    'created_at_human' => $log->created_at?->locale('id')->diffForHumans(),
                 ];
             })
         );
@@ -431,6 +485,9 @@ class AdminAuditLogController extends Controller
                 'Agency' => 'Instansi OPD',
                 'Category' => 'Kategori Karhutla',
                 'System' => 'Sistem & Utilitas',
+                'AiAnalysis' => 'Analisis AI',
+                'AiEvaluationRun' => 'Evaluasi AI',
+                'AiDuplicateCandidate' => 'Deteksi Laporan Serupa',
                 default => $type,
             },
         ])->values()->all();

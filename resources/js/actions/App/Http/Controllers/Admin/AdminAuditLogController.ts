@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
 const AdminAuditLogController = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ AdminAuditLogController.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
 AdminAuditLogController.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ AdminAuditLogController.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
 AdminAuditLogController.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ AdminAuditLogController.get = (options?: RouteQueryOptions): RouteDefinition<'ge
 })
 /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
 AdminAuditLogController.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ AdminAuditLogController.head = (options?: RouteQueryOptions): RouteDefinition<'h
 
     /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
     const AdminAuditLogControllerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ AdminAuditLogController.head = (options?: RouteQueryOptions): RouteDefinition<'h
 
             /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
         AdminAuditLogControllerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ AdminAuditLogController.head = (options?: RouteQueryOptions): RouteDefinition<'h
         })
             /**
 * @see \App\Http\Controllers\Admin\AdminAuditLogController::__invoke
- * @see app/Http/Controllers/Admin/AdminAuditLogController.php:137
+ * @see app/Http/Controllers/Admin/AdminAuditLogController.php:167
  * @route '/admin/audit-logs'
  */
         AdminAuditLogControllerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

@@ -693,9 +693,6 @@ export default function AiIntelligenceDashboard({
                                                 )}
                                             </strong>
                                         </div>
-                                        <p className="text-[11px] text-gray-neutral">
-                                            {activeMetrics.vision.note}
-                                        </p>
                                         <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-[11px] font-medium text-amber-900">
                                             Status Pengujian Foto Lapangan Asli:
                                             Belum Diukur (saat ini baru diuji

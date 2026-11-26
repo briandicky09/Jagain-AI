@@ -26,6 +26,7 @@ import {
     getAiCategoryLabel,
     getAiFireIndicatorLabel,
     getAiImageQualityLabel,
+    getAiMissingInfoLabel,
     getAiVerificationFlagLabel,
     getAiVisionAdapterLabel,
 } from '@/lib/ai-terminology';
@@ -138,8 +139,8 @@ export function AiAnalysisPanel({ reportId, analyses }: AiAnalysisPanelProps) {
                             {running
                                 ? 'Sedang Menganalisis...'
                                 : latest
-                                  ? 'Analisis Ulang'
-                                  : 'Jalankan Analisis AI'}
+                                    ? 'Analisis Ulang'
+                                    : 'Jalankan Analisis AI'}
                         </span>
                     </Button>
                 </div>
@@ -209,24 +210,24 @@ export function AiAnalysisPanel({ reportId, analyses }: AiAnalysisPanelProps) {
                     {((latest.confidence_score !== null &&
                         latest.confidence_score < 0.65) ||
                         latest.severity_recommendation === 'UNKNOWN') && (
-                        <div
-                            role="status"
-                            className="flex items-start gap-2.5 rounded-xl border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900"
-                        >
-                            <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-700" />
-                            <div>
-                                <div className="font-bold">
-                                    Tingkat Keyakinan AI Rendah / Keterangan
-                                    Belum Lengkap
+                            <div
+                                role="status"
+                                className="flex items-start gap-2.5 rounded-xl border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900"
+                            >
+                                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-700" />
+                                <div>
+                                    <div className="font-bold">
+                                        Tingkat Keyakinan AI Rendah / Keterangan
+                                        Belum Lengkap
+                                    </div>
+                                    <p className="mt-0.5 text-[11px]">
+                                        Keterangan atau foto pada laporan masih
+                                        terbatas sehingga perkiraan AI belum cukup
+                                        kuat. Pemeriksaan langsung oleh petugas
+                                        wajib dilakukan sebelum menentukan tindakan.
+                                    </p>
                                 </div>
-                                <p className="mt-0.5 text-[11px]">
-                                    Keterangan atau foto pada laporan masih
-                                    terbatas sehingga perkiraan AI belum cukup
-                                    kuat. Pemeriksaan langsung oleh petugas
-                                    wajib dilakukan sebelum menentukan tindakan.
-                                </p>
                             </div>
-                        </div>
                         )}
 
                     {/* Top Metadata & Severity Strip */}
@@ -327,19 +328,19 @@ export function AiAnalysisPanel({ reportId, analyses }: AiAnalysisPanelProps) {
 
                             {structured.text_analysis.fire_indicators.length >
                                 0 && (
-                                <div className="mt-2.5 flex flex-wrap gap-1.5">
-                                    {structured.text_analysis.fire_indicators.map(
-                                        (ind) => (
-                                            <span
-                                                key={ind}
-                                                className="rounded-md border border-border-neutral bg-white px-2 py-0.5 text-[11px] font-medium text-dark-neutral"
-                                            >
-                                                {getAiFireIndicatorLabel(ind)}
-                                            </span>
-                                        ),
-                                    )}
-                                </div>
-                            )}
+                                    <div className="mt-2.5 flex flex-wrap gap-1.5">
+                                        {structured.text_analysis.fire_indicators.map(
+                                            (ind) => (
+                                                <span
+                                                    key={ind}
+                                                    className="rounded-md border border-border-neutral bg-white px-2 py-0.5 text-[11px] font-medium text-dark-neutral"
+                                                >
+                                                    {getAiFireIndicatorLabel(ind)}
+                                                </span>
+                                            ),
+                                        )}
+                                    </div>
+                                )}
 
                             {structured.text_analysis.missing_information
                                 .length > 0 && (
@@ -347,9 +348,9 @@ export function AiAnalysisPanel({ reportId, analyses }: AiAnalysisPanelProps) {
                                     <span className="font-semibold">
                                         Keterangan yang masih kurang:
                                     </span>{' '}
-                                    {structured.text_analysis.missing_information.join(
-                                        ', ',
-                                    )}
+                                    {structured.text_analysis.missing_information
+                                        .map(getAiMissingInfoLabel)
+                                        .join(', ')}
                                 </div>
                             )}
                         </div>
@@ -394,10 +395,10 @@ export function AiAnalysisPanel({ reportId, analyses }: AiAnalysisPanelProps) {
                                 )}
                                 {structured.image_analysis
                                     .appears_unrelated && (
-                                    <span className="rounded-md border border-rose-300 bg-rose-50 px-2 py-0.5 text-rose-900">
-                                        Foto tampak tidak terkait kebakaran
-                                    </span>
-                                )}
+                                        <span className="rounded-md border border-rose-300 bg-rose-50 px-2 py-0.5 text-rose-900">
+                                            Foto tampak tidak terkait kebakaran
+                                        </span>
+                                    )}
                             </div>
 
                             <div className="mt-2.5 rounded-lg border border-border-neutral bg-white p-2 text-[11px] text-dark-neutral">

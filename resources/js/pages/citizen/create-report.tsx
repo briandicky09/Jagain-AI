@@ -529,7 +529,8 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                                 </li>
                                 <li>
                                     2. Identitas pribadi (nama, telepon,
-                                    NIK/email di teks) & metadata EXIF foto
+                                    NIK/email di teks) serta data lokasi/perangkat
+                                    tersembunyi pada foto
                                     disaring sebelum tampil ke publik.
                                 </li>
                                 <li>
