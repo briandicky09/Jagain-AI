@@ -52,7 +52,7 @@
             }
 
             html, body {
-                background-color: #ffffff;
+                background-color: #f8faf9;
                 overflow-x: hidden;
                 max-width: 100vw;
                 width: 100%;
@@ -62,15 +62,57 @@
             }
 
             html::-webkit-scrollbar,
-            body::-webkit-scrollbar,
-            ::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
+            body::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
             }
 
             html.dark, html.dark body {
-                background-color: #ffffff;
+                background-color: #0d120f;
+            }
+
+            #jagain-initial-loader {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                background-color: #f8faf9;
+                color: #174b35;
+                font-family: 'Poppins', system-ui, sans-serif;
+            }
+
+            html.dark #jagain-initial-loader {
+                background-color: #0d120f;
+                color: #10e57a;
+            }
+
+            .jagain-loader-ring {
+                width: 34px;
+                height: 34px;
+                border-radius: 9999px;
+                border: 3px solid rgba(33, 107, 73, 0.2);
+                border-top-color: #216b49;
+                animation: jagainSpin 0.8s linear infinite;
+            }
+
+            html.dark .jagain-loader-ring {
+                border-color: rgba(16, 229, 122, 0.2);
+                border-top-color: #10e57a;
+            }
+
+            @keyframes jagainSpin {
+                to { transform: rotate(360deg); }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .jagain-loader-ring {
+                    animation: none;
+                }
             }
         </style>
 
@@ -91,6 +133,10 @@
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">
+        <div id="jagain-initial-loader" aria-hidden="true">
+            <div class="jagain-loader-ring"></div>
+            <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;">JAGAIN AI</div>
+        </div>
         <x-inertia::app />
     </body>
 </html>

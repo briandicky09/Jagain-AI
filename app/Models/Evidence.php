@@ -71,8 +71,9 @@ class Evidence extends Model
     public function getUrlAttribute(): string
     {
         $path = $this->file_path ?? $this->storage_key ?? '';
+        $normalized = ltrim(preg_replace('#^/?storage/#', '', $path) ?? $path, '/');
 
-        return Storage::disk('public')->url($path);
+        return Storage::disk('public')->url($normalized);
     }
 
     /**

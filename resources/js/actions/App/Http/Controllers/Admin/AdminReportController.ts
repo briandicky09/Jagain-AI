@@ -385,7 +385,7 @@ export const show = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 const transitiondcb169241e573948182d8768a503792f = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -400,7 +400,7 @@ transitiondcb169241e573948182d8768a503792f.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 transitiondcb169241e573948182d8768a503792f.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -433,7 +433,7 @@ transitiondcb169241e573948182d8768a503792f.url = (args: { report: number | { id:
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 transitiondcb169241e573948182d8768a503792f.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -443,7 +443,7 @@ transitiondcb169241e573948182d8768a503792f.post = (args: { report: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
     const transitiondcb169241e573948182d8768a503792fForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -453,7 +453,7 @@ transitiondcb169241e573948182d8768a503792f.post = (args: { report: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
         transitiondcb169241e573948182d8768a503792fForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -464,7 +464,7 @@ transitiondcb169241e573948182d8768a503792f.post = (args: { report: number | { id
     transitiondcb169241e573948182d8768a503792f.form = transitiondcb169241e573948182d8768a503792fForm
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/laporan/{report}/status'
  */
 const transition4ae78ab43df3c6bd281eed07416d8d25 = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -479,7 +479,7 @@ transition4ae78ab43df3c6bd281eed07416d8d25.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/laporan/{report}/status'
  */
 transition4ae78ab43df3c6bd281eed07416d8d25.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -512,7 +512,7 @@ transition4ae78ab43df3c6bd281eed07416d8d25.url = (args: { report: number | { id:
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/laporan/{report}/status'
  */
 transition4ae78ab43df3c6bd281eed07416d8d25.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -522,7 +522,7 @@ transition4ae78ab43df3c6bd281eed07416d8d25.post = (args: { report: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/laporan/{report}/status'
  */
     const transition4ae78ab43df3c6bd281eed07416d8d25Form = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -532,7 +532,7 @@ transition4ae78ab43df3c6bd281eed07416d8d25.post = (args: { report: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/laporan/{report}/status'
  */
         transition4ae78ab43df3c6bd281eed07416d8d25Form.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -555,7 +555,7 @@ export const transition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 const assignadda280c3f90d4a568df4f241ded96bf = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -570,7 +570,7 @@ assignadda280c3f90d4a568df4f241ded96bf.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 assignadda280c3f90d4a568df4f241ded96bf.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -603,7 +603,7 @@ assignadda280c3f90d4a568df4f241ded96bf.url = (args: { report: number | { id: num
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 assignadda280c3f90d4a568df4f241ded96bf.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -613,7 +613,7 @@ assignadda280c3f90d4a568df4f241ded96bf.post = (args: { report: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
     const assignadda280c3f90d4a568df4f241ded96bfForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -623,7 +623,7 @@ assignadda280c3f90d4a568df4f241ded96bf.post = (args: { report: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
         assignadda280c3f90d4a568df4f241ded96bfForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -634,7 +634,7 @@ assignadda280c3f90d4a568df4f241ded96bf.post = (args: { report: number | { id: nu
     assignadda280c3f90d4a568df4f241ded96bf.form = assignadda280c3f90d4a568df4f241ded96bfForm
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/laporan/{report}/assign'
  */
 const assign3290379e89734ab6f33ad8a8fd46192f = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -649,7 +649,7 @@ assign3290379e89734ab6f33ad8a8fd46192f.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/laporan/{report}/assign'
  */
 assign3290379e89734ab6f33ad8a8fd46192f.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -682,7 +682,7 @@ assign3290379e89734ab6f33ad8a8fd46192f.url = (args: { report: number | { id: num
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/laporan/{report}/assign'
  */
 assign3290379e89734ab6f33ad8a8fd46192f.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -692,7 +692,7 @@ assign3290379e89734ab6f33ad8a8fd46192f.post = (args: { report: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/laporan/{report}/assign'
  */
     const assign3290379e89734ab6f33ad8a8fd46192fForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -702,7 +702,7 @@ assign3290379e89734ab6f33ad8a8fd46192f.post = (args: { report: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/laporan/{report}/assign'
  */
         assign3290379e89734ab6f33ad8a8fd46192fForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

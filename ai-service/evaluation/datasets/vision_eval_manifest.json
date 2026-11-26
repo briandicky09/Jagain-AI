@@ -1,0 +1,13 @@
+{
+  "dataset_name": "JAGAIN Synthetic Vision Sanity Manifest",
+  "version": "1.0.0",
+  "is_simulated": true,
+  "is_synthetic_images": true,
+  "notes": "Synthetic PNG images used strictly to verify CLIP inference pipeline end-to-end offline. Real-world Indonesian wildfire photograph validation is still required.",
+  "cases": [
+    {"id": "VIS-01", "split": "test", "image_path": "datasets/synthetic_images/synthetic_smoke.png", "expected_label": "SMOKE"},
+    {"id": "VIS-02", "split": "test", "image_path": "datasets/synthetic_images/synthetic_flame.png", "expected_label": "FLAME"},
+    {"id": "VIS-03", "split": "test", "image_path": "datasets/synthetic_images/synthetic_forest.png", "expected_label": "OTHER"},
+    {"id": "VIS-04", "split": "test", "image_path": "datasets/synthetic_images/synthetic_unrelated.png", "expected_label": "UNRELATED"}
+  ]
+}

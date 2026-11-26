@@ -125,6 +125,11 @@ class AdminReportController extends Controller
             'assignments.operationalUpdates.createdByUser',
             'assignments.updates.creator',
             'assignments.updates.evidence',
+            'aiAnalyses.reviews.reviewer:id,name',
+            'aiAnalyses.triggeredBy:id,name',
+            'duplicateCandidates.candidateReport:id,tracking_code,report_number,title,report_status,latitude,longitude,created_at,location_description',
+            'duplicateCandidates.decisions.decider:id,name',
+            'privacyRecord',
         ]);
 
         $activeAgencies = Agency::where('is_active', true)
@@ -162,6 +167,16 @@ class AdminReportController extends Controller
                 'value' => $f->value,
                 'label' => $f->label(),
             ], FireCondition::cases()),
+            'aiAnalyses' => $report->aiAnalyses,
+            'aiDuplicateCandidates' => $report->duplicateCandidates,
+            'aiPrivacyRecord' => $report->privacyRecord ? [
+                'id' => $report->privacyRecord->id,
+                'pii_detected' => $report->privacyRecord->pii_detected,
+                'redaction_applied' => $report->privacyRecord->redaction_applied,
+                'entity_counts' => $report->privacyRecord->entity_counts,
+                'detector_version' => $report->privacyRecord->detector_version,
+                'processed_at' => $report->privacyRecord->processed_at?->toIso8601String(),
+            ] : null,
         ]);
     }
 

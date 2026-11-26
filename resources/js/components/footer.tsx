@@ -39,9 +39,9 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#peta-sebaran" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
+                                <Link href="/#peta-sebaran" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
                                     Peta Sebaran
-                                </a>
+                                </Link>
                             </li>
                             <li>
                                 <Link href="/lapor" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
@@ -49,14 +49,14 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#panduan-keselamatan" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
+                                <Link href="/#panduan-keselamatan" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
                                     Panduan Keselamatan
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#transparansi" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
+                                <Link href="/#transparansi" className="text-neutral-900/80 hover:text-black font-bold transition-colors">
                                     Transparansi
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

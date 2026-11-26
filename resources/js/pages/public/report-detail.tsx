@@ -6,6 +6,7 @@ import KarhutlaMap from '@/components/karhutla-map';
 import StatusBadge from '@/components/status-badge';
 import FireConditionBadge from '@/components/fire-condition-badge';
 import BorderGlow from '@/components/react-bits/BorderGlow';
+import { PrivacyProtectionBadge } from '@/components/ai/privacy-protection-badge';
 import {
     ArrowLeft,
     MapPin,
@@ -59,6 +60,12 @@ interface ReportDetailProps {
             name: string;
             jurisdiction: string;
         } | null;
+        privacy_protection?: {
+            sanitized: boolean;
+            redaction_applied: boolean;
+            detector_version: string;
+            processed_at?: string | null;
+        };
     };
 }
 
@@ -72,73 +79,86 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-white text-neutral-900 selection:bg-[#10e57a] selection:text-black font-sans antialiased overflow-x-hidden w-full max-w-full">
+        <div className="flex min-h-screen w-full max-w-full flex-col overflow-x-hidden bg-white font-sans text-neutral-900 antialiased selection:bg-[#10e57a] selection:text-black">
             <Head title={`Laporan ${report.tracking_code} — JAGAIN`} />
             <Navbar />
 
             {/* Breadcrumb Header Strip */}
-            <div className="bg-neutral-50 border-b border-neutral-200 pt-28 pb-4 px-4 sm:px-6 lg:px-8 font-sans">
-                <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="border-b border-neutral-200 bg-neutral-50 px-4 pt-28 pb-4 font-sans sm:px-6 lg:px-8">
+                <div className="mx-auto flex max-w-[1280px] flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <Link
                         href="/peta"
-                        className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-black transition-colors"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-black"
                     >
                         <ArrowLeft className="size-3.5" />
                         <span>Kembali ke Peta Sebaran</span>
                     </Link>
 
-                    <div className="flex items-center gap-2.5">
-                        <span className="font-mono text-xs text-neutral-400 font-medium">KODE LACAK:</span>
-                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 border border-emerald-300 rounded-full font-mono text-xs font-bold text-emerald-800 shadow-xs">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                        <span className="font-mono text-xs font-medium text-neutral-400">
+                            KODE LACAK:
+                        </span>
+                        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-3.5 py-1.5 font-mono text-xs font-bold text-emerald-800 shadow-xs">
                             <span>{report.tracking_code}</span>
                             <button
                                 type="button"
                                 onClick={handleCopyCode}
-                                className="p-0.5 text-emerald-600 hover:text-black transition-colors cursor-pointer"
+                                className="cursor-pointer p-0.5 text-emerald-600 transition-colors hover:text-black"
                                 title="Salin Kode Lacak"
                             >
-                                {copied ? <Check className="size-3.5 text-emerald-700" /> : <Copy className="size-3.5" />}
+                                {copied ? (
+                                    <Check className="size-3.5 text-emerald-700" />
+                                ) : (
+                                    <Copy className="size-3.5" />
+                                )}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <main className="flex-1 max-w-[1280px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-10 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12">
                     {/* Left 8 Cols: Dossier Information */}
-                    <div className="lg:col-span-8 space-y-8">
+                    <div className="space-y-8 lg:col-span-8">
                         {/* Title & Metadata */}
-                        <div className="border-b border-neutral-200 pb-6 space-y-4">
+                        <div className="space-y-4 border-b border-neutral-200 pb-6">
                             <div className="flex flex-wrap items-center gap-2 font-sans">
-                                <StatusBadge status={report.report_status} label={report.status_label} />
+                                <StatusBadge
+                                    status={report.report_status}
+                                    label={report.status_label}
+                                />
                                 {report.category && (
-                                    <span className="px-3 py-1 text-xs rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200 font-medium">
+                                    <span className="rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700">
                                         {report.category.name}
                                     </span>
                                 )}
                                 {report.is_simulated && (
-                                    <span className="px-3 py-1 text-[10px] font-mono font-bold rounded-full bg-red-100 text-red-800 border border-red-200">
+                                    <span className="rounded-full border border-red-200 bg-red-100 px-3 py-1 font-mono text-[10px] font-bold text-red-800">
                                         DATA SIMULASI
                                     </span>
                                 )}
                             </div>
 
-                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 leading-tight">
+                            <h1 className="text-2xl leading-tight font-extrabold text-neutral-950 sm:text-3xl lg:text-4xl">
                                 {report.title}
                             </h1>
 
-                            <div className="flex flex-wrap items-center gap-5 text-xs text-neutral-500 pt-1 font-sans">
-                                <div className="flex items-center gap-1.5 text-neutral-800 font-medium">
+                            <div className="flex flex-wrap items-center gap-5 pt-1 font-sans text-xs text-neutral-500">
+                                <div className="flex items-center gap-1.5 font-medium text-neutral-800">
                                     <MapPin className="size-3.5 text-emerald-600" />
-                                    <span>{report.regency_city}, {report.province}</span>
+                                    <span>
+                                        {report.regency_city}, {report.province}
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <Calendar className="size-3.5 text-neutral-400" />
                                     <span>
                                         Dilaporkan:{' '}
                                         {report.reported_occurrence_at
-                                            ? new Date(report.reported_occurrence_at).toLocaleString('id-ID', {
+                                            ? new Date(
+                                                  report.reported_occurrence_at,
+                                              ).toLocaleString('id-ID', {
                                                   day: '2-digit',
                                                   month: 'short',
                                                   year: 'numeric',
@@ -163,66 +183,89 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                             animated={false}
                             colors={['#f59e0b', '#ef4444', '#f97316']}
                             fillOpacity={0.12}
-                            className="w-full bg-amber-50/70 border border-amber-300 shadow-sm"
+                            className="w-full border border-amber-300 bg-amber-50/70 shadow-sm"
                         >
-                            <div className="p-7 space-y-4">
-                                <div className="flex items-center justify-between flex-wrap gap-2 border-b border-amber-200 pb-3">
-                                    <div className="text-xs font-mono font-bold uppercase tracking-wider text-amber-900 flex items-center gap-2">
+                            <div className="space-y-4 p-7">
+                                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-3">
+                                    <div className="flex items-center gap-2 font-mono text-xs font-bold tracking-wider text-amber-900 uppercase">
                                         <AlertTriangle className="size-4 text-amber-700" />
-                                        <span>Observasi Kondisi Kebakaran Aktual Lapangan</span>
+                                        <span>
+                                            Observasi Kondisi Kebakaran Aktual
+                                            Lapangan
+                                        </span>
                                     </div>
-                                    <span className="font-mono text-xs text-amber-700 font-medium">Pemeriksaan Regu</span>
+                                    <span className="font-mono text-xs font-medium text-amber-700">
+                                        Pemeriksaan Regu
+                                    </span>
                                 </div>
 
                                 <div>
                                     <FireConditionBadge
                                         condition={report.fire_condition}
                                         source={report.fire_condition_source}
-                                        observedAt={report.fire_condition_observed_at}
+                                        observedAt={
+                                            report.fire_condition_observed_at
+                                        }
                                     />
                                 </div>
 
-                                <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed pt-1 font-sans">
-                                    <strong className="text-neutral-950 font-bold">Catatan Integritas:</strong> Kondisi kebakaran di atas diverifikasi langsung oleh petugas regu darat. Laporan yang berstatus administratif "Selesai" tetap memuat bukti pemadaman dingin sebelum kondisi lahan dinyatakan tuntas aman.
+                                <p className="pt-1 font-sans text-xs leading-relaxed text-neutral-700 sm:text-sm">
+                                    <strong className="font-bold text-neutral-950">
+                                        Catatan Integritas:
+                                    </strong>{' '}
+                                    Kondisi kebakaran di atas diverifikasi
+                                    langsung oleh petugas regu darat. Laporan
+                                    yang berstatus administratif "Selesai" tetap
+                                    memuat bukti pemadaman dingin sebelum
+                                    kondisi lahan dinyatakan tuntas aman.
                                 </p>
                             </div>
                         </BorderGlow>
 
                         {/* Uraian Kejadian & Patok Lokasi */}
                         <div className="space-y-4">
-                            <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 border-b border-neutral-200 pb-2">
+                            <h2 className="border-b border-neutral-200 pb-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                 Uraian Kejadian & Kronologi Warga
                             </h2>
-                            <p className="text-sm sm:text-base text-neutral-700 whitespace-pre-line leading-relaxed font-sans">
+                            <p className="font-sans text-sm leading-relaxed whitespace-pre-line text-neutral-700 sm:text-base">
                                 {report.description}
                             </p>
 
-                            <div className="bg-neutral-50 rounded-[1.5rem] p-5 space-y-1 text-xs border border-neutral-200">
-                                <strong className="font-sans font-bold text-neutral-900 block">
+                            <div className="space-y-1 rounded-xl border border-neutral-200 bg-neutral-50 p-5 text-xs">
+                                <strong className="block font-sans font-bold text-neutral-900">
                                     Petunjuk Patok Lokasi Lapangan:
                                 </strong>
-                                <span className="text-xs text-neutral-500 leading-relaxed block">
-                                    {report.location_description || 'Tidak ada petunjuk patok tambahan yang dicatat.'}
+                                <span className="block text-xs leading-relaxed text-neutral-500">
+                                    {report.location_description ||
+                                        'Tidak ada petunjuk patok tambahan yang dicatat.'}
                                 </span>
                             </div>
                         </div>
 
                         {/* Evidence Photos */}
                         {report.evidence.length > 0 && (
-                            <div className="space-y-4 pt-4 border-t border-neutral-200">
-                                <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900">
-                                    Dokumentasi Bukti Lapangan ({report.evidence.length})
+                            <div className="space-y-4 border-t border-neutral-200 pt-4">
+                                <h2 className="font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
+                                    Dokumentasi Bukti Lapangan (
+                                    {report.evidence.length})
                                 </h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     {report.evidence.map((ev) => (
-                                        <div key={ev.id} className="rounded-[1.5rem] overflow-hidden border border-neutral-200 bg-white shadow-sm">
+                                        <div
+                                            key={ev.id}
+                                            className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"
+                                        >
                                             <img
                                                 src={ev.file_path}
-                                                alt={ev.caption || 'Bukti karhutla'}
-                                                className="w-full h-52 object-cover"
+                                                loading="lazy"
+                                                alt={
+                                                    ev.caption ||
+                                                    'Bukti karhutla'
+                                                }
+                                                className="h-52 w-full object-cover"
                                             />
                                             {ev.caption && (
-                                                <div className="p-3 text-xs text-neutral-700 bg-neutral-50 border-t border-neutral-200">
+                                                <div className="border-t border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-700">
                                                     {ev.caption}
                                                 </div>
                                             )}
@@ -233,43 +276,63 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                         )}
 
                         {/* Chronological Audit Trail Timeline */}
-                        <div className="space-y-4 pt-4 border-t border-neutral-200">
-                            <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
-                                <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 flex items-center gap-2">
+                        <div className="space-y-4 border-t border-neutral-200 pt-4">
+                            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+                                <h2 className="flex items-center gap-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                     <Clock className="size-4 text-emerald-600" />
-                                    <span>Jejak Audit & Perjalanan Status Laporan</span>
+                                    <span>
+                                        Jejak Audit & Perjalanan Status Laporan
+                                    </span>
                                 </h2>
-                                <span className="font-mono text-xs text-neutral-500">Rantai Audit Permanen</span>
+                                <span className="font-mono text-xs text-neutral-500">
+                                    Rantai Audit Permanen
+                                </span>
                             </div>
 
                             {report.status_history.length === 0 ? (
-                                <p className="text-sm text-neutral-400">Belum ada riwayat status tercatat.</p>
+                                <p className="text-sm text-neutral-400">
+                                    Belum ada riwayat status tercatat.
+                                </p>
                             ) : (
-                                <div className="bg-white border border-neutral-200 rounded-[2rem] overflow-hidden divide-y divide-neutral-100 shadow-sm">
+                                <div className="divide-y divide-neutral-100 overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-sm">
                                     {report.status_history.map((hist) => (
-                                        <div key={hist.id} className="p-6 space-y-2 text-xs">
-                                            <div className="flex items-center justify-between flex-wrap gap-2 font-sans">
-                                                <StatusBadge status={hist.to_status} size="sm" />
+                                        <div
+                                            key={hist.id}
+                                            className="space-y-2 p-6 text-xs"
+                                        >
+                                            <div className="flex flex-wrap items-center justify-between gap-2 font-sans">
+                                                <StatusBadge
+                                                    status={hist.to_status}
+                                                    size="sm"
+                                                />
                                                 <span className="font-mono text-xs text-neutral-400">
                                                     {hist.created_at
-                                                        ? new Date(hist.created_at).toLocaleString('id-ID', {
-                                                              day: '2-digit',
-                                                              month: 'short',
-                                                              year: 'numeric',
-                                                              hour: '2-digit',
-                                                              minute: '2-digit',
-                                                          })
+                                                        ? new Date(
+                                                              hist.created_at,
+                                                          ).toLocaleString(
+                                                              'id-ID',
+                                                              {
+                                                                  day: '2-digit',
+                                                                  month: 'short',
+                                                                  year: 'numeric',
+                                                                  hour: '2-digit',
+                                                                  minute: '2-digit',
+                                                              },
+                                                          )
                                                         : ''}
                                                 </span>
                                             </div>
                                             {hist.note && (
-                                                <p className="text-xs text-neutral-700 bg-neutral-50 p-3.5 rounded-2xl border border-neutral-200 leading-relaxed font-sans">
+                                                <p className="rounded-2xl border border-neutral-200 bg-neutral-50 p-3.5 font-sans text-xs leading-relaxed text-neutral-700">
                                                     {hist.note}
                                                 </p>
                                             )}
                                             {hist.reason && (
-                                                <p className="text-xs text-neutral-500 font-sans">
-                                                    <strong className="text-neutral-900">Alasan Keputusan:</strong> <span>{hist.reason}</span>
+                                                <p className="font-sans text-xs text-neutral-500">
+                                                    <strong className="text-neutral-900">
+                                                        Alasan Keputusan:
+                                                    </strong>{' '}
+                                                    <span>{hist.reason}</span>
                                                 </p>
                                             )}
                                         </div>
@@ -280,59 +343,94 @@ export default function ReportDetailPage({ report }: ReportDetailProps) {
                     </div>
 
                     {/* Right 4 Cols: Agency Assignment & Map Coordinates */}
-                    <div className="lg:col-span-4 space-y-6">
+                    <div className="space-y-6 lg:col-span-4">
                         {/* Assigned Agency */}
-                        <div className="bg-white border border-neutral-200 rounded-[2rem] p-6 space-y-4 shadow-sm">
-                            <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 flex items-center gap-2">
+                        <div className="space-y-4 rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-sm">
+                            <h3 className="flex items-center gap-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                 <Building className="size-4 text-emerald-600" />
                                 <span>Instansi Penanganan Lapangan</span>
                             </h3>
 
                             {report.active_agency ? (
-                                <div className="bg-neutral-50 p-5 rounded-2xl space-y-2 border border-neutral-200">
-                                    <div className="font-bold text-sm text-neutral-900">
+                                <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+                                    <div className="text-sm font-bold text-neutral-900">
                                         {report.active_agency.name}
                                     </div>
                                     <div className="text-xs text-neutral-500">
-                                        Wilayah Kewenangan: {report.active_agency.jurisdiction}
+                                        Wilayah Kewenangan:{' '}
+                                        {report.active_agency.jurisdiction}
                                     </div>
-                                    <div className="font-mono text-[11px] text-emerald-700 font-semibold pt-2 border-t border-neutral-200">
-                                        Penugasan resmi terbit dari administrator JAGAIN.
+                                    <div className="border-t border-neutral-200 pt-2 font-mono text-[11px] font-semibold text-emerald-700">
+                                        Penugasan resmi terbit dari
+                                        administrator JAGAIN.
                                     </div>
                                 </div>
                             ) : (
-                                <div className="p-4 text-xs text-neutral-500 leading-relaxed bg-neutral-50 rounded-2xl border border-neutral-200">
-                                    Laporan berada dalam antrean peninjauan verifikator sebelum penugasan diterbitkan ke instansi operasional.
+                                <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-xs leading-relaxed text-neutral-500">
+                                    Laporan berada dalam antrean peninjauan
+                                    verifikator sebelum penugasan diterbitkan ke
+                                    instansi operasional.
                                 </div>
                             )}
                         </div>
 
                         {/* Location Coordinates & Map */}
-                        <div className="bg-white border border-neutral-200 rounded-[2rem] p-6 space-y-4 shadow-sm">
-                            <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 flex items-center gap-2">
+                        <div className="space-y-4 rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-sm">
+                            <h3 className="flex items-center gap-2 font-sans text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                 <MapPin className="size-4 text-emerald-600" />
                                 <span>Titik Koordinat Geospasial</span>
                             </h3>
 
-                            <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 font-mono text-xs space-y-1">
-                                <div>Lintang: <strong className="text-neutral-900">{report.latitude}</strong></div>
-                                <div>Bujur: <strong className="text-neutral-900">{report.longitude}</strong></div>
+                            <div className="space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 font-mono text-xs">
+                                <div>
+                                    Lintang:{' '}
+                                    <strong className="text-neutral-900">
+                                        {report.latitude}
+                                    </strong>
+                                </div>
+                                <div>
+                                    Bujur:{' '}
+                                    <strong className="text-neutral-900">
+                                        {report.longitude}
+                                    </strong>
+                                </div>
                             </div>
 
-                            <div className="rounded-2xl overflow-hidden border border-neutral-200">
-                                <KarhutlaMap reports={[report]} height="240px" showLegend={false} />
+                            <div className="overflow-hidden rounded-2xl border border-neutral-200">
+                                <KarhutlaMap
+                                    reports={[report]}
+                                    height="240px"
+                                    showLegend={false}
+                                    showFloatingLegend={false}
+                                />
                             </div>
                         </div>
 
                         {/* Privacy Shield Mandate */}
-                        <div className="bg-emerald-50/70 rounded-[2rem] p-6 space-y-2.5 border border-emerald-200 shadow-sm">
-                            <div className="flex items-center gap-2 font-bold text-xs text-emerald-950">
+                        <div className="space-y-3 rounded-[2rem] border border-emerald-200 bg-emerald-50/70 p-6 shadow-sm">
+                            <div className="flex items-center gap-2 text-xs font-bold text-emerald-950">
                                 <Shield className="size-4 text-emerald-700" />
                                 <span>Perlindungan Privasi Pelapor</span>
                             </div>
-                            <p className="text-xs text-neutral-600 leading-relaxed font-sans">
-                                Sesuai protokol transparansi JAGAIN, data pribadi warga pelapor disaring dan tidak dipublikasikan ke umum demi keselamatan pelapor di lapangan.
+                            <p className="font-sans text-xs leading-relaxed text-neutral-600">
+                                Sesuai protokol transparansi JAGAIN, data
+                                pribadi warga pelapor disaring dan tidak
+                                dipublikasikan ke umum demi keselamatan pelapor
+                                di lapangan.
                             </p>
+                            <PrivacyProtectionBadge
+                                mode="public"
+                                sanitized={
+                                    report.privacy_protection?.sanitized ?? true
+                                }
+                                redactionApplied={
+                                    report.privacy_protection
+                                        ?.redaction_applied ?? false
+                                }
+                                detectorVersion={
+                                    report.privacy_protection?.detector_version
+                                }
+                            />
                         </div>
                     </div>
                 </div>

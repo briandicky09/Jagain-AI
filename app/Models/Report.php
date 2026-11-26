@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\FireCondition;
 use App\Enums\ReportStatus;
+use App\Services\Ai\LocalPiiFallbackSanitizer;
 use Carbon\CarbonImmutable;
 use Database\Factories\ReportFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -257,6 +258,47 @@ class Report extends Model
     }
 
     /**
+     * @return HasMany<AiAnalysis, $this>
+     */
+    public function aiAnalyses(): HasMany
+    {
+        return $this->hasMany(AiAnalysis::class, 'report_id')->latest();
+    }
+
+    /**
+     * @return HasOne<AiAnalysis, $this>
+     */
+    public function latestAiAnalysis(): HasOne
+    {
+        return $this->hasOne(AiAnalysis::class, 'report_id')->latestOfMany();
+    }
+
+    /**
+     * @return HasMany<AiEmbedding, $this>
+     */
+    public function aiEmbeddings(): HasMany
+    {
+        return $this->hasMany(AiEmbedding::class, 'report_id');
+    }
+
+    /**
+     * @return HasMany<AiDuplicateCandidate, $this>
+     */
+    public function duplicateCandidates(): HasMany
+    {
+        return $this->hasMany(AiDuplicateCandidate::class, 'source_report_id')
+            ->orderByDesc('duplicate_probability');
+    }
+
+    /**
+     * @return HasOne<AiPrivacyRecord, $this>
+     */
+    public function privacyRecord(): HasOne
+    {
+        return $this->hasOne(AiPrivacyRecord::class, 'report_id');
+    }
+
+    /**
      * Scope for public viewing (excludes RESTRICTED or PRIVATE reports).
      *
      * @param  Builder<$this>  $query
@@ -324,18 +366,48 @@ class Report extends Model
             $severityLabel = 'Sedang';
         }
 
+        $privacyRecord = $this->relationLoaded('privacyRecord') ? $this->getRelation('privacyRecord') : null;
+        if ($privacyRecord instanceof AiPrivacyRecord) {
+            $publicTitle = $privacyRecord->sanitized_title ?? (string) $this->title;
+            $publicDescription = $privacyRecord->sanitized_description ?? (string) $this->description;
+            $publicLocation = $privacyRecord->sanitized_location_description ?? $this->location_description;
+            $privacyProtection = [
+                'sanitized' => true,
+                'redaction_applied' => $privacyRecord->redaction_applied,
+                'detector_version' => $privacyRecord->detector_version,
+                'processed_at' => $privacyRecord->processed_at?->toIso8601String(),
+            ];
+        } else {
+            $sanitizer = app(LocalPiiFallbackSanitizer::class);
+            $sanitized = $sanitizer->sanitizeReportFields(
+                (string) $this->title,
+                (string) $this->description,
+                $this->location_description,
+            );
+            $publicTitle = $sanitized['sanitized_title'];
+            $publicDescription = $sanitized['sanitized_description'];
+            $publicLocation = $sanitized['sanitized_location_description'];
+            $privacyProtection = [
+                'sanitized' => true,
+                'redaction_applied' => $sanitized['redaction_applied'],
+                'detector_version' => $sanitized['detector_version'],
+                'processed_at' => null,
+            ];
+        }
+
         return [
             'id' => $this->id,
             'tracking_code' => $this->tracking_code,
             'report_number' => $this->report_number,
-            'title' => $this->title,
-            'description' => $this->description,
+            'title' => $publicTitle,
+            'description' => $publicDescription,
             'category' => $categoryData,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'province' => $this->province,
             'regency_city' => $this->regency_city,
-            'location_description' => $this->location_description,
+            'location_description' => $publicLocation,
+            'privacy_protection' => $privacyProtection,
             'reported_occurrence_at' => $this->reported_occurrence_at?->toIso8601String(),
             'report_status' => $statusVal,
             'status_label' => $statusLabel,
@@ -351,8 +423,10 @@ class Report extends Model
             'evidence' => $this->relationLoaded('evidence')
                 ? $this->evidence->where('visibility', 'PUBLIC')->map(fn ($ev) => [
                     'id' => $ev->id,
-                    'file_path' => $ev->file_path,
-                    'caption' => $ev->caption,
+                    'file_path' => $ev->url ?: $ev->file_path,
+                    'caption' => is_string($ev->caption)
+                        ? app(LocalPiiFallbackSanitizer::class)->redactText($ev->caption)
+                        : $ev->caption,
                     'media_type' => $ev->media_type,
                 ])->values()->all()
                 : [],
@@ -361,8 +435,12 @@ class Report extends Model
                     'id' => $h->id,
                     'from_status' => $h->from_status instanceof ReportStatus ? $h->from_status->value : $h->from_status,
                     'to_status' => $h->to_status instanceof ReportStatus ? $h->to_status->value : $h->to_status,
-                    'reason' => $h->reason,
-                    'note' => $h->note,
+                    'reason' => is_string($h->reason)
+                        ? app(LocalPiiFallbackSanitizer::class)->redactText($h->reason)
+                        : $h->reason,
+                    'note' => is_string($h->note)
+                        ? app(LocalPiiFallbackSanitizer::class)->redactText($h->note)
+                        : $h->note,
                     'created_at' => $h->created_at?->toIso8601String(),
                 ])->values()->all()
                 : [],

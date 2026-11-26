@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAgencyController;
+use App\Http\Controllers\Admin\AdminAiDashboardController;
+use App\Http\Controllers\Admin\AdminAiReportController;
 use App\Http\Controllers\Admin\AdminAuditLogController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -41,16 +43,24 @@ Route::middleware(['auth'])->group(function () {
     // Community Reports (from main)
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/create', [ReportController::class, 'create'])->name('reports.create');
-    Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
+    Route::post('reports', [ReportController::class, 'store'])
+        ->middleware('throttle:15,1')
+        ->name('reports.store');
     Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
-    Route::post('reports/{report}/additional-info', [ReportController::class, 'submitAdditionalInfo'])->name('reports.additional-info');
+    Route::post('reports/{report}/additional-info', [ReportController::class, 'submitAdditionalInfo'])
+        ->middleware('throttle:15,1')
+        ->name('reports.additional-info');
 
     // Citizen Report Creation & Tracking (from brian)
     Route::get('/lapor', [CitizenReportController::class, 'create'])->name('citizen.reports.create');
-    Route::post('/lapor', [CitizenReportController::class, 'store'])->name('citizen.reports.store');
+    Route::post('/lapor', [CitizenReportController::class, 'store'])
+        ->middleware('throttle:15,1')
+        ->name('citizen.reports.store');
     Route::get('/laporan-saya', [CitizenReportController::class, 'index'])->name('citizen.reports.index');
     Route::get('/laporan-saya/{tracking_code}', [CitizenReportController::class, 'show'])->name('citizen.reports.show');
-    Route::post('/laporan-saya/{tracking_code}/tambah-informasi', [CitizenReportController::class, 'provideInformation'])->name('citizen.reports.provide-info');
+    Route::post('/laporan-saya/{tracking_code}/tambah-informasi', [CitizenReportController::class, 'provideInformation'])
+        ->middleware('throttle:15,1')
+        ->name('citizen.reports.provide-info');
 });
 
 // Admin Route Group (Requires ADMIN role)
@@ -63,6 +73,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
     Route::post('/reports/{report}/transitions', [AdminReportController::class, 'transition'])->name('reports.transition');
     Route::post('/reports/{report}/assignments', [AdminReportController::class, 'assign'])->name('reports.assign');
+
+    // AI Assistance & Intelligence (Admin human-in-the-loop)
+    Route::post('/reports/{report}/ai/analyze', [AdminAiReportController::class, 'analyze'])
+        ->middleware('throttle:20,1')
+        ->name('reports.ai.analyze');
+    Route::post('/reports/{report}/ai/analyses/{analysis}/review', [AdminAiReportController::class, 'review'])
+        ->middleware('throttle:30,1')
+        ->name('reports.ai.review');
+    Route::post('/reports/{report}/ai/duplicates/{candidate}/decision', [AdminAiReportController::class, 'decideDuplicate'])
+        ->middleware('throttle:30,1')
+        ->name('reports.ai.duplicate-decision');
+    Route::get('/ai-intelligence', [AdminAiDashboardController::class, 'index'])->name('ai.dashboard');
+    Route::post('/ai-intelligence/evaluate', [AdminAiDashboardController::class, 'evaluate'])
+        ->middleware('throttle:5,1')
+        ->name('ai.evaluate');
 
     // Aliases for alternate route paths
     Route::get('/laporan', [AdminReportController::class, 'index']);

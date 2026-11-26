@@ -1,5 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 import reports from './reports'
+import ai from './ai'
 import agencies from './agencies'
 import categories from './categories'
 import auditLogs from './audit-logs'
@@ -163,6 +164,7 @@ map.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 const admin = {
     dashboard: Object.assign(dashboard, dashboard),
 reports: Object.assign(reports, reports),
+ai: Object.assign(ai, ai),
 agencies: Object.assign(agencies, agencies),
 categories: Object.assign(categories, categories),
 auditLogs: Object.assign(auditLogs, auditLogs),

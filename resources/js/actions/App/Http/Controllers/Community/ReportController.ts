@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Community\ReportController::index
- * @see app/Http/Controllers/Community/ReportController.php:26
+ * @see app/Http/Controllers/Community/ReportController.php:27
  * @route '/reports'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Community\ReportController::create
- * @see app/Http/Controllers/Community/ReportController.php:85
+ * @see app/Http/Controllers/Community/ReportController.php:86
  * @route '/reports/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Community\ReportController::store
- * @see app/Http/Controllers/Community/ReportController.php:93
+ * @see app/Http/Controllers/Community/ReportController.php:94
  * @route '/reports'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::store
- * @see app/Http/Controllers/Community/ReportController.php:93
+ * @see app/Http/Controllers/Community/ReportController.php:94
  * @route '/reports'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::store
- * @see app/Http/Controllers/Community/ReportController.php:93
+ * @see app/Http/Controllers/Community/ReportController.php:94
  * @route '/reports'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Community\ReportController::store
- * @see app/Http/Controllers/Community/ReportController.php:93
+ * @see app/Http/Controllers/Community/ReportController.php:94
  * @route '/reports'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Community\ReportController::store
- * @see app/Http/Controllers/Community/ReportController.php:93
+ * @see app/Http/Controllers/Community/ReportController.php:94
  * @route '/reports'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
 export const show = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
 show.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -260,7 +260,7 @@ show.url = (args: { report: number | { id: number } } | [report: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
 show.get = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -269,7 +269,7 @@ show.get = (args: { report: number | { id: number } } | [report: number | { id: 
 })
 /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
 show.head = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -279,7 +279,7 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
 
     /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
     const showForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -289,7 +289,7 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
 
             /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
         showForm.get = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -298,7 +298,7 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
         })
             /**
 * @see \App\Http\Controllers\Community\ReportController::show
- * @see app/Http/Controllers/Community/ReportController.php:155
+ * @see app/Http/Controllers/Community/ReportController.php:165
  * @route '/reports/{report}'
  */
         showForm.head = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -314,7 +314,7 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Community\ReportController::submitAdditionalInfo
- * @see app/Http/Controllers/Community/ReportController.php:215
+ * @see app/Http/Controllers/Community/ReportController.php:225
  * @route '/reports/{report}/additional-info'
  */
 export const submitAdditionalInfo = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -329,7 +329,7 @@ submitAdditionalInfo.definition = {
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::submitAdditionalInfo
- * @see app/Http/Controllers/Community/ReportController.php:215
+ * @see app/Http/Controllers/Community/ReportController.php:225
  * @route '/reports/{report}/additional-info'
  */
 submitAdditionalInfo.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -362,7 +362,7 @@ submitAdditionalInfo.url = (args: { report: number | { id: number } } | [report:
 
 /**
 * @see \App\Http\Controllers\Community\ReportController::submitAdditionalInfo
- * @see app/Http/Controllers/Community/ReportController.php:215
+ * @see app/Http/Controllers/Community/ReportController.php:225
  * @route '/reports/{report}/additional-info'
  */
 submitAdditionalInfo.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -372,7 +372,7 @@ submitAdditionalInfo.post = (args: { report: number | { id: number } } | [report
 
     /**
 * @see \App\Http\Controllers\Community\ReportController::submitAdditionalInfo
- * @see app/Http/Controllers/Community/ReportController.php:215
+ * @see app/Http/Controllers/Community/ReportController.php:225
  * @route '/reports/{report}/additional-info'
  */
     const submitAdditionalInfoForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -382,7 +382,7 @@ submitAdditionalInfo.post = (args: { report: number | { id: number } } | [report
 
             /**
 * @see \App\Http\Controllers\Community\ReportController::submitAdditionalInfo
- * @see app/Http/Controllers/Community/ReportController.php:215
+ * @see app/Http/Controllers/Community/ReportController.php:225
  * @route '/reports/{report}/additional-info'
  */
         submitAdditionalInfoForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -104,10 +104,10 @@ export default function Login({ status, canResetPassword }: Props) {
             {/* Title & Subtitle Header */}
             <div className="mb-6">
                 <h1 className="text-2xl sm:text-[28px] font-bold text-gray-900 tracking-tight flex items-center gap-1.5">
-                    Hey, Hello<span className="inline-block hover:rotate-12 transition-transform">👋</span>
+                    Masuk ke JAGAIN
                 </h1>
                 <p className="mt-1.5 text-sm text-gray-500 font-normal">
-                    Enter your email and password to sign in.
+                    Masukkan email dan kata sandi Anda, atau pilih akun demo cepat.
                 </p>
             </div>
 
@@ -189,7 +189,11 @@ export default function Login({ status, canResetPassword }: Props) {
             )}
 
             {/* Passkey trigger if supported */}
-            <PasskeyVerify />
+            <PasskeyVerify
+                label="Masuk dengan Passkey"
+                loadingLabel="Mengautentikasi..."
+                separator="atau lanjut dengan email"
+            />
 
             <Form
                 {...store.form()}
@@ -257,7 +261,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                         tabIndex={3}
                                         className="size-4 rounded border-gray-300 data-[state=checked]:bg-[#10e57a] data-[state=checked]:border-[#10e57a] data-[state=checked]:text-black"
                                     />
-                                    <span>Remember me</span>
+                                    <span>Ingat saya</span>
                                 </label>
 
                                 {canResetPassword && (
@@ -266,7 +270,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                         className="text-sm font-semibold text-gray-700 hover:text-black transition-colors"
                                         tabIndex={5}
                                     >
-                                        Forgot password?
+                                        Lupa kata sandi?
                                     </Link>
                                 )}
                             </div>
@@ -283,7 +287,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     {processing ? (
                                         <Spinner className="size-4 text-gray-950" />
                                     ) : (
-                                        'Sign In'
+                                        'Masuk'
                                     )}
                                 </button>
 
@@ -292,7 +296,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     tabIndex={6}
                                     className="h-11 sm:h-12 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-bold text-sm tracking-normal transition-all flex items-center justify-center text-center shadow-xs active:scale-[0.99]"
                                 >
-                                    Sign Up
+                                    Daftar
                                 </Link>
                             </div>
                         </div>

@@ -1,5 +1,7 @@
 import AdminDashboardController from './AdminDashboardController'
 import AdminReportController from './AdminReportController'
+import AdminAiReportController from './AdminAiReportController'
+import AdminAiDashboardController from './AdminAiDashboardController'
 import AdminAgencyController from './AdminAgencyController'
 import AdminCategoryController from './AdminCategoryController'
 import AdminAuditLogController from './AdminAuditLogController'
@@ -8,6 +10,8 @@ import AdminMapController from './AdminMapController'
 const Admin = {
     AdminDashboardController: Object.assign(AdminDashboardController, AdminDashboardController),
 AdminReportController: Object.assign(AdminReportController, AdminReportController),
+AdminAiReportController: Object.assign(AdminAiReportController, AdminAiReportController),
+AdminAiDashboardController: Object.assign(AdminAiDashboardController, AdminAiDashboardController),
 AdminAgencyController: Object.assign(AdminAgencyController, AdminAgencyController),
 AdminCategoryController: Object.assign(AdminCategoryController, AdminCategoryController),
 AdminAuditLogController: Object.assign(AdminAuditLogController, AdminAuditLogController),

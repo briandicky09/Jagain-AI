@@ -12,6 +12,7 @@ import {
     ShieldCheck,
     Tags,
     LayoutDashboard,
+    Bot,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -39,26 +40,59 @@ export function AppSidebar() {
 
     if (isAdmin) {
         navItems.push(
-            { title: 'Pusat Kendali', href: '/admin/dashboard', icon: LayoutDashboard },
+            {
+                title: 'Pusat Kendali',
+                href: '/admin/dashboard',
+                icon: LayoutDashboard,
+            },
             { title: 'Antrean & Laporan', href: '/admin/reports', icon: Flame },
-            { title: 'Instansi & OPD', href: '/admin/agencies', icon: Building2 },
-            { title: 'Kategori Karhutla', href: '/admin/categories', icon: Tags },
+            {
+                title: 'AI Intelligence',
+                href: '/admin/ai-intelligence',
+                icon: Bot,
+            },
+            {
+                title: 'Instansi & OPD',
+                href: '/admin/agencies',
+                icon: Building2,
+            },
+            {
+                title: 'Kategori Karhutla',
+                href: '/admin/categories',
+                icon: Tags,
+            },
             { title: 'Audit Trail', href: '/admin/audit-logs', icon: History },
-            { title: 'Peta Karhutla', href: '/admin/map', icon: Map }
+            { title: 'Peta Karhutla', href: '/admin/map', icon: Map },
         );
     } else if (isAgency) {
         navItems.push(
-            { title: 'Dashboard OPD', href: '/opd/dashboard', icon: LayoutGrid },
-            { title: 'Tugas Lapangan', href: '/opd/tugas', icon: ClipboardList },
-            { title: 'Peta Karhutla', href: '/opd/map', icon: Map }
+            {
+                title: 'Dashboard OPD',
+                href: '/opd/dashboard',
+                icon: LayoutGrid,
+            },
+            {
+                title: 'Tugas Lapangan',
+                href: '/opd/tugas',
+                icon: ClipboardList,
+            },
+            { title: 'Peta Karhutla', href: '/opd/map', icon: Map },
         );
     } else {
         navItems.push(
-            { title: 'Dasbor Masyarakat', href: '/dashboard', icon: LayoutGrid },
+            {
+                title: 'Dasbor Masyarakat',
+                href: '/dashboard',
+                icon: LayoutGrid,
+            },
             { title: 'Laporan Saya', href: '/laporan-saya', icon: FileText },
             { title: 'Buat Laporan Baru', href: '/lapor', icon: PlusCircle },
             { title: 'Peta Karhutla', href: '/peta', icon: Map },
-            { title: 'Panduan Keselamatan', href: '/panduan-keselamatan', icon: Shield }
+            {
+                title: 'Panduan Keselamatan',
+                href: '/panduan-keselamatan',
+                icon: Shield,
+            },
         );
     }
 
@@ -71,17 +105,25 @@ export function AppSidebar() {
     const homeUrl = isAdmin
         ? '/admin/dashboard'
         : isAgency
-        ? '/opd/dashboard'
-        : '/dashboard';
+          ? '/opd/dashboard'
+          : '/dashboard';
 
     const { isMobile, setOpenMobile } = useSidebar();
 
     return (
-        <Sidebar collapsible="icon" variant="inset" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
-            <SidebarHeader className="border-b border-sidebar-border pb-3 bg-sidebar space-y-2">
+        <Sidebar
+            collapsible="icon"
+            variant="inset"
+            className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground"
+        >
+            <SidebarHeader className="space-y-2 border-b border-sidebar-border bg-sidebar pb-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                        >
                             <Link
                                 href={homeUrl}
                                 prefetch
@@ -98,11 +140,11 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent className="px-2 py-3 bg-sidebar">
+            <SidebarContent className="bg-sidebar px-2 py-3">
                 <NavMain items={navItems} />
             </SidebarContent>
 
-            <SidebarFooter className="border-t border-sidebar-border pt-2 bg-sidebar">
+            <SidebarFooter className="border-t border-sidebar-border bg-sidebar pt-2">
                 <NavFooter items={footerNavItems} className="mt-auto" />
             </SidebarFooter>
         </Sidebar>

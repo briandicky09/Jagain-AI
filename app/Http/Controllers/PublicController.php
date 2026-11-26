@@ -46,7 +46,7 @@ class PublicController extends Controller
                 ];
 
                 $reports = Report::publiclyVisible()
-                    ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories'])
+                    ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories', 'privacyRecord'])
                     ->latest()
                     ->take(50)
                     ->get()
@@ -179,7 +179,7 @@ class PublicController extends Controller
     protected function resolveMapPayload(?string $categorySlug, ?string $province, ?string $status): array
     {
         $reportsQuery = Report::publiclyVisible()
-            ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories']);
+            ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories', 'privacyRecord']);
 
         if ($categorySlug) {
             $reportsQuery->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
@@ -244,7 +244,7 @@ class PublicController extends Controller
     {
         $report = Report::where('tracking_code', $tracking_code)
             ->publiclyVisible()
-            ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories'])
+            ->with(['category', 'evidence', 'latestAssignment.agency', 'statusHistories', 'privacyRecord'])
             ->firstOrFail();
 
         return Inertia::render('public/report-detail', [

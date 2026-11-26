@@ -1,9 +1,14 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+$appEnv = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? 'production');
+$isDebug = $appEnv !== 'production'
+    && filter_var(getenv('APP_DEBUG') ?: ($_ENV['APP_DEBUG'] ?? 'false'), FILTER_VALIDATE_BOOLEAN);
+
+ini_set('display_errors', $isDebug ? '1' : '0');
+ini_set('display_startup_errors', $isDebug ? '1' : '0');
+ini_set('log_errors', '1');
 ini_set('unserialize_callback_func', 'spl_autoload_call');
-error_reporting(E_ALL);
+error_reporting($isDebug ? E_ALL : (E_ALL & ~E_DEPRECATED & ~E_STRICT));
 
 // Trust HTTPS proxy headers from Vercel edge network
 if ((isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
@@ -13,7 +18,7 @@ if ((isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PRO
     $_SERVER['SERVER_PORT'] = 443;
 }
 
-if (isset($_SERVER['HTTP_HOST'])) {
+if (empty(getenv('APP_URL')) && isset($_SERVER['HTTP_HOST']) && preg_match('/^[a-zA-Z0-9.-]+(:\d{1,5})?$/', $_SERVER['HTTP_HOST']) === 1) {
     $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
     $appUrl = "{$scheme}://{$_SERVER['HTTP_HOST']}";
     putenv("APP_URL={$appUrl}");
@@ -60,10 +65,16 @@ foreach ($tmpDirs as $dir) {
 try {
     require __DIR__.'/../public/index.php';
 } catch (Throwable $e) {
+    error_log(sprintf('[JAGAIN Serverless Error] %s in %s:%d', $e::class, basename($e->getFile()), $e->getLine()));
     http_response_code(500);
     header('Content-Type: text/html');
-    echo '<h1>Laravel Serverless Error</h1>';
-    echo '<p><strong>Message:</strong> '.htmlspecialchars($e->getMessage()).'</p>';
-    echo '<p><strong>File:</strong> '.htmlspecialchars($e->getFile()).':'.$e->getLine().'</p>';
-    echo '<pre>'.htmlspecialchars($e->getTraceAsString()).'</pre>';
+    if ($isDebug) {
+        echo '<h1>Laravel Serverless Error</h1>';
+        echo '<p><strong>Message:</strong> '.htmlspecialchars($e->getMessage()).'</p>';
+        echo '<p><strong>File:</strong> '.htmlspecialchars($e->getFile()).':'.$e->getLine().'</p>';
+        echo '<pre>'.htmlspecialchars($e->getTraceAsString()).'</pre>';
+    } else {
+        echo '<h1>Internal Server Error</h1>';
+        echo '<p>Terjadi kesalahan pada server. Silakan coba beberapa saat lagi.</p>';
+    }
 }

@@ -397,7 +397,7 @@ export default function Home({
                                         router.visit(`/laporan-publik/${item.tracking_code}`);
                                     }
                                 }}
-                                animation="pop"
+                                animation="none"
                                 theme="light"
                                 accentColor="#10e57a"
                                 radius={14}
@@ -405,7 +405,7 @@ export default function Home({
                                 width="100%"
                                 maxHeight={340}
                                 frame={false}
-                                showGradients={true}
+                                showGradients={false}
                                 displayScrollbar={false}
                             />
                         </div>
@@ -553,7 +553,7 @@ export default function Home({
                     Spacious breathing room below wave shape
                     ========================================================================= */}
                 <section className="pt-10 sm:pt-14 pb-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full text-center">
-                    <AnimatedContent distance={24} duration={0.8} threshold={0.15}>
+                    <AnimatedContent distance={24} duration={0.8} threshold={0.15} initialOpacity={1}>
                         {/* Infinite Smooth Logo Loop */}
                         <div>
                             <div className="text-xs sm:text-sm tracking-wide text-neutral-600 mb-8 font-semibold">
@@ -581,7 +581,7 @@ export default function Home({
                     3. OBSERVASI GEOSPASIAL & PETA SEBARAN (Magic Bento Grid)
                     ========================================================================= */}
                 <section id="peta-sebaran" className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full pb-24 scroll-mt-24">
-                    <AnimatedContent distance={40} duration={0.9} threshold={0.1}>
+                    <AnimatedContent distance={40} duration={0.9} threshold={0.1} initialOpacity={1}>
                         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
                             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-950 text-xs font-bold uppercase tracking-wider">
                                 <span>Observasi Geospasial & Rekapitulasi</span>
@@ -617,7 +617,7 @@ export default function Home({
                     4. PANDUAN KESELAMATAN & MITIGASI KRISIS
                     ========================================================================= */}
                 <section id="panduan-keselamatan" className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full pb-24 scroll-mt-24">
-                    <AnimatedContent distance={30} duration={0.8} threshold={0.1}>
+                    <AnimatedContent distance={30} duration={0.8} threshold={0.1} initialOpacity={1}>
                         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-2.5">
                             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-950 text-xs font-bold uppercase tracking-wider">
                                 <span>Protokol Keselamatan Lapangan</span>
@@ -834,7 +834,7 @@ export default function Home({
                     5. TRANSPARANSI, PROVENANCE & BATASAN SISTEM
                     ========================================================================= */}
                 <section id="transparansi" className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full pb-24 scroll-mt-24">
-                    <AnimatedContent distance={30} duration={0.8} threshold={0.1}>
+                    <AnimatedContent distance={30} duration={0.8} threshold={0.1} initialOpacity={1}>
                         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-2.5">
                             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-950 text-xs font-bold uppercase tracking-wider">
                                 <span>Transparansi & Provenance Data</span>

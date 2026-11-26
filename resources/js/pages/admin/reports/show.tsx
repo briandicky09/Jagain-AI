@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
@@ -23,13 +23,24 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/reports/status-badge';
+import { AiAnalysisPanel } from '@/components/ai/ai-analysis-panel';
+import { DuplicateDetectionPanel } from '@/components/ai/duplicate-detection-panel';
+import { PrivacyProtectionBadge } from '@/components/ai/privacy-protection-badge';
 import {
     assign as reportAssign,
     index as reportsIndex,
     show as reportShow,
     transition as reportTransition,
 } from '@/routes/admin/reports';
-import type { Agency, Evidence, Report, ReportStatus } from '@/types';
+import type {
+    Agency,
+    AiAnalysisRecord,
+    AiDuplicateCandidateRecord,
+    AiPrivacyRecordSummary,
+    Evidence,
+    Report,
+    ReportStatus,
+} from '@/types';
 
 type ReportShowProps = {
     report: Report;
@@ -39,6 +50,9 @@ type ReportShowProps = {
         Report,
         'id' | 'title' | 'report_status' | 'created_at' | 'location_description'
     >[];
+    aiAnalyses?: AiAnalysisRecord[];
+    aiDuplicateCandidates?: AiDuplicateCandidateRecord[];
+    aiPrivacyRecord?: AiPrivacyRecordSummary | null;
 };
 
 const assignmentStatusLabels: Record<string, string> = {
@@ -55,6 +69,9 @@ export default function ReportShow({
     activeAgencies,
     allowedTransitions,
     potentialDuplicates = [],
+    aiAnalyses = [],
+    aiDuplicateCandidates = [],
+    aiPrivacyRecord = null,
 }: ReportShowProps) {
     const page = usePage();
     const flash = (page.props as any).flash;
@@ -65,6 +82,17 @@ export default function ReportShow({
     } | null>(null);
     const [isNeedsInfoModalOpen, setIsNeedsInfoModalOpen] = useState(false);
     const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
+
+    useEffect(() => {
+        if (!selectedEvidence) return;
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setSelectedEvidence(null);
+            }
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [selectedEvidence]);
 
     // Transition Form
     const transitionForm = useForm({
@@ -86,7 +114,7 @@ export default function ReportShow({
         targetStatus: ReportStatus,
         reason = '',
         note = '',
-        publicNote = ''
+        publicNote = '',
     ) => {
         transitionForm.setData({
             target_status: targetStatus,
@@ -135,14 +163,22 @@ export default function ReportShow({
 
     const getEvidenceUrl = (ev: Evidence) => {
         if (ev.url) return ev.url;
-        if (ev.file_path) return `/storage/${ev.file_path}`;
-        if (ev.storage_key) return `/storage/${ev.storage_key}`;
+        if (ev.file_path) {
+            const cleaned = ev.file_path.replace(/^\/+/, '');
+            return cleaned.startsWith('storage/')
+                ? `/${cleaned}`
+                : `/storage/${cleaned}`;
+        }
+        if (ev.storage_key) {
+            return `/storage/${ev.storage_key.replace(/^\/+/, '')}`;
+        }
         return '';
     };
 
     const isImageFile = (ev: Evidence) => {
         if (ev.media_type && ev.media_type.startsWith('image/')) return true;
-        const name = ev.original_filename || ev.file_path || ev.storage_key || '';
+        const name =
+            ev.original_filename || ev.file_path || ev.storage_key || '';
         return /\.(jpe?g|png|webp|gif|svg)$/i.test(name);
     };
 
@@ -186,7 +222,10 @@ export default function ReportShow({
                                 <span className="badge badge-light font-mono font-bold">
                                     #{report.id}
                                 </span>
-                                <StatusBadge status={report.report_status} variant="neutral" />
+                                <StatusBadge
+                                    status={report.report_status}
+                                    variant="neutral"
+                                />
                                 {report.is_simulated && (
                                     <span className="badge badge-light border border-amber-200 bg-amber-50 text-amber-700">
                                         SIMULASI
@@ -226,10 +265,15 @@ export default function ReportShow({
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <h3 className="text-sm font-bold text-amber-950">
-                                            Perhatian: Ditemukan {potentialDuplicates.length} Laporan di Area Berdekatan
+                                            Perhatian: Ditemukan{' '}
+                                            {potentialDuplicates.length} Laporan
+                                            di Area Berdekatan
                                         </h3>
                                         <p className="mt-0.5 text-xs text-amber-900/80">
-                                            Laporan di bawah ini memiliki kategori atau koordinat berdekatan (&plusmn;10 km). Cek potensi duplikat sebelum validasi:
+                                            Laporan di bawah ini memiliki
+                                            kategori atau koordinat berdekatan
+                                            (&plusmn;10 km). Cek potensi
+                                            duplikat sebelum validasi:
                                         </p>
                                         <div className="mt-3 divide-y divide-amber-200/60 overflow-hidden rounded-xl border border-amber-200/80 bg-white/80">
                                             {potentialDuplicates.map((dup) => (
@@ -242,7 +286,11 @@ export default function ReportShow({
                                                             #{dup.id}
                                                         </span>
                                                         <Link
-                                                            href={reportShow(dup.id).url}
+                                                            href={
+                                                                reportShow(
+                                                                    dup.id,
+                                                                ).url
+                                                            }
                                                             className="truncate text-xs font-semibold text-dark-neutral hover:text-forest-green hover:underline"
                                                         >
                                                             {dup.title}
@@ -250,7 +298,9 @@ export default function ReportShow({
                                                     </div>
                                                     <div className="flex shrink-0 items-center gap-2">
                                                         <StatusBadge
-                                                            status={dup.report_status}
+                                                            status={
+                                                                dup.report_status
+                                                            }
                                                             variant="neutral"
                                                             className="text-[11px]"
                                                         />
@@ -269,7 +319,7 @@ export default function ReportShow({
                                 Deskripsi Kejadian & Lokasi
                             </h2>
 
-                            <div className="mt-3 whitespace-pre-wrap text-xs leading-relaxed text-dark-neutral sm:text-sm">
+                            <div className="mt-3 text-xs leading-relaxed whitespace-pre-wrap text-dark-neutral sm:text-sm">
                                 {report.description}
                             </div>
 
@@ -289,7 +339,9 @@ export default function ReportShow({
                                     </span>
                                     <div className="mt-1 flex items-center gap-1.5 text-xs font-medium text-dark-neutral sm:text-sm">
                                         <UserIcon className="size-4 text-primary-green" />
-                                        <span>{report.creator?.name ?? 'Anonim'}</span>
+                                        <span>
+                                            {report.creator?.name ?? 'Anonim'}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -300,7 +352,9 @@ export default function ReportShow({
                                     <div className="mt-1 flex items-center gap-1.5 text-xs font-medium text-dark-neutral sm:text-sm">
                                         <Calendar className="size-4 text-primary-green" />
                                         <span>
-                                            {formatDate(report.reported_occurrence_at)}
+                                            {formatDate(
+                                                report.reported_occurrence_at,
+                                            )}
                                         </span>
                                     </div>
                                 </div>
@@ -327,10 +381,12 @@ export default function ReportShow({
                                             <span>Titik Lokasi Karhutla</span>
                                         </div>
                                         <p className="text-xs font-medium text-dark-neutral sm:text-sm">
-                                            {report.location_description ?? 'Tidak ada deskripsi detail alamat.'}
+                                            {report.location_description ??
+                                                'Tidak ada deskripsi detail alamat.'}
                                         </p>
                                         <p className="font-mono text-xs text-gray-neutral">
-                                            Koordinat: {report.latitude}, {report.longitude}
+                                            Koordinat: {report.latitude},{' '}
+                                            {report.longitude}
                                         </p>
                                     </div>
 
@@ -347,22 +403,53 @@ export default function ReportShow({
                             </div>
                         </div>
 
+                        {/* AI Privacy Guardrail Indicator */}
+                        {aiPrivacyRecord && (
+                            <PrivacyProtectionBadge
+                                mode="admin"
+                                sanitized={true}
+                                redactionApplied={
+                                    aiPrivacyRecord.redaction_applied
+                                }
+                                detectorVersion={
+                                    aiPrivacyRecord.detector_version
+                                }
+                                entityCounts={aiPrivacyRecord.entity_counts}
+                            />
+                        )}
+
+                        {/* AI Multimodal Analysis Panel */}
+                        <AiAnalysisPanel
+                            reportId={report.id}
+                            analyses={aiAnalyses}
+                        />
+
+                        {/* AI Semantic & Geospatial Duplicate Detection Panel */}
+                        <DuplicateDetectionPanel
+                            reportId={report.id}
+                            candidates={aiDuplicateCandidates}
+                        />
+
                         {/* Evidence Gallery Card */}
                         <div className="rounded-2xl border border-border-neutral bg-white p-5 shadow-xs sm:p-6">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h2 className="text-base font-bold tracking-tight text-dark-neutral">
-                                        Berkas Bukti Lapangan ({report.evidence?.length ?? 0})
+                                        Berkas Bukti Lapangan (
+                                        {report.evidence?.length ?? 0})
                                     </h2>
                                     <p className="mt-0.5 text-xs text-gray-neutral">
-                                        Foto atau dokumentasi lapangan yang diunggah pelapor
+                                        Foto atau dokumentasi lapangan yang
+                                        diunggah pelapor
                                     </p>
                                 </div>
                             </div>
 
-                            {!report.evidence || report.evidence.length === 0 ? (
+                            {!report.evidence ||
+                            report.evidence.length === 0 ? (
                                 <div className="mt-4 rounded-xl border border-dashed border-border-neutral bg-pale-green/30 p-6 text-center text-xs text-gray-neutral">
-                                    Tidak ada berkas bukti yang disertakan pada laporan ini.
+                                    Tidak ada berkas bukti yang disertakan pada
+                                    laporan ini.
                                 </div>
                             ) : (
                                 <div className="mt-4 grid gap-3.5 sm:grid-cols-2 md:grid-cols-3">
@@ -377,12 +464,15 @@ export default function ReportShow({
                                                     if (isImg && imageUrl) {
                                                         setSelectedEvidence({
                                                             url: imageUrl,
-                                                            filename: ev.original_filename,
+                                                            filename:
+                                                                ev.original_filename,
                                                         });
                                                     }
                                                 }}
                                                 className={`group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border-neutral bg-white p-3 shadow-2xs transition-all duration-200 hover:border-primary-green hover:shadow-xs ${
-                                                    isImg ? 'cursor-pointer' : ''
+                                                    isImg
+                                                        ? 'cursor-pointer'
+                                                        : ''
                                                 }`}
                                             >
                                                 <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border-neutral/60 bg-zinc-100">
@@ -390,28 +480,47 @@ export default function ReportShow({
                                                         <>
                                                             <img
                                                                 src={imageUrl}
-                                                                alt={ev.original_filename}
+                                                                loading="lazy"
+                                                                alt={
+                                                                    ev.original_filename
+                                                                }
                                                                 className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                                                onError={(e) => {
-                                                                    const target = e.currentTarget;
-                                                                    target.style.display = 'none';
-                                                                    const fallback = target.nextElementSibling as HTMLElement;
-                                                                    if (fallback) {
-                                                                        fallback.classList.remove('hidden');
-                                                                        fallback.classList.add('flex');
+                                                                onError={(
+                                                                    e,
+                                                                ) => {
+                                                                    const target =
+                                                                        e.currentTarget;
+                                                                    target.style.display =
+                                                                        'none';
+                                                                    const fallback =
+                                                                        target.nextElementSibling as HTMLElement;
+                                                                    if (
+                                                                        fallback
+                                                                    ) {
+                                                                        fallback.classList.remove(
+                                                                            'hidden',
+                                                                        );
+                                                                        fallback.classList.add(
+                                                                            'flex',
+                                                                        );
                                                                     }
                                                                 }}
                                                             />
-                                                            <div className="fallback-icon hidden absolute inset-0 flex-col items-center justify-center bg-pale-green/40 p-2 text-center text-forest-green">
+                                                            <div className="fallback-icon absolute inset-0 hidden flex-col items-center justify-center bg-pale-green/40 p-2 text-center text-forest-green">
                                                                 <FileImage className="mb-1 size-7 text-primary-green" />
                                                                 <span className="max-w-full truncate text-[10px] text-gray-neutral">
-                                                                    {ev.original_filename}
+                                                                    {
+                                                                        ev.original_filename
+                                                                    }
                                                                 </span>
                                                             </div>
                                                             <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                                                                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-dark-neutral shadow-sm backdrop-blur-xs">
                                                                     <ZoomIn className="size-3.5 text-primary-green" />
-                                                                    <span>Lihat Foto</span>
+                                                                    <span>
+                                                                        Lihat
+                                                                        Foto
+                                                                    </span>
                                                                 </span>
                                                             </div>
                                                         </>
@@ -419,7 +528,9 @@ export default function ReportShow({
                                                         <div className="flex size-full flex-col items-center justify-center bg-pale-green/40 p-3 text-center">
                                                             <FileText className="mb-1 size-7 text-primary-green" />
                                                             <span className="max-w-full truncate text-[11px] font-medium text-dark-neutral">
-                                                                {ev.original_filename}
+                                                                {
+                                                                    ev.original_filename
+                                                                }
                                                             </span>
                                                         </div>
                                                     )}
@@ -428,14 +539,21 @@ export default function ReportShow({
                                                 <div className="mt-2.5">
                                                     <div
                                                         className="truncate text-xs font-semibold text-dark-neutral"
-                                                        title={ev.original_filename}
+                                                        title={
+                                                            ev.original_filename
+                                                        }
                                                     >
                                                         {ev.original_filename}
                                                     </div>
                                                     <div className="mt-1 flex items-center justify-between text-[11px] text-gray-neutral">
                                                         <span>
-                                                            {(ev.size_bytes / 1024).toFixed(0)} KB &bull;{' '}
-                                                            {ev.media_type || 'image'}
+                                                            {(
+                                                                ev.size_bytes /
+                                                                1024
+                                                            ).toFixed(0)}{' '}
+                                                            KB &bull;{' '}
+                                                            {ev.media_type ||
+                                                                'image'}
                                                         </span>
                                                         {isImg && (
                                                             <span className="font-medium text-forest-green group-hover:underline">
@@ -460,17 +578,24 @@ export default function ReportShow({
                                 </h2>
                             </div>
                             <p className="mt-0.5 text-xs text-gray-neutral">
-                                Jejak audit transisi status yang tercatat permanen sesuai standar akuntabilitas JAGAIN
+                                Jejak audit transisi status yang tercatat
+                                permanen sesuai standar akuntabilitas JAGAIN
                             </p>
 
                             <ol className="relative mt-6 ml-3.5 border-l-2 border-primary-green/20">
                                 {report.status_histories?.map((history) => (
-                                    <li key={history.id} className="mb-6 ml-6 last:mb-0">
-                                        <span className="absolute -left-4 flex size-7 items-center justify-center rounded-full bg-soft-green text-primary-green ring-4 ring-white shadow-2xs">
+                                    <li
+                                        key={history.id}
+                                        className="mb-6 ml-6 last:mb-0"
+                                    >
+                                        <span className="absolute -left-4 flex size-7 items-center justify-center rounded-full bg-soft-green text-primary-green shadow-2xs ring-4 ring-white">
                                             <CheckCircle2 className="size-4" />
                                         </span>
                                         <div className="flex flex-wrap items-center gap-2">
-                                            <StatusBadge status={history.to_status} variant="neutral" />
+                                            <StatusBadge
+                                                status={history.to_status}
+                                                variant="neutral"
+                                            />
                                             <span className="text-xs text-gray-neutral">
                                                 {formatDate(history.created_at)}
                                             </span>
@@ -478,7 +603,8 @@ export default function ReportShow({
                                         <div className="mt-1.5 text-xs text-dark-neutral">
                                             Aktor:{' '}
                                             <span className="font-semibold text-forest-green">
-                                                {history.actor?.name ?? 'Sistem'}
+                                                {history.actor?.name ??
+                                                    'Sistem'}
                                             </span>
                                         </div>
                                         {history.reason && (
@@ -520,8 +646,13 @@ export default function ReportShow({
                             </div>
 
                             <div className="mt-3 flex items-center justify-between rounded-xl border border-border-neutral bg-pale-green/40 p-3">
-                                <span className="text-xs font-medium text-gray-neutral">Status saat ini:</span>
-                                <StatusBadge status={report.report_status} variant="neutral" />
+                                <span className="text-xs font-medium text-gray-neutral">
+                                    Status saat ini:
+                                </span>
+                                <StatusBadge
+                                    status={report.report_status}
+                                    variant="neutral"
+                                />
                             </div>
 
                             <div className="mt-4 flex flex-col gap-2.5">
@@ -533,7 +664,7 @@ export default function ReportShow({
                                             executeTransition(
                                                 'UNDER_REVIEW',
                                                 '',
-                                                'Admin memulai pemeriksaan kelengkapan berkas.'
+                                                'Admin memulai pemeriksaan kelengkapan berkas.',
                                             )
                                         }
                                         className="w-full rounded-xl bg-primary-green px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-forest-green"
@@ -552,27 +683,34 @@ export default function ReportShow({
                                                 executeTransition(
                                                     'VERIFIED',
                                                     '',
-                                                    'Laporan telah diperiksa dan dinilai memenuhi kriteria verifikasi JAGAIN.'
+                                                    'Laporan telah diperiksa dan dinilai memenuhi kriteria verifikasi JAGAIN.',
                                                 )
                                             }
                                             className="w-full rounded-xl bg-primary-green px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-forest-green"
                                         >
                                             <CheckCircle2 className="mr-1.5 size-4" />
-                                            <span>Verifikasi Laporan Valid</span>
+                                            <span>
+                                                Verifikasi Laporan Valid
+                                            </span>
                                         </Button>
 
                                         <button
                                             type="button"
-                                            onClick={() => setIsNeedsInfoModalOpen(true)}
+                                            onClick={() =>
+                                                setIsNeedsInfoModalOpen(true)
+                                            }
                                             className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-center text-xs font-semibold text-amber-900 transition hover:bg-amber-100"
                                         >
                                             <FileQuestion className="size-4 text-amber-700" />
-                                            <span>Minta Informasi Tambahan</span>
+                                            <span>
+                                                Minta Informasi Tambahan
+                                            </span>
                                         </button>
                                     </>
                                 )}
 
-                                {report.report_status === 'NEEDS_INFORMATION' && (
+                                {report.report_status ===
+                                    'NEEDS_INFORMATION' && (
                                     <Button
                                         type="button"
                                         disabled={transitionForm.processing}
@@ -580,7 +718,7 @@ export default function ReportShow({
                                             executeTransition(
                                                 'UNDER_REVIEW',
                                                 '',
-                                                'Melanjutkan pemeriksaan laporan setelah informasi diperbarui.'
+                                                'Melanjutkan pemeriksaan laporan setelah informasi diperbarui.',
                                             )
                                         }
                                         className="w-full rounded-xl bg-primary-green px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-forest-green"
@@ -590,7 +728,8 @@ export default function ReportShow({
                                     </Button>
                                 )}
 
-                                {report.report_status === 'RESOLUTION_REVIEW' && (
+                                {report.report_status ===
+                                    'RESOLUTION_REVIEW' && (
                                     <Button
                                         type="button"
                                         disabled={transitionForm.processing}
@@ -598,23 +737,30 @@ export default function ReportShow({
                                             executeTransition(
                                                 'RESOLVED_VERIFIED',
                                                 '',
-                                                'Admin telah memeriksa bukti penanganan OPD dan menetapkan status administratif selesai.'
+                                                'Admin telah memeriksa bukti penanganan OPD dan menetapkan status administratif selesai.',
                                             )
                                         }
                                         className="w-full rounded-xl bg-forest-green px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-primary-green"
                                     >
                                         <CheckCircle2 className="mr-1.5 size-4" />
-                                        <span>Sahkan Selesai Terverifikasi</span>
+                                        <span>
+                                            Sahkan Selesai Terverifikasi
+                                        </span>
                                     </Button>
                                 )}
 
                                 {/* Destructive Close action */}
-                                {['SUBMITTED', 'UNDER_REVIEW', 'NEEDS_INFORMATION', 'VERIFIED'].includes(
-                                    report.report_status
-                                ) && (
+                                {[
+                                    'SUBMITTED',
+                                    'UNDER_REVIEW',
+                                    'NEEDS_INFORMATION',
+                                    'VERIFIED',
+                                ].includes(report.report_status) && (
                                     <button
                                         type="button"
-                                        onClick={() => setIsCloseModalOpen(true)}
+                                        onClick={() =>
+                                            setIsCloseModalOpen(true)
+                                        }
                                         className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-center text-xs font-semibold text-rose-800 transition hover:bg-rose-100"
                                     >
                                         <XCircle className="size-3.5 text-rose-600" />
@@ -644,11 +790,16 @@ export default function ReportShow({
                                 </h3>
                             </div>
                             <p className="mt-1 text-xs text-gray-neutral">
-                                Teruskan laporan terverifikasi kepada instansi penanganan wilayah Kalimantan
+                                Teruskan laporan terverifikasi kepada instansi
+                                penanganan wilayah Kalimantan
                             </p>
 
-                            {report.report_status === 'VERIFIED' || report.report_status === 'DISPATCHED' ? (
-                                <form onSubmit={handleAssignSubmit} className="mt-4 flex flex-col gap-3">
+                            {report.report_status === 'VERIFIED' ||
+                            report.report_status === 'DISPATCHED' ? (
+                                <form
+                                    onSubmit={handleAssignSubmit}
+                                    className="mt-4 flex flex-col gap-3"
+                                >
                                     <div>
                                         <label
                                             htmlFor="agency_id"
@@ -658,19 +809,33 @@ export default function ReportShow({
                                         </label>
                                         <select
                                             id="agency_id"
-                                            value={assignmentForm.data.agency_id}
-                                            onChange={(e) => assignmentForm.setData('agency_id', e.target.value)}
+                                            value={
+                                                assignmentForm.data.agency_id
+                                            }
+                                            onChange={(e) =>
+                                                assignmentForm.setData(
+                                                    'agency_id',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="mt-1 w-full rounded-xl border border-border-neutral bg-pale-green/40 px-3 py-2 text-xs text-dark-neutral transition-colors focus:border-primary-green focus:bg-white focus:outline-hidden"
                                         >
                                             {activeAgencies.map((agency) => (
-                                                <option key={agency.id} value={agency.id}>
-                                                    {agency.name} ({agency.jurisdiction})
+                                                <option
+                                                    key={agency.id}
+                                                    value={agency.id}
+                                                >
+                                                    {agency.name} (
+                                                    {agency.jurisdiction})
                                                 </option>
                                             ))}
                                         </select>
                                         {assignmentForm.errors.agency_id && (
                                             <p className="mt-1 text-xs text-rose-600">
-                                                {assignmentForm.errors.agency_id}
+                                                {
+                                                    assignmentForm.errors
+                                                        .agency_id
+                                                }
                                             </p>
                                         )}
                                     </div>
@@ -680,13 +845,19 @@ export default function ReportShow({
                                             htmlFor="note"
                                             className="block text-xs font-semibold text-dark-neutral"
                                         >
-                                            Catatan Instruksi Penanganan (Opsional)
+                                            Catatan Instruksi Penanganan
+                                            (Opsional)
                                         </label>
                                         <textarea
                                             id="note"
                                             rows={3}
                                             value={assignmentForm.data.note}
-                                            onChange={(e) => assignmentForm.setData('note', e.target.value)}
+                                            onChange={(e) =>
+                                                assignmentForm.setData(
+                                                    'note',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Contoh: Mohon koordinasi dengan pos damkar terdekat..."
                                             className="mt-1 w-full rounded-xl border border-border-neutral bg-pale-green/40 p-2.5 text-xs text-dark-neutral transition-colors focus:border-primary-green focus:bg-white focus:outline-hidden"
                                         />
@@ -699,15 +870,28 @@ export default function ReportShow({
                                     >
                                         <Send className="mr-1.5 size-3.5" />
                                         <span>
-                                            {report.report_status === 'DISPATCHED'
-                                                 ? 'Tugaskan Ulang (Reassign)'
-                                                 : 'Kirim Penugasan ke OPD'}
+                                            {report.report_status ===
+                                            'DISPATCHED'
+                                                ? 'Tugaskan Ulang (Reassign)'
+                                                : 'Kirim Penugasan ke OPD'}
                                         </span>
                                     </Button>
 
-                                    {(assignmentForm.errors as Record<string, string | undefined>).report && (
+                                    {(
+                                        assignmentForm.errors as Record<
+                                            string,
+                                            string | undefined
+                                        >
+                                    ).report && (
                                         <p className="text-xs text-rose-600">
-                                            {(assignmentForm.errors as Record<string, string | undefined>).report}
+                                            {
+                                                (
+                                                    assignmentForm.errors as Record<
+                                                        string,
+                                                        string | undefined
+                                                    >
+                                                ).report
+                                            }
                                         </p>
                                     )}
                                 </form>
@@ -715,7 +899,9 @@ export default function ReportShow({
                                 <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-border-neutral bg-pale-green/40 p-3.5 text-xs text-dark-neutral">
                                     <AlertCircle className="size-4 shrink-0 text-forest-green/80" />
                                     <span>
-                                        Laporan harus berstatus Terverifikasi Valid sebelum dapat didisposisikan ke instansi penanganan.
+                                        Laporan harus berstatus Terverifikasi
+                                        Valid sebelum dapat didisposisikan ke
+                                        instansi penanganan.
                                     </span>
                                 </div>
                             )}
@@ -728,18 +914,31 @@ export default function ReportShow({
                                     </span>
                                     <div className="mt-2 rounded-xl border border-border-neutral bg-pale-green/40 p-3 text-xs">
                                         <div className="font-semibold text-dark-neutral">
-                                            {report.latest_assignment.agency?.name}
+                                            {
+                                                report.latest_assignment.agency
+                                                    ?.name
+                                            }
                                         </div>
                                         <div className="mt-1.5 flex items-center gap-1.5">
                                             <span className="badge badge-light">
-                                                {assignmentStatusLabels[report.latest_assignment.assignment_status] ??
-                                                    report.latest_assignment.assignment_status}
+                                                {assignmentStatusLabels[
+                                                    report.latest_assignment
+                                                        .assignment_status
+                                                ] ??
+                                                    report.latest_assignment
+                                                        .assignment_status}
                                             </span>
                                         </div>
-                                        {report.latest_assignment.decline_reason && (
+                                        {report.latest_assignment
+                                            .decline_reason && (
                                             <div className="mt-2 rounded-lg border border-rose-200 bg-rose-50 p-2 text-rose-900">
-                                                <span className="font-semibold">Alasan Penolakan:</span>{' '}
-                                                {report.latest_assignment.decline_reason}
+                                                <span className="font-semibold">
+                                                    Alasan Penolakan:
+                                                </span>{' '}
+                                                {
+                                                    report.latest_assignment
+                                                        .decline_reason
+                                                }
                                             </div>
                                         )}
                                     </div>
@@ -817,7 +1016,8 @@ export default function ReportShow({
                             </button>
                         </div>
                         <p className="mt-1 text-xs text-gray-neutral">
-                            Pesan ini akan terlihat oleh pelapor pada halaman detail dan pelacakan status.
+                            Pesan ini akan terlihat oleh pelapor pada halaman
+                            detail dan pelacakan status.
                         </p>
 
                         <div className="mt-4">
@@ -827,12 +1027,19 @@ export default function ReportShow({
                             <textarea
                                 rows={4}
                                 value={transitionForm.data.public_note}
-                                onChange={(e) => transitionForm.setData('public_note', e.target.value)}
+                                onChange={(e) =>
+                                    transitionForm.setData(
+                                        'public_note',
+                                        e.target.value,
+                                    )
+                                }
                                 placeholder="Contoh: Mohon sebutkan patok batas desa atau titik acuan terdekat..."
                                 className="mt-1 w-full rounded-xl border border-border-neutral bg-pale-green/40 p-2.5 text-xs text-dark-neutral focus:border-primary-green focus:bg-white focus:outline-hidden"
                             />
                             {transitionForm.errors.note && (
-                                <p className="mt-1 text-xs text-rose-600">{transitionForm.errors.note}</p>
+                                <p className="mt-1 text-xs text-rose-600">
+                                    {transitionForm.errors.note}
+                                </p>
                             )}
                         </div>
 
@@ -846,13 +1053,16 @@ export default function ReportShow({
                             </button>
                             <Button
                                 type="button"
-                                disabled={transitionForm.processing || !transitionForm.data.public_note.trim()}
+                                disabled={
+                                    transitionForm.processing ||
+                                    !transitionForm.data.public_note.trim()
+                                }
                                 onClick={() =>
                                     executeTransition(
                                         'NEEDS_INFORMATION',
                                         '',
                                         'Meminta kelengkapan informasi pelapor.',
-                                        transitionForm.data.public_note
+                                        transitionForm.data.public_note,
                                     )
                                 }
                                 className="rounded-xl bg-primary-green px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-forest-green"
@@ -877,7 +1087,9 @@ export default function ReportShow({
                                     Konfirmasi Penutupan Laporan
                                 </h3>
                                 <p className="mt-1 text-xs text-rose-700">
-                                    Aksi ini akan menghentikan proses verifikasi laporan. Alasan penutupan wajib dicatat dalam audit trail.
+                                    Aksi ini akan menghentikan proses verifikasi
+                                    laporan. Alasan penutupan wajib dicatat
+                                    dalam audit trail.
                                 </p>
                             </div>
                         </div>
@@ -888,17 +1100,36 @@ export default function ReportShow({
                             </label>
                             <select
                                 value={transitionForm.data.reason}
-                                onChange={(e) => transitionForm.setData('reason', e.target.value)}
+                                onChange={(e) =>
+                                    transitionForm.setData(
+                                        'reason',
+                                        e.target.value,
+                                    )
+                                }
                                 className="mt-1 w-full rounded-xl border border-border-neutral bg-white p-2.5 text-xs text-dark-neutral focus:border-rose-500 focus:outline-hidden"
                             >
-                                <option value="">-- Pilih Alasan Penutupan --</option>
-                                <option value="Laporan Duplikat dari Titik yang Sama">Laporan Duplikat dari Titik yang Sama</option>
-                                <option value="Bukan Kebakaran Hutan atau Lahan">Bukan Kebakaran Hutan atau Lahan (Di luar cakupan)</option>
-                                <option value="Informasi Palsu atau Tidak Dapat Diverifikasi">Informasi Palsu atau Tidak Dapat Diverifikasi</option>
-                                <option value="Lokasi Berada di Luar Wilayah Operasional">Lokasi Berada di Luar Wilayah Operasional</option>
+                                <option value="">
+                                    -- Pilih Alasan Penutupan --
+                                </option>
+                                <option value="Laporan Duplikat dari Titik yang Sama">
+                                    Laporan Duplikat dari Titik yang Sama
+                                </option>
+                                <option value="Bukan Kebakaran Hutan atau Lahan">
+                                    Bukan Kebakaran Hutan atau Lahan (Di luar
+                                    cakupan)
+                                </option>
+                                <option value="Informasi Palsu atau Tidak Dapat Diverifikasi">
+                                    Informasi Palsu atau Tidak Dapat
+                                    Diverifikasi
+                                </option>
+                                <option value="Lokasi Berada di Luar Wilayah Operasional">
+                                    Lokasi Berada di Luar Wilayah Operasional
+                                </option>
                             </select>
                             {transitionForm.errors.reason && (
-                                <p className="mt-1 text-xs text-rose-600">{transitionForm.errors.reason}</p>
+                                <p className="mt-1 text-xs text-rose-600">
+                                    {transitionForm.errors.reason}
+                                </p>
                             )}
                         </div>
 
@@ -909,7 +1140,12 @@ export default function ReportShow({
                             <textarea
                                 rows={2}
                                 value={transitionForm.data.note}
-                                onChange={(e) => transitionForm.setData('note', e.target.value)}
+                                onChange={(e) =>
+                                    transitionForm.setData(
+                                        'note',
+                                        e.target.value,
+                                    )
+                                }
                                 placeholder="Jelaskan detail pertimbangan penutupan..."
                                 className="mt-1 w-full rounded-xl border border-border-neutral p-2 text-xs text-dark-neutral focus:border-rose-500 focus:outline-hidden"
                             />
@@ -925,12 +1161,15 @@ export default function ReportShow({
                             </button>
                             <Button
                                 type="button"
-                                disabled={transitionForm.processing || !transitionForm.data.reason}
+                                disabled={
+                                    transitionForm.processing ||
+                                    !transitionForm.data.reason
+                                }
                                 onClick={() =>
                                     executeTransition(
                                         'CLOSED_WITH_REASON',
                                         transitionForm.data.reason,
-                                        transitionForm.data.note
+                                        transitionForm.data.note,
                                     )
                                 }
                                 className="rounded-xl bg-rose-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-rose-700"

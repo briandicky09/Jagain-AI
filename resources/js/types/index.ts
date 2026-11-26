@@ -3,3 +3,4 @@ export type * from './navigation';
 export type * from './report';
 export type * from './ui';
 export type * from './jagain';
+export type * from './ai';

@@ -8,6 +8,7 @@ use App\Models\Evidence;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\ReportStatusHistory;
+use App\Services\Ai\ReportAiOrchestrator;
 use App\Services\AuditLogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class CitizenReportController extends Controller
             'regency_city' => ['required', 'string', 'max:100'],
             'location_description' => ['required', 'string', 'min:5', 'max:500'],
             'reported_occurrence_at' => ['nullable', 'date', 'before_or_equal:now'],
-            'evidence_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'evidence_file' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'safety_acknowledged' => ['required', 'accepted'],
         ], [
             'latitude.between' => 'Koordinat lintang harus berada dalam wilayah Kalimantan (-5 s/d 5).',
@@ -102,15 +103,17 @@ class CitizenReportController extends Controller
             // Handle evidence file upload safely
             if ($request->hasFile('evidence_file')) {
                 $file = $request->file('evidence_file');
-                $filename = 'evidence_'.Str::random(24).'.'.$file->getClientOriginalExtension();
+                $detectedExt = strtolower((string) ($file->extension() ?: $file->guessExtension() ?: 'jpg'));
+                $extension = in_array($detectedExt, ['jpg', 'jpeg', 'png', 'webp'], true) ? $detectedExt : 'jpg';
+                $filename = 'evidence_'.Str::random(24).'.'.$extension;
                 $path = $file->storeAs('evidence/'.$report->id, $filename, 'public');
 
                 Evidence::create([
                     'report_id' => $report->id,
                     'uploaded_by_user_id' => $user->id,
                     'file_path' => '/storage/'.$path,
-                    'original_filename' => $file->getClientOriginalName(),
-                    'media_type' => $file->getClientMimeType() ?: 'image/jpeg',
+                    'original_filename' => basename((string) $file->getClientOriginalName()),
+                    'media_type' => $file->getMimeType() ?: 'image/jpeg',
                     'size_bytes' => $file->getSize(),
                     'caption' => 'Bukti foto laporan awal',
                     'visibility' => 'PUBLIC',
@@ -135,6 +138,14 @@ class CitizenReportController extends Controller
 
             return $report;
         });
+
+        if (config('ai.enabled') && config('ai.auto_analyze_on_submit')) {
+            try {
+                app(ReportAiOrchestrator::class)->analyzeReport($report, $user);
+            } catch (\Throwable) {
+                // AI analysis failure must never fail citizen report submission
+            }
+        }
 
         return redirect()->route('citizen.reports.show', ['tracking_code' => $report->tracking_code])
             ->with('success', 'Laporan berhasil dikirim dengan kode lacak: '.$report->tracking_code);
@@ -269,6 +280,12 @@ class CitizenReportController extends Controller
                 actor: $user
             );
         });
+
+        try {
+            app(ReportAiOrchestrator::class)->runPrivacyGuardrail($report->fresh() ?? $report);
+        } catch (\Throwable) {
+            // Privacy fallback remains active in Report::toPublicArray()
+        }
 
         return back()->with('success', 'Informasi tambahan berhasil dikirim. Laporan kembali dalam antrean peninjauan petugas.');
     }

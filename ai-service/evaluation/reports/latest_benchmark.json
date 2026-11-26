@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0",
+  "run_uuid": "f48a3e2c-b89e-4bcf-8de2-1cc53a45a185",
+  "executed_at": "2026-11-26T02:14:06.036481+00:00",
+  "dataset_name": "JAGAIN Curated Multimodal & PII Benchmark Suite",
+  "dataset_version": "1.0.0",
+  "is_simulated_dataset": true,
+  "split": "test",
+  "model_manifest": {
+    "vision": {
+      "name": "openai/clip-vit-base-patch32",
+      "backend": "clip",
+      "status": "loaded",
+      "is_pretrained_ml": true,
+      "details": "Zero-shot CLIP visual observation adapter (CPU)."
+    },
+    "embedding": {
+      "name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "backend": "sentence_transformer",
+      "status": "loaded",
+      "is_pretrained_ml": true,
+      "details": "384-dim normalized semantic embeddings (CPU)."
+    },
+    "ner": {
+      "name": "indonesian-contextual-pii-detector-v1",
+      "backend": "heuristic",
+      "status": "loaded",
+      "is_pretrained_ml": false,
+      "details": "Context-aware Indonesian PII detector (regex + structural validator + allowlist)."
+    }
+  },
+  "hardware_info": {
+    "python_version": "3.11.16",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "processor": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+    "cpu_count": 8,
+    "accelerator": "CPU"
+  },
+  "modules": {
+    "triage": {
+      "measured": true,
+      "dataset_size": 30,
+      "is_simulated": true,
+      "precision": 0.9714,
+      "recall": 0.975,
+      "f1_score": 0.9713,
+      "per_class": {
+        "CRITICAL": {
+          "precision": 0.8571,
+          "recall": 1.0,
+          "f1": 0.9231,
+          "support": 6
+        },
+        "HIGH": {
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333,
+          "support": 8
+        },
+        "LOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 6
+        },
+        "MEDIUM": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 6
+        },
+        "UNKNOWN": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 4
+        }
+      },
+      "confusion_matrix_labels": [
+        "CRITICAL",
+        "HIGH",
+        "LOW",
+        "MEDIUM",
+        "UNKNOWN"
+      ],
+      "confusion_matrix": [
+        [
+          6,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          6,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          4
+        ]
+      ],
+      "error_rate": 0.0,
+      "latency": {
+        "avg_ms": 0.12,
+        "median_ms": 0.11,
+        "p95_ms": 0.14
+      }
+    },
+    "deduplication": {
+      "measured": true,
+      "dataset_size": 20,
+      "is_simulated": true,
+      "is_pretrained_ml": true,
+      "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "model_load_time_ms": 30.4,
+      "precision_at_1": 1.0,
+      "recall_at_1": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "confusion_counts": {
+        "tp": 10,
+        "fp": 0,
+        "tn": 10,
+        "fn": 0
+      },
+      "error_rate": 0.0,
+      "latency": {
+        "avg_ms": 92.79,
+        "median_ms": 91.15,
+        "p95_ms": 104.09
+      }
+    },
+    "privacy": {
+      "measured": true,
+      "dataset_size": 26,
+      "is_simulated": true,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "redaction_completeness": 1.0,
+      "false_positive_rate": 0.0,
+      "counts": {
+        "tp": 32,
+        "fp": 0,
+        "tn": 8,
+        "fn": 0
+      },
+      "latency": {
+        "avg_ms": 0.11,
+        "median_ms": 0.1,
+        "p95_ms": 0.15
+      }
+    },
+    "vision": {
+      "measured": true,
+      "dataset_size": 4,
+      "is_simulated": true,
+      "is_synthetic_images": true,
+      "model_name": "openai/clip-vit-base-patch32",
+      "model_load_time_ms": 0.01,
+      "precision": 0.375,
+      "recall": 0.5,
+      "f1_score": 0.4167,
+      "latency": {
+        "avg_ms": 229.93,
+        "median_ms": 229.99,
+        "p95_ms": 230.76
+      },
+      "note": "Evaluated on synthetic smoke/flame/forest/unrelated images; real-world wildfire photograph benchmark still required."
+    }
+  },
+  "notes": [
+    "All datasets in evaluation/datasets are manually curated synthetic/simulated test suites labeled is_simulated=true.",
+    "Rule-based triage confidence scores are coverage heuristics, not calibrated statistical probabilities."
+  ]
+}

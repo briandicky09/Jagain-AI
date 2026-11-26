@@ -35,7 +35,7 @@ class DevelopmentAutoLogin
             return $next($request);
         }
 
-        if (app()->environment('local') && config('auth.dev_auto_login', false)) {
+        if (! app()->isProduction() && app()->environment('local') && config('auth.dev_auto_login', false)) {
             if (! Auth::check()) {
                 $user = User::firstWhere('role', 'ADMIN') ?? User::first();
 

@@ -1,0 +1,162 @@
+{
+  "dataset_name": "JAGAIN Curated Semantic & Geospatial Deduplication Dataset",
+  "version": "1.0.0",
+  "is_simulated": true,
+  "notes": "Manually curated duplicate and hard non-duplicate pairs in Kalimantan testing paraphrase semantic matching, geographic distance, and temporal separation.",
+  "pairs": [
+    {
+      "id": "DUP-01",
+      "split": "dev",
+      "is_duplicate": true,
+      "source": {"title": "Asap pekat di lahan gambut Rasau Jaya Km 14", "description": "Kepulan asap putih tebal muncul dari parit di lahan gambut Rasau Jaya Tiga.", "category": "lahan-gambut", "latitude": -0.1558, "longitude": 109.3872, "created_at": "2026-10-20T10:00:00+07:00"},
+      "candidate": {"title": "Kebakaran gambut dekat Parit H Ali Rasau Jaya", "description": "Asap tebal dan bara api terlihat membakar lantai gambut sekitar Km 14 Rasau Jaya.", "category": "lahan-gambut", "latitude": -0.1575, "longitude": 109.3890, "created_at": "2026-10-20T10:25:00+07:00"}
+    },
+    {
+      "id": "DUP-02",
+      "split": "dev",
+      "is_duplicate": false,
+      "source": {"title": "Asap pekat di lahan gambut Rasau Jaya Km 14", "description": "Kepulan asap putih tebal muncul dari parit di lahan gambut Rasau Jaya Tiga.", "category": "lahan-gambut", "latitude": -0.1558, "longitude": 109.3872, "created_at": "2026-10-20T10:00:00+07:00"},
+      "candidate": {"title": "Asap pekat di lahan gambut Palangka Raya", "description": "Kepulan asap putih tebal muncul dari parit di lahan gambut Palangka Raya Kalimantan Tengah.", "category": "lahan-gambut", "latitude": -2.2350, "longitude": 113.8900, "created_at": "2026-10-20T10:15:00+07:00"}
+    },
+    {
+      "id": "DUP-03",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Api di semak belukar Ambawang Km 18", "description": "Api membakar ilalang pinggir jalan Trans Kalimantan Km 18 Ambawang sehingga jarak pandang berkurang.", "category": "semak-belukar", "latitude": -0.0821, "longitude": 109.4321, "created_at": "2026-10-21T13:00:00+07:00"},
+      "candidate": {"title": "Kebakaran semak tepi Jalan Trans Kalimantan Ambawang", "description": "Asap pekat menutupi jalan raya di sekitar kilometer 18 Ambawang akibat semak kering terbakar.", "category": "semak-belukar", "latitude": -0.0840, "longitude": 109.4335, "created_at": "2026-10-21T13:20:00+07:00"}
+    },
+    {
+      "id": "DUP-04",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Kebakaran kebun sawit di Desa Wajok Hilir", "description": "Nyala api membakar blok perkebunan kelapa sawit di Wajok Hilir dekat parit batas.", "category": "perkebunan", "latitude": 0.0345, "longitude": 109.2845, "created_at": "2026-10-21T14:00:00+07:00"},
+      "candidate": {"title": "Titik api area perkebunan sawit Wajok Hilir", "description": "Terlihat kobaran api dan asap hitam dari lahan sawit di Kecamatan Jongkat Wajok Hilir.", "category": "perkebunan", "latitude": 0.0362, "longitude": 109.2860, "created_at": "2026-10-21T14:35:00+07:00"}
+    },
+    {
+      "id": "DUP-05",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Asap di penyangga Hutan Lindung Gunung Palung", "description": "Kolom asap membubung dari lereng timur penyangga Gunung Palung dekat Sedahan Jaya.", "category": "hutan-lindung", "latitude": -1.2185, "longitude": 110.1450, "created_at": "2026-10-21T09:10:00+07:00"},
+      "candidate": {"title": "Dugaan kebakaran hutan di Sedahan Jaya Gunung Palung", "description": "Warga melihat kepulan asap tinggi di perbatasan kawasan lindung Gunung Palung sebelah timur.", "category": "hutan-lindung", "latitude": -1.2210, "longitude": 110.1475, "created_at": "2026-10-21T09:40:00+07:00"}
+    },
+    {
+      "id": "DUP-06",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Api membakar gambut di Sungai Raya Dalam", "description": "Titik api dan asap tebal muncul di lahan gambut belakang perumahan Sungai Raya Dalam.", "category": "lahan-gambut", "latitude": -0.0950, "longitude": 109.3650, "created_at": "2026-10-21T15:00:00+07:00"},
+      "candidate": {"title": "Asap pekat lahan gambut belakang kompleks Sungai Raya", "description": "Tercium bau asap gambut dan terlihat api di semak gambut dekat pemukiman Sungai Raya Dalam.", "category": "lahan-gambut", "latitude": -0.0968, "longitude": 109.3665, "created_at": "2026-10-21T15:18:00+07:00"}
+    },
+    {
+      "id": "DUP-07",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Kebakaran semak kering Jalan Adi Sucipto Km 11", "description": "Api meluas di semak belukar pinggir Jalan Adi Sucipto dekat bandara lama.", "category": "semak-belukar", "latitude": -0.1150, "longitude": 109.3920, "created_at": "2026-10-21T11:00:00+07:00"},
+      "candidate": {"title": "Titik api ilalang di Jl Adi Sucipto Km 11", "description": "Kebakaran rumput dan belukar di tepi jalan menuju bandara Supadio Km 11.", "category": "semak-belukar", "latitude": -0.1165, "longitude": 109.3935, "created_at": "2026-10-21T11:22:00+07:00"}
+    },
+    {
+      "id": "DUP-08",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Kebakaran gambut Palangka Raya Jalan Mahir Mahar", "description": "Asap tebal menyelimuti pinggir Jalan Mahir Mahar akibat lahan gambut terbakar.", "category": "lahan-gambut", "latitude": -2.2350, "longitude": 113.8900, "created_at": "2026-10-21T12:00:00+07:00"},
+      "candidate": {"title": "Titik api di tepi Jalan Mahir Mahar Palangka Raya", "description": "Kepulan asap gambut dan api kecil muncul di sisi jalan lingkar Mahir Mahar.", "category": "lahan-gambut", "latitude": -2.2370, "longitude": 113.8920, "created_at": "2026-10-21T12:30:00+07:00"}
+    },
+    {
+      "id": "DUP-09",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Asap tebal di kebun karet Desa Mandor", "description": "Api membakar lahan kebun karet dan semak kering di Desa Mandor Landak.", "category": "perkebunan", "latitude": 0.3150, "longitude": 109.3420, "created_at": "2026-10-21T13:15:00+07:00"},
+      "candidate": {"title": "Kebakaran perkebunan karet Kecamatan Mandor", "description": "Warga melaporkan kepulan asap hitam dari kebun karet dekat jalur utama Mandor.", "category": "perkebunan", "latitude": 0.3175, "longitude": 109.3440, "created_at": "2026-10-21T13:50:00+07:00"}
+    },
+    {
+      "id": "DUP-10",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Api di lahan gambut Siantan Hulu Pontianak Utara", "description": "Bara api gambut dan asap pekat muncul di Parit Pangeran Siantan Hulu.", "category": "lahan-gambut", "latitude": 0.0120, "longitude": 109.3480, "created_at": "2026-10-21T16:00:00+07:00"},
+      "candidate": {"title": "Asap gambut Parit Pangeran Siantan Hulu", "description": "Lahan gambut mengeluarkan asap tebal di kawasan Parit Pangeran Pontianak Utara.", "category": "lahan-gambut", "latitude": 0.0140, "longitude": 109.3495, "created_at": "2026-10-21T16:12:00+07:00"}
+    },
+    {
+      "id": "DUP-11",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Kebakaran semak dekat Desa Punggur Besar", "description": "Api membakar alang-alang di pinggir parit Desa Punggur Besar Kubu Raya.", "category": "semak-belukar", "latitude": -0.1750, "longitude": 109.2680, "created_at": "2026-10-21T10:10:00+07:00"},
+      "candidate": {"title": "Titik api belukar di Punggur Besar", "description": "Terlihat api dan asap putih di lahan semak belukar Punggur Besar dekat sungai.", "category": "semak-belukar", "latitude": -0.1765, "longitude": 109.2695, "created_at": "2026-10-21T10:45:00+07:00"}
+    },
+    {
+      "id": "DUP-12",
+      "split": "test",
+      "is_duplicate": true,
+      "source": {"title": "Api di perkebunan sawit Tayan Hilir", "description": "Kebakaran lahan sawit di tepi jalan Trans Kalimantan Tayan Hilir Sanggau.", "category": "perkebunan", "latitude": -0.0250, "longitude": 110.1150, "created_at": "2026-10-21T14:15:00+07:00"},
+      "candidate": {"title": "Asap hitam kebun sawit Tayan Hilir Sanggau", "description": "Api membakar blok sawit di Tayan Hilir dekat jembatan Kapuas.", "category": "perkebunan", "latitude": -0.0270, "longitude": 110.1170, "created_at": "2026-10-21T14:40:00+07:00"}
+    },
+    {
+      "id": "DUP-13",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Api di lahan gambut Siantan Hulu Pontianak", "description": "Bara api gambut dan asap pekat muncul di Parit Pangeran Siantan Hulu.", "category": "lahan-gambut", "latitude": 0.0120, "longitude": 109.3480, "created_at": "2026-10-21T16:00:00+07:00"},
+      "candidate": {"title": "Api di lahan gambut Sampit Kotawaringin Timur", "description": "Bara api gambut dan asap pekat muncul di kawasan gambut Sampit Kalimantan Tengah.", "category": "lahan-gambut", "latitude": -2.5310, "longitude": 112.9490, "created_at": "2026-10-21T16:10:00+07:00"}
+    },
+    {
+      "id": "DUP-14",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Api membakar gambut di Sungai Raya Dalam", "description": "Titik api dan asap tebal muncul di lahan gambut belakang perumahan Sungai Raya Dalam.", "category": "lahan-gambut", "latitude": -0.0950, "longitude": 109.3650, "created_at": "2026-10-21T15:00:00+07:00"},
+      "candidate": {"title": "Kebakaran hutan lindung di Ketapang Selatan", "description": "Kobaran api membakar hutan dataran rendah di Kabupaten Ketapang Kalimantan Barat.", "category": "hutan-lindung", "latitude": -1.8500, "longitude": 109.9800, "created_at": "2026-10-21T15:05:00+07:00"}
+    },
+    {
+      "id": "DUP-15",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Kebakaran semak Ambawang Km 18", "description": "Api membakar ilalang di pinggir jalan Trans Kalimantan Km 18 Ambawang.", "category": "semak-belukar", "latitude": -0.0821, "longitude": 109.4321, "created_at": "2026-10-01T10:00:00+07:00"},
+      "candidate": {"title": "Kebakaran hutan lindung Taman Nasional Sebangau", "description": "Titik api ditemukan oleh patroli di zona inti hutan lindung Sebangau Kalimantan Tengah.", "category": "hutan-lindung", "latitude": -2.3500, "longitude": 113.8500, "created_at": "2026-10-21T10:00:00+07:00"}
+    },
+    {
+      "id": "DUP-16",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Titik api kebun sawit di Wajok Hilir", "description": "Api membakar perkebunan sawit di Desa Wajok Hilir Mempawah.", "category": "perkebunan", "latitude": 0.0345, "longitude": 109.2845, "created_at": "2026-10-02T09:00:00+07:00"},
+      "candidate": {"title": "Asap tipis di semak belukar Banjarmasin", "description": "Terlihat asap ringan di lahan semak pinggir jalan lingkar Banjarmasin.", "category": "semak-belukar", "latitude": -3.3190, "longitude": 114.5900, "created_at": "2026-10-21T09:00:00+07:00"}
+    },
+    {
+      "id": "DUP-17",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Asap pekat di Rasau Jaya Km 14", "description": "Kepulan asap tebal dari lahan gambut Rasau Jaya Tiga.", "category": "lahan-gambut", "latitude": -0.1558, "longitude": 109.3872, "created_at": "2026-10-05T08:00:00+07:00"},
+      "candidate": {"title": "Kebakaran kebun karet di Sintang", "description": "Api membakar pohon karet di Kecamatan Kelam Permai Sintang.", "category": "perkebunan", "latitude": 0.0700, "longitude": 111.5000, "created_at": "2026-10-20T08:00:00+07:00"}
+    },
+    {
+      "id": "DUP-18",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Kebakaran hutan lindung Gunung Palung", "description": "Asap membubung dari kawasan penyangga Gunung Palung Kayong Utara.", "category": "hutan-lindung", "latitude": -1.2185, "longitude": 110.1450, "created_at": "2026-10-21T09:00:00+07:00"},
+      "candidate": {"title": "Kebakaran semak di Singkawang Timur", "description": "Rumput kering di lereng bukit Singkawang Timur terbakar sore hari.", "category": "semak-belukar", "latitude": 0.9000, "longitude": 109.0200, "created_at": "2026-10-21T17:00:00+07:00"}
+    },
+    {
+      "id": "DUP-19",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Asap di perkebunan sawit Tayan Hilir", "description": "Titik api terlihat di blok sawit Tayan Hilir dekat jalan poros.", "category": "perkebunan", "latitude": -0.0250, "longitude": 110.1150, "created_at": "2026-10-01T12:00:00+07:00"},
+      "candidate": {"title": "Laporan banjir dan pohon tumbang di Tayan", "description": "Jalan utama tergenang air dan ada pohon tumbang menghalangi jalur.", "category": "semak-belukar", "latitude": -0.4500, "longitude": 110.5000, "created_at": "2026-10-21T12:00:00+07:00"}
+    },
+    {
+      "id": "DUP-20",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Api di lahan gambut Palangka Raya", "description": "Kebakaran gambut di Jalan Mahir Mahar Palangka Raya.", "category": "lahan-gambut", "latitude": -2.2350, "longitude": 113.8900, "created_at": "2026-10-01T10:00:00+07:00"},
+      "candidate": {"title": "Kebakaran gambut di Balikpapan Timur", "description": "Titik api di semak dan gambut pesisir Balikpapan Kalimantan Timur.", "category": "lahan-gambut", "latitude": -1.2300, "longitude": 116.9500, "created_at": "2026-10-21T10:00:00+07:00"}
+    },
+    {
+      "id": "DUP-21",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Asap tebal di Sungai Ambawang", "description": "Asap menutupi jarak pandang di Jalan Trans Kalimantan Ambawang.", "category": "semak-belukar", "latitude": -0.0821, "longitude": 109.4321, "created_at": "2026-10-10T10:00:00+07:00"},
+      "candidate": {"title": "Kebakaran lahan di Kapuas Hulu", "description": "Warga melaporkan asap tipis di perladangan pinggir sungai Kapuas Hulu.", "category": "perkebunan", "latitude": 0.8600, "longitude": 112.9200, "created_at": "2026-10-21T10:00:00+07:00"}
+    },
+    {
+      "id": "DUP-22",
+      "split": "test",
+      "is_duplicate": false,
+      "source": {"title": "Kebakaran gambut di Mempawah", "description": "Api membakar lahan gambut di Kecamatan Jongkat Mempawah.", "category": "lahan-gambut", "latitude": 0.0500, "longitude": 109.2500, "created_at": "2026-10-02T14:00:00+07:00"},
+      "candidate": {"title": "Asap dari kebun sawit di Mempawah Hilir", "description": "Asap tipis di kebun sawit dekat pesisir Mempawah Hilir setelah 18 hari berselang.", "category": "perkebunan", "latitude": 0.3600, "longitude": 108.9600, "created_at": "2026-10-20T14:00:00+07:00"}
+    }
+  ]
+}

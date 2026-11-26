@@ -520,7 +520,7 @@ export const AnimatedList: React.FC<AnimatedListProps> = ({
           WebkitMaskImage: showGradients ? FADE_MASK : undefined
         }}
       >
-        <div ref={trackRef} className="animated-list__track">
+        <div ref={trackRef} className="animated-list__track" role="presentation">
           {items.map((item, index) => {
             const entry: AnimatedListItem = item !== null && typeof item === 'object' ? item : { title: String(item) };
             const isSelected = index === selected;

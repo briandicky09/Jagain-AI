@@ -15,6 +15,7 @@ export interface MapReport {
     status_label: string;
     fire_condition?: string;
     fire_condition_label?: string;
+    fire_condition_source?: string | null;
     reported_occurrence_at?: string | null;
     is_simulated?: boolean;
     severity?: 'RINGAN' | 'SEDANG' | 'BERAT' | string;
@@ -84,12 +85,17 @@ export default function KarhutlaMap({
 
         import('leaflet').then((leafletModule) => {
             if (!isMounted || !mapContainerRef.current) return;
-            const L = (leafletModule.default || leafletModule) as typeof LeafletType;
+            const L = (leafletModule.default ||
+                leafletModule) as typeof LeafletType;
 
             // Initialize Map centered on Kalimantan
             if (!mapInstanceRef.current) {
-                const initialLat = selectedCoordinates ? selectedCoordinates.lat : -0.7893;
-                const initialLng = selectedCoordinates ? selectedCoordinates.lng : 113.9213;
+                const initialLat = selectedCoordinates
+                    ? selectedCoordinates.lat
+                    : -0.7893;
+                const initialLng = selectedCoordinates
+                    ? selectedCoordinates.lng
+                    : 113.9213;
                 const initialZoom = selectedCoordinates ? 10 : 6;
 
                 const map = L.map(mapContainerRef.current, {
@@ -101,10 +107,14 @@ export default function KarhutlaMap({
                 });
 
                 // ESRI World Light Gray Canvas (Single Base Layer - Keyless, high performance, no watermark or double-label collision)
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | JAGAIN',
-                    maxZoom: 16,
-                }).addTo(map);
+                L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+                    {
+                        attribution:
+                            'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | JAGAIN',
+                        maxZoom: 16,
+                    },
+                ).addTo(map);
 
                 const markersLayer = L.layerGroup().addTo(map);
                 markersLayerRef.current = markersLayer;
@@ -122,54 +132,61 @@ export default function KarhutlaMap({
                 }
             }
 
-        const map = mapInstanceRef.current;
-        const layer = markersLayerRef.current;
+            const map = mapInstanceRef.current;
+            const layer = markersLayerRef.current;
 
-        if (!map || !layer) return;
+            if (!map || !layer) return;
 
-        // Auto-fit to Kalimantan, active reports, or satellite observations
-        if (reports.length > 0 && !selectedCoordinates) {
-            const latLngs = reports.map(r => [r.latitude, r.longitude] as [number, number]);
-            const bounds = L.latLngBounds(latLngs);
-            // Ensure island bounds remain comfortably visible
-            bounds.extend([-3.8, 109.2]);
-            bounds.extend([1.5, 117.8]);
-            map.fitBounds(bounds, { padding: [25, 25], maxZoom: 7 });
-        } else if (observations.length > 0 && !selectedCoordinates) {
-            const latLngs = observations.map(o => [o.latitude, o.longitude] as [number, number]);
-            const bounds = L.latLngBounds(latLngs);
-            bounds.extend([-3.8, 109.2]);
-            bounds.extend([1.5, 117.8]);
-            map.fitBounds(bounds, { padding: [25, 25], maxZoom: 7 });
-        } else if (!selectedCoordinates) {
-            map.setView([-1.2, 114.0], 6);
-        }
-
-        // Clear existing markers
-        layer.clearLayers();
-
-        // Icon Generators categorized by Severity (RINGAN, SEDANG, BERAT)
-        const createCitizenIcon = (rep: MapReport) => {
-            const rawSeverity = rep.severity?.toUpperCase() || (
-                rep.title.toLowerCase().includes('berat') ? 'BERAT' :
-                rep.title.toLowerCase().includes('ringan') ? 'RINGAN' : 'SEDANG'
-            );
-
-            let pinColor = '#f97316'; // Sedang: Orange
-            let pulseHtml = '';
-
-            if (rawSeverity === 'BERAT') {
-                pinColor = '#ef4444'; // Berat: Red
-                pulseHtml = `
-                    <div style="position: absolute; inset: -4px; border-radius: 50%; background-color: rgba(239, 68, 68, 0.4); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
-                `;
-            } else if (rawSeverity === 'RINGAN') {
-                pinColor = '#eab308'; // Ringan: Yellow/Gold
+            // Auto-fit to Kalimantan, active reports, or satellite observations
+            if (reports.length > 0 && !selectedCoordinates) {
+                const latLngs = reports.map(
+                    (r) => [r.latitude, r.longitude] as [number, number],
+                );
+                const bounds = L.latLngBounds(latLngs);
+                // Ensure island bounds remain comfortably visible
+                bounds.extend([-3.8, 109.2]);
+                bounds.extend([1.5, 117.8]);
+                map.fitBounds(bounds, { padding: [25, 25], maxZoom: 7 });
+            } else if (observations.length > 0 && !selectedCoordinates) {
+                const latLngs = observations.map(
+                    (o) => [o.latitude, o.longitude] as [number, number],
+                );
+                const bounds = L.latLngBounds(latLngs);
+                bounds.extend([-3.8, 109.2]);
+                bounds.extend([1.5, 117.8]);
+                map.fitBounds(bounds, { padding: [25, 25], maxZoom: 7 });
+            } else if (!selectedCoordinates) {
+                map.setView([-1.2, 114.0], 6);
             }
 
-            return L.divIcon({
-                className: 'custom-map-pin',
-                html: `
+            // Clear existing markers
+            layer.clearLayers();
+
+            // Icon Generators categorized by Severity (RINGAN, SEDANG, BERAT)
+            const createCitizenIcon = (rep: MapReport) => {
+                const rawSeverity =
+                    rep.severity?.toUpperCase() ||
+                    (rep.title.toLowerCase().includes('berat')
+                        ? 'BERAT'
+                        : rep.title.toLowerCase().includes('ringan')
+                          ? 'RINGAN'
+                          : 'SEDANG');
+
+                let pinColor = '#f97316'; // Sedang: Orange
+                let pulseHtml = '';
+
+                if (rawSeverity === 'BERAT') {
+                    pinColor = '#ef4444'; // Berat: Red
+                    pulseHtml = `
+                    <div style="position: absolute; inset: -4px; border-radius: 50%; background-color: rgba(239, 68, 68, 0.4); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+                `;
+                } else if (rawSeverity === 'RINGAN') {
+                    pinColor = '#eab308'; // Ringan: Yellow/Gold
+                }
+
+                return L.divIcon({
+                    className: 'custom-map-pin',
+                    html: `
                     <div style="position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;">
                         ${pulseHtml}
                         <div style="width: 20px; height: 20px; border-radius: 50%; background-color: ${pinColor}; border: 2.5px solid #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
@@ -177,16 +194,16 @@ export default function KarhutlaMap({
                         </div>
                     </div>
                 `,
-                iconSize: [22, 22],
-                iconAnchor: [11, 11],
-                popupAnchor: [0, -11],
-            });
-        };
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11],
+                    popupAnchor: [0, -11],
+                });
+            };
 
-        const createSatelliteIcon = () => {
-            return L.divIcon({
-                className: 'custom-map-pin-sat',
-                html: `
+            const createSatelliteIcon = () => {
+                return L.divIcon({
+                    className: 'custom-map-pin-sat',
+                    html: `
                     <div style="position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;">
                         <div style="position: absolute; inset: -4px; border-radius: 50%; background-color: rgba(249, 115, 22, 0.45); animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
                         <div style="width: 18px; height: 18px; border-radius: 50%; background-color: #f97316; border: 2.5px solid #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
@@ -194,58 +211,67 @@ export default function KarhutlaMap({
                         </div>
                     </div>
                 `,
-                iconSize: [22, 22],
-                iconAnchor: [11, 11],
-                popupAnchor: [0, -11],
-            });
-        };
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11],
+                    popupAnchor: [0, -11],
+                });
+            };
 
-        const createSelectedPickerIcon = () => {
-            return L.divIcon({
-                className: 'custom-selected-pin',
-                html: `
+            const createSelectedPickerIcon = () => {
+                return L.divIcon({
+                    className: 'custom-selected-pin',
+                    html: `
                     <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #10e57a; border: 3px solid #000000; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
                         <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #000000;"></div>
                     </div>
                 `,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12],
-                popupAnchor: [0, -12],
-            });
-        };
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12],
+                    popupAnchor: [0, -12],
+                });
+            };
 
-        // Invalidate map size after rendering to avoid blank/collapsed tiles
-        const timer = setTimeout(() => {
-            map.invalidateSize();
-        }, 200);
+            // Invalidate map size after rendering to avoid blank/collapsed tiles
+            const timer = setTimeout(() => {
+                map.invalidateSize();
+            }, 200);
 
-        // Render Reports
-        reports.forEach((rep) => {
-            const marker = L.marker([rep.latitude, rep.longitude], {
-                icon: createCitizenIcon(rep),
-            });
+            // Render Reports
+            reports.forEach((rep) => {
+                const marker = L.marker([rep.latitude, rep.longitude], {
+                    icon: createCitizenIcon(rep),
+                });
 
-            const rawSeverity = rep.severity?.toUpperCase() || (
-                rep.title.toLowerCase().includes('berat') ? 'BERAT' :
-                rep.title.toLowerCase().includes('ringan') ? 'RINGAN' : 'SEDANG'
-            );
+                const rawSeverity =
+                    rep.severity?.toUpperCase() ||
+                    (rep.title.toLowerCase().includes('berat')
+                        ? 'BERAT'
+                        : rep.title.toLowerCase().includes('ringan')
+                          ? 'RINGAN'
+                          : 'SEDANG');
 
-            const severityBadgeStyle = rawSeverity === 'BERAT'
-                ? 'background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;'
-                : rawSeverity === 'RINGAN'
-                ? 'background: #fefce8; color: #854d0e; border: 1px solid #fef08a;'
-                : 'background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa;';
+                const severityBadgeStyle =
+                    rawSeverity === 'BERAT'
+                        ? 'background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;'
+                        : rawSeverity === 'RINGAN'
+                          ? 'background: #fefce8; color: #854d0e; border: 1px solid #fef08a;'
+                          : 'background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa;';
 
-            const severityLabel = rawSeverity === 'BERAT' ? 'Berat (Kritis)' : rawSeverity === 'RINGAN' ? 'Ringan' : 'Sedang';
+                const severityLabel =
+                    rawSeverity === 'BERAT'
+                        ? 'Berat (Kritis)'
+                        : rawSeverity === 'RINGAN'
+                          ? 'Ringan'
+                          : 'Sedang';
 
-            const reportUrl = reportUrlPrefix
-                ? `${reportUrlPrefix}/${rep.id}`
-                : `/laporan-publik/${rep.tracking_code}`;
-            const reportButtonLabel = reportUrlPrefix
-                ? 'Review Laporan Admin →'
-                : 'Lihat Register Publik →';
+                const reportUrl = reportUrlPrefix
+                    ? `${reportUrlPrefix}/${rep.id}`
+                    : `/laporan-publik/${rep.tracking_code}`;
+                const reportButtonLabel = reportUrlPrefix
+                    ? 'Review Laporan Admin →'
+                    : 'Lihat Register Publik →';
 
-            const popupContent = `
+                const popupContent = `
                 <div style="min-width: 240px; font-family: Poppins, sans-serif; font-size: 12px; color: #111827; background: #ffffff; padding: 14px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 6px;">
                         <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #111827; font-family: monospace; background: #e5e7eb; padding: 2px 8px; border-radius: 9999px;">
@@ -269,23 +295,23 @@ export default function KarhutlaMap({
                 </div>
             `;
 
-            marker.bindPopup(popupContent);
-            layer.addLayer(marker);
-        });
-
-        // Render Satellite Observations (Hotspots)
-        observations.forEach((obs) => {
-            const marker = L.marker([obs.latitude, obs.longitude], {
-                icon: createSatelliteIcon(),
+                marker.bindPopup(popupContent);
+                layer.addLayer(marker);
             });
 
-            const simulationBadge = obs.is_simulated
-                ? `<div style="display: inline-block; background: #f3f4f6; border: 1px solid #e5e7eb; color: #111827; font-weight: 700; font-size: 9px; padding: 2px 6px; border-radius: 9999px; margin-bottom: 6px;">
+            // Render Satellite Observations (Hotspots)
+            observations.forEach((obs) => {
+                const marker = L.marker([obs.latitude, obs.longitude], {
+                    icon: createSatelliteIcon(),
+                });
+
+                const simulationBadge = obs.is_simulated
+                    ? `<div style="display: inline-block; background: #f3f4f6; border: 1px solid #e5e7eb; color: #111827; font-weight: 700; font-size: 9px; padding: 2px 6px; border-radius: 9999px; margin-bottom: 6px;">
                      DATA SIMULASI
                    </div>`
-                : '';
+                    : '';
 
-            const popupContent = `
+                const popupContent = `
                 <div style="min-width: 230px; font-family: Poppins, sans-serif; font-size: 12px; color: #111827; background: #ffffff; padding: 14px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);">
                     ${simulationBadge}
                     <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #111827; margin-bottom: 4px; font-family: monospace;">
@@ -306,32 +332,39 @@ export default function KarhutlaMap({
                 </div>
             `;
 
-            marker.bindPopup(popupContent);
-            layer.addLayer(marker);
-        });
-
-        // Render interactive Selected Coordinates Pin
-        if (selectedCoordinates) {
-            if (selectedMarkerRef.current) {
-                layer.removeLayer(selectedMarkerRef.current);
-            }
-            const selMarker = L.marker([selectedCoordinates.lat, selectedCoordinates.lng], {
-                icon: createSelectedPickerIcon(),
+                marker.bindPopup(popupContent);
+                layer.addLayer(marker);
             });
-            selMarker.bindPopup(`<strong>Titik Dipilih</strong><br/>Lat: ${selectedCoordinates.lat}<br/>Lng: ${selectedCoordinates.lng}`).openPopup();
-            layer.addLayer(selMarker);
-            selectedMarkerRef.current = selMarker;
-        }
 
-        // ResizeObserver to ensure map properly measures and never centers in ocean
-        if (mapContainerRef.current) {
-            resizeObserver = new ResizeObserver(() => {
-                if (mapInstanceRef.current) {
-                    mapInstanceRef.current.invalidateSize();
+            // Render interactive Selected Coordinates Pin
+            if (selectedCoordinates) {
+                if (selectedMarkerRef.current) {
+                    layer.removeLayer(selectedMarkerRef.current);
                 }
-            });
-            resizeObserver.observe(mapContainerRef.current);
-        }
+                const selMarker = L.marker(
+                    [selectedCoordinates.lat, selectedCoordinates.lng],
+                    {
+                        icon: createSelectedPickerIcon(),
+                    },
+                );
+                selMarker
+                    .bindPopup(
+                        `<strong>Titik Dipilih</strong><br/>Lat: ${selectedCoordinates.lat}<br/>Lng: ${selectedCoordinates.lng}`,
+                    )
+                    .openPopup();
+                layer.addLayer(selMarker);
+                selectedMarkerRef.current = selMarker;
+            }
+
+            // ResizeObserver to ensure map properly measures and never centers in ocean
+            if (mapContainerRef.current) {
+                resizeObserver = new ResizeObserver(() => {
+                    if (mapInstanceRef.current) {
+                        mapInstanceRef.current.invalidateSize();
+                    }
+                });
+                resizeObserver.observe(mapContainerRef.current);
+            }
         });
 
         return () => {
@@ -343,10 +376,18 @@ export default function KarhutlaMap({
                 resizeObserver.disconnect();
             }
         };
-    }, [reports, observations, selectedCoordinates, interactiveSelectMode, reportUrlPrefix]);
+    }, [
+        reports,
+        observations,
+        selectedCoordinates,
+        interactiveSelectMode,
+        reportUrlPrefix,
+    ]);
 
     return (
-        <div className={`relative flex flex-col overflow-hidden bg-neutral-100 ${className || 'border border-neutral-200 rounded-3xl'}`}>
+        <div
+            className={`relative flex flex-col overflow-hidden bg-neutral-100 ${className || 'rounded-3xl border border-neutral-200'}`}
+        >
             {/* Map Container */}
             <div
                 ref={mapContainerRef}
@@ -355,22 +396,24 @@ export default function KarhutlaMap({
                     width: '100%',
                     minHeight: minHeight ?? (height ? 'auto' : '350px'),
                 }}
-                className={`z-10 focus:outline-none ${height === '100%' ? 'flex-1 h-full' : ''}`}
+                className={`z-10 focus:outline-none ${height === '100%' ? 'h-full flex-1' : ''}`}
             />
 
             {/* Interactive Mode Helper overlay */}
             {interactiveSelectMode && (
-                <div className="absolute top-12 left-4 z-20 bg-white/95 border border-neutral-200 px-3.5 py-2 rounded-xl text-xs text-neutral-800 shadow-md font-sans">
+                <div className="absolute top-12 left-4 z-20 rounded-xl border border-neutral-200 bg-white/95 px-3.5 py-2 font-sans text-xs text-neutral-800 shadow-md">
                     Klik pada peta untuk menandai titik koordinat kejadian
                 </div>
             )}
 
             {/* Floating Severity Legend Overlay */}
             {showFloatingLegend && (
-                <div className="absolute bottom-2.5 left-2.5 z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-neutral-200/90 shadow-md flex items-center gap-3 text-[11px] font-semibold text-neutral-800 pointer-events-auto">
-                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Tingkat:</span>
+                <div className="pointer-events-auto absolute bottom-2.5 left-2.5 z-20 flex items-center gap-3 rounded-full border border-neutral-200/90 bg-white/95 px-3 py-1.5 text-[11px] font-semibold text-neutral-800 shadow-md backdrop-blur-md">
+                    <span className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase">
+                        Tingkat:
+                    </span>
                     <div className="flex items-center gap-1.5">
-                        <span className="size-2 rounded-full bg-red-500 ring-2 ring-red-200 animate-pulse" />
+                        <span className="size-2 animate-pulse rounded-full bg-red-500 ring-2 ring-red-200" />
                         <span>Berat</span>
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -386,28 +429,38 @@ export default function KarhutlaMap({
 
             {/* Map Legend */}
             {showLegend && (
-                <div className="bg-white/95 backdrop-blur-md border-t border-neutral-200/80 px-4 sm:px-6 py-3 text-xs text-neutral-700 flex flex-wrap items-center justify-between gap-3 z-20 font-sans">
+                <div className="z-20 flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200/80 bg-white/95 px-4 py-3 font-sans text-xs text-neutral-700 backdrop-blur-md sm:px-6">
                     <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
-                        <span className="font-bold text-neutral-900 text-[11px] uppercase tracking-wider">Kategori Karhutla:</span>
-                        <div className="flex items-center gap-1.5 bg-neutral-100/80 px-2.5 py-1 rounded-full border border-neutral-200/70">
-                            <span className="size-2 rounded-full bg-red-500 ring-2 ring-red-200 animate-pulse" />
-                            <span className="font-semibold text-neutral-800 text-[11px]">Berat (Kritis)</span>
+                        <span className="text-[11px] font-bold tracking-wider text-neutral-900 uppercase">
+                            Kategori Karhutla:
+                        </span>
+                        <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-100/80 px-2.5 py-1">
+                            <span className="size-2 animate-pulse rounded-full bg-red-500 ring-2 ring-red-200" />
+                            <span className="text-[11px] font-semibold text-neutral-800">
+                                Berat (Kritis)
+                            </span>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-neutral-100/80 px-2.5 py-1 rounded-full border border-neutral-200/70">
+                        <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-100/80 px-2.5 py-1">
                             <span className="size-2 rounded-full bg-orange-500" />
-                            <span className="font-semibold text-neutral-800 text-[11px]">Sedang</span>
+                            <span className="text-[11px] font-semibold text-neutral-800">
+                                Sedang
+                            </span>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-neutral-100/80 px-2.5 py-1 rounded-full border border-neutral-200/70">
+                        <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-100/80 px-2.5 py-1">
                             <span className="size-2 rounded-full bg-yellow-400" />
-                            <span className="font-semibold text-neutral-800 text-[11px]">Ringan</span>
+                            <span className="text-[11px] font-semibold text-neutral-800">
+                                Ringan
+                            </span>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-neutral-100/80 px-2.5 py-1 rounded-full border border-neutral-200/70">
+                        <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-100/80 px-2.5 py-1">
                             <span className="size-2 rounded-full bg-[#f97316]" />
-                            <span className="font-semibold text-neutral-800 text-[11px]">Hotspot Satelit</span>
+                            <span className="text-[11px] font-semibold text-neutral-800">
+                                Hotspot Satelit
+                            </span>
                         </div>
                     </div>
 
-                    <div className="text-[11px] text-neutral-600 flex items-center gap-1.5 bg-neutral-50 px-2.5 py-1 rounded-full border border-neutral-200/70 font-medium">
+                    <div className="flex items-center gap-1.5 rounded-full border border-neutral-200/70 bg-neutral-50 px-2.5 py-1 text-[11px] font-medium text-neutral-600">
                         <span className="size-1.5 rounded-full bg-emerald-500" />
                         <span>Cakupan: 5 Provinsi Kalimantan</span>
                     </div>

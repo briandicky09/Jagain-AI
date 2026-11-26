@@ -38,7 +38,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/reports/status-badge';
-import KarhutlaMap, { MapReport, MapObservation } from '@/components/karhutla-map';
+import KarhutlaMap, {
+    MapReport,
+    MapObservation,
+} from '@/components/karhutla-map';
 import {
     Banner,
     BannerIcon,
@@ -50,7 +53,10 @@ import { dashboard as adminDashboard } from '@/routes/admin';
 import { index as agenciesIndex } from '@/routes/admin/agencies';
 import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as categoriesIndex } from '@/routes/admin/categories';
-import { index as reportsIndex, show as reportShow } from '@/routes/admin/reports';
+import {
+    index as reportsIndex,
+    show as reportShow,
+} from '@/routes/admin/reports';
 import type { AuditLog, Report } from '@/types';
 
 type DashboardProps = {
@@ -69,6 +75,7 @@ type DashboardProps = {
         Report & {
             tracking_code?: string;
             report_number?: string;
+            regency_city?: string | null;
             creator?: { name: string; email?: string } | null;
             created_by_user?: { name: string; email?: string } | null;
         }
@@ -161,9 +168,14 @@ export default function AdminDashboard({
     const [activeBar, setActiveBar] = useState<number>(6); // Default July (index 6)
 
     // Forestry Geospatial & Analytics State
-    const [selectedForestProvince, setSelectedForestProvince] = useState<string>('');
-    const [selectedLayer, setSelectedLayer] = useState<'all' | 'gambut' | 'lindung' | 'satelit' | 'padam'>('all');
-    const [forestryTab, setForestryTab] = useState<'trend' | 'ecosystem' | 'provinces'>('trend');
+    const [selectedForestProvince, setSelectedForestProvince] =
+        useState<string>('');
+    const [selectedLayer, setSelectedLayer] = useState<
+        'all' | 'gambut' | 'lindung' | 'satelit' | 'padam'
+    >('all');
+    const [forestryTab, setForestryTab] = useState<
+        'trend' | 'ecosystem' | 'provinces'
+    >('trend');
     const [selectedMonthIndex, setSelectedMonthIndex] = useState<number>(6);
 
     const defaultForestryMetrics = {
@@ -223,13 +235,55 @@ export default function AdminDashboard({
             },
         ],
         monthly_trend: [
-            { month: 'Jan', damaged_ha: 18.2, recovered_ha: 16.4, incidents: 5, recovery_rate: 90.1 },
-            { month: 'Feb', damaged_ha: 24.5, recovered_ha: 21.0, incidents: 7, recovery_rate: 85.7 },
-            { month: 'Mar', damaged_ha: 39.8, recovered_ha: 31.5, incidents: 12, recovery_rate: 79.1 },
-            { month: 'Apr', damaged_ha: 29.4, recovered_ha: 24.2, incidents: 9, recovery_rate: 82.3 },
-            { month: 'Mei', damaged_ha: 35.1, recovered_ha: 28.0, incidents: 11, recovery_rate: 79.8 },
-            { month: 'Jun', damaged_ha: 48.6, recovered_ha: 36.2, incidents: 15, recovery_rate: 74.5 },
-            { month: 'Jul', damaged_ha: 54.2, recovered_ha: 38.8, incidents: 18, recovery_rate: 71.6 },
+            {
+                month: 'Jan',
+                damaged_ha: 18.2,
+                recovered_ha: 16.4,
+                incidents: 5,
+                recovery_rate: 90.1,
+            },
+            {
+                month: 'Feb',
+                damaged_ha: 24.5,
+                recovered_ha: 21.0,
+                incidents: 7,
+                recovery_rate: 85.7,
+            },
+            {
+                month: 'Mar',
+                damaged_ha: 39.8,
+                recovered_ha: 31.5,
+                incidents: 12,
+                recovery_rate: 79.1,
+            },
+            {
+                month: 'Apr',
+                damaged_ha: 29.4,
+                recovered_ha: 24.2,
+                incidents: 9,
+                recovery_rate: 82.3,
+            },
+            {
+                month: 'Mei',
+                damaged_ha: 35.1,
+                recovered_ha: 28.0,
+                incidents: 11,
+                recovery_rate: 79.8,
+            },
+            {
+                month: 'Jun',
+                damaged_ha: 48.6,
+                recovered_ha: 36.2,
+                incidents: 15,
+                recovery_rate: 74.5,
+            },
+            {
+                month: 'Jul',
+                damaged_ha: 54.2,
+                recovered_ha: 38.8,
+                incidents: 18,
+                recovery_rate: 71.6,
+            },
         ],
         provincial_gis: [
             {
@@ -248,7 +302,8 @@ export default function AdminDashboard({
                 recovered_ha: 31.4,
                 recovery_rate: 63.1,
                 risk_status: 'PRIORITAS TINGGI',
-                key_zones: 'Palangka Raya & Kotawaringin (Taman Nasional Sebangau)',
+                key_zones:
+                    'Palangka Raya & Kotawaringin (Taman Nasional Sebangau)',
             },
             {
                 province: 'Kalimantan Selatan',
@@ -257,7 +312,8 @@ export default function AdminDashboard({
                 recovered_ha: 12.0,
                 recovery_rate: 64.9,
                 risk_status: 'WASPADA',
-                key_zones: 'Banjarbaru & Barito Kuala (Ring-1 Bandara Syamsudin Noor)',
+                key_zones:
+                    'Banjarbaru & Barito Kuala (Ring-1 Bandara Syamsudin Noor)',
             },
             {
                 province: 'Kalimantan Timur',
@@ -287,7 +343,8 @@ export default function AdminDashboard({
         document.documentElement.style.colorScheme = 'light';
     }, []);
 
-    const pendingReviewTotal = statusCounts.submitted + statusCounts.under_review;
+    const pendingReviewTotal =
+        statusCounts.submitted + statusCounts.under_review;
 
     const formatDate = (isoString?: string | null) => {
         if (!isoString) return '-';
@@ -312,9 +369,15 @@ export default function AdminDashboard({
         return (
             searchQuery.trim() === '' ||
             report.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            report.tracking_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            report.location_description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            report.regency_city?.toLowerCase().includes(searchQuery.toLowerCase())
+            report.tracking_code
+                ?.toLowerCase()
+                .includes(searchQuery.toLowerCase()) ||
+            report.location_description
+                ?.toLowerCase()
+                .includes(searchQuery.toLowerCase()) ||
+            report.regency_city
+                ?.toLowerCase()
+                .includes(searchQuery.toLowerCase())
         );
     });
 
@@ -341,7 +404,8 @@ export default function AdminDashboard({
             longitude: 109.387234,
             province: 'Kalimantan Barat',
             regency_city: 'Kabupaten Kubu Raya',
-            location_description: 'Parit H. Ali, Dusun Mekar Sari, Desa Rasau Jaya Tiga',
+            location_description:
+                'Parit H. Ali, Dusun Mekar Sari, Desa Rasau Jaya Tiga',
             report_status: 'DISPATCHED',
             status_label: 'Penanganan Lapangan',
             fire_condition: 'OBSERVED_ACTIVE',
@@ -354,8 +418,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-BRT02',
             title: 'Titik Api Merambat ke Zona Penyangga Hutan Lindung Sebangau',
             category: { name: 'Hutan Lindung' },
-            latitude: -2.254100,
-            longitude: 113.882000,
+            latitude: -2.2541,
+            longitude: 113.882,
             province: 'Kalimantan Tengah',
             regency_city: 'Kota Palangka Raya',
             location_description: 'Kanal Primer Sebangau Km 16, Hutan Lindung',
@@ -371,8 +435,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-BRT03',
             title: 'Kebakaran Lahan Gambut Dekat Pemukiman Ambawang',
             category: { name: 'Lahan Gambut' },
-            latitude: -0.065200,
-            longitude: 109.412000,
+            latitude: -0.0652,
+            longitude: 109.412,
             province: 'Kalimantan Barat',
             regency_city: 'Kabupaten Kubu Raya',
             location_description: 'Jl. Trans Kalimantan Km 12, Sungai Ambawang',
@@ -390,8 +454,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-SDG01',
             title: 'Api Semak Belukar Merambat Sepanjang Parit Jalan Poros',
             category: { name: 'Semak Belukar' },
-            latitude: -0.089400,
-            longitude: 109.432100,
+            latitude: -0.0894,
+            longitude: 109.4321,
             province: 'Kalimantan Barat',
             regency_city: 'Kabupaten Kubu Raya',
             location_description: 'Jl. Poros Rasau Jaya - Ambawang Km 8',
@@ -407,8 +471,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-SDG02',
             title: 'Kebakaran Semak Terbuka Dekat Lahan Sawit Sampit',
             category: { name: 'Perkebunan' },
-            latitude: -2.535000,
-            longitude: 112.955000,
+            latitude: -2.535,
+            longitude: 112.955,
             province: 'Kalimantan Tengah',
             regency_city: 'Kabupaten Kotawaringin Timur',
             location_description: 'Desa Bagendang Hilir, Sampit',
@@ -424,8 +488,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-SDG03',
             title: 'Titik Panas Merambat di Semak Perkebunan Karet',
             category: { name: 'Perkebunan' },
-            latitude: -3.012500,
-            longitude: 114.765400,
+            latitude: -3.0125,
+            longitude: 114.7654,
             province: 'Kalimantan Selatan',
             regency_city: 'Kabupaten Barito Kuala',
             location_description: 'Kecamatan Marabahan, Barito Kuala',
@@ -443,8 +507,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-RGN01',
             title: 'Asap Tipis Terkendali di Lahan Terbuka Siantan',
             category: { name: 'Semak Belukar' },
-            latitude: -0.012000,
-            longitude: 109.345000,
+            latitude: -0.012,
+            longitude: 109.345,
             province: 'Kalimantan Barat',
             regency_city: 'Kota Pontianak',
             location_description: 'Siantan Tengah, Pontianak Utara',
@@ -460,8 +524,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-RGN02',
             title: 'Bara Terisolasi Sekat Parit di Sungai Kakap',
             category: { name: 'Lahan Gambut' },
-            latitude: -0.055000,
-            longitude: 109.185000,
+            latitude: -0.055,
+            longitude: 109.185,
             province: 'Kalimantan Barat',
             regency_city: 'Kabupaten Kubu Raya',
             location_description: 'Desa Sungai Kakap, parit keliling',
@@ -477,8 +541,8 @@ export default function AdminDashboard({
             tracking_code: 'JGN-202611-RGN03',
             title: 'Titik Panas Rendah Vegetasi Kering Banjarbaru',
             category: { name: 'Semak Belukar' },
-            latitude: -3.445000,
-            longitude: 114.835000,
+            latitude: -3.445,
+            longitude: 114.835,
             province: 'Kalimantan Selatan',
             regency_city: 'Kota Banjarbaru',
             location_description: 'Kawasan Cempaka, Banjarbaru',
@@ -608,16 +672,18 @@ export default function AdminDashboard({
         },
     ];
 
-    const effectiveMapReports = mapReports.length > 0 ? mapReports : defaultMapReports;
-    const effectiveMapObservations = (mapObservations && mapObservations.length > 0)
-        ? mapObservations
-        : defaultMapObservations;
+    const effectiveMapReports =
+        mapReports.length > 0 ? mapReports : defaultMapReports;
+    const effectiveMapObservations =
+        mapObservations && mapObservations.length > 0
+            ? mapObservations
+            : defaultMapObservations;
 
     return (
         <>
             <Head title="Dashboard - JAGAIN" />
 
-            <div className="min-h-screen bg-[#f8faf9] py-8 sm:py-10 px-5 sm:px-8 lg:px-10">
+            <div className="min-h-screen bg-[#f8faf9] px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 sm:gap-9">
                     {/* Flash Success & Error Notification */}
                     {flash?.success && (
@@ -626,7 +692,9 @@ export default function AdminDashboard({
                             className="flex items-center gap-3 rounded-2xl border border-leaf-green/30 bg-soft-green/80 p-4 text-sm text-forest-green shadow-xs transition-all"
                         >
                             <CheckCircle2 className="size-5 shrink-0 text-primary-green" />
-                            <span className="font-semibold">{flash.success}</span>
+                            <span className="font-semibold">
+                                {flash.success}
+                            </span>
                         </div>
                     )}
                     {flash?.error && (
@@ -643,19 +711,24 @@ export default function AdminDashboard({
                     {pendingReviewTotal > 0 && (
                         <Banner
                             inset
-                            className="rounded-2xl border border-emerald-200/80 bg-white p-4 sm:p-5 text-neutral-800 shadow-xs transition-all hover:border-emerald-300"
+                            className="rounded-2xl border border-emerald-200/80 bg-white p-4 text-neutral-800 shadow-xs transition-all hover:border-emerald-300 sm:p-5"
                         >
                             <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:items-center">
                                 <div className="flex items-start gap-3.5">
-                                    <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200/60 shrink-0">
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-50 text-emerald-800">
                                         <Clock className="size-5" />
                                     </div>
                                     <div className="space-y-0.5">
-                                        <BannerTitle className="text-sm sm:text-base font-bold text-neutral-900 tracking-tight">
-                                            Tindakan Diperlukan: {pendingReviewTotal} Laporan Menunggu Telaah
+                                        <BannerTitle className="text-sm font-bold tracking-tight text-neutral-900 sm:text-base">
+                                            Tindakan Diperlukan:{' '}
+                                            {pendingReviewTotal} Laporan
+                                            Menunggu Telaah
                                         </BannerTitle>
-                                        <p className="text-xs sm:text-[13px] text-neutral-500">
-                                            {statusCounts.submitted} laporan baru & {statusCounts.under_review} dalam telaah siap untuk validasi GPS dan disposisi OPD.
+                                        <p className="text-xs text-neutral-500 sm:text-[13px]">
+                                            {statusCounts.submitted} laporan
+                                            baru & {statusCounts.under_review}{' '}
+                                            dalam telaah siap untuk validasi GPS
+                                            dan disposisi OPD.
                                         </p>
                                     </div>
                                 </div>
@@ -664,10 +737,16 @@ export default function AdminDashboard({
                                         <Button
                                             asChild
                                             size="sm"
-                                            className="h-9 px-4 rounded-xl bg-[#0c4e33] hover:bg-[#073623] text-xs font-bold text-white shadow-xs"
+                                            className="h-9 rounded-xl bg-[#0c4e33] px-4 text-xs font-bold text-white shadow-xs hover:bg-[#073623]"
                                         >
                                             <Link
-                                                href={reportsIndex({ query: { status: 'SUBMITTED' } }).url}
+                                                href={
+                                                    reportsIndex({
+                                                        query: {
+                                                            status: 'SUBMITTED',
+                                                        },
+                                                    }).url
+                                                }
                                             >
                                                 Buka Antrean
                                             </Link>
@@ -682,9 +761,9 @@ export default function AdminDashboard({
                     {/* =========================================================================
                         1. DASHBOARD TOP HEADER
                         ========================================================================= */}
-                    <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+                            <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
                                 Dashboard
                             </h1>
                         </div>
@@ -696,18 +775,22 @@ export default function AdminDashboard({
                                     type="button"
                                     onClick={() =>
                                         setPeriod((p) =>
-                                            p === 'bulan' ? 'minggu' : p === 'minggu' ? 'tahun' : 'bulan'
+                                            p === 'bulan'
+                                                ? 'minggu'
+                                                : p === 'minggu'
+                                                  ? 'tahun'
+                                                  : 'bulan',
                                         )
                                     }
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-neutral-200/90 bg-white text-xs font-semibold text-neutral-700 shadow-2xs hover:bg-neutral-50 transition-colors cursor-pointer"
+                                    className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-neutral-200/90 bg-white px-4 py-2 text-xs font-semibold text-neutral-700 shadow-2xs transition-colors hover:bg-neutral-50"
                                 >
                                     <Calendar className="size-3.5 text-neutral-400" />
                                     <span>
                                         {period === 'bulan'
                                             ? 'Bulan Ini'
                                             : period === 'minggu'
-                                            ? 'Minggu Ini'
-                                            : 'Tahun Ini'}
+                                              ? 'Minggu Ini'
+                                              : 'Tahun Ini'}
                                     </span>
                                     <ChevronDown className="size-3.5 text-neutral-400" />
                                 </button>
@@ -719,43 +802,47 @@ export default function AdminDashboard({
                         2. TOP STAT CARDS (3 Cards Row: 1 Emerald Forest Hero + 2 Clean White Cards)
                         ========================================================================= */}
                     <section aria-label="Statistik Utama">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+                        <div className="grid grid-cols-1 gap-6 sm:gap-7 md:grid-cols-3">
                             {/* Card 1: Total Laporan (Deep Emerald Hero Card) */}
-                            <div className="group rounded-2xl bg-gradient-to-br from-[#0c4e33] via-[#094029] to-[#052819] text-white p-7 shadow-sm hover:shadow-md relative overflow-hidden flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5">
+                            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c4e33] via-[#094029] to-[#052819] p-7 text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                                 {/* Ambient Background Glow */}
-                                <div className="absolute -right-8 -bottom-8 size-32 rounded-full bg-emerald-400/10 blur-2xl pointer-events-none" />
+                                <div className="pointer-events-none absolute -right-8 -bottom-8 size-32 rounded-full bg-emerald-400/10 blur-2xl" />
 
-                                <div className="flex items-start justify-between relative z-10">
+                                <div className="relative z-10 flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="flex size-11 items-center justify-center rounded-xl bg-white/15 text-emerald-300 backdrop-blur-xs border border-white/10">
+                                        <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/15 text-emerald-300 backdrop-blur-xs">
                                             <Flame className="size-5" />
                                         </div>
                                         <div>
-                                            <h3 className="text-sm font-bold text-white">Total Laporan Karhutla</h3>
+                                            <h3 className="text-sm font-bold text-white">
+                                                Total Laporan Karhutla
+                                            </h3>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="my-6 flex items-baseline gap-2.5 relative z-10">
-                                    <span className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white tabular-nums">
+                                <div className="relative z-10 my-6 flex items-baseline gap-2.5">
+                                    <span className="text-3xl font-extrabold tracking-tight text-white tabular-nums lg:text-4xl">
                                         {statusCounts.total}
                                     </span>
-                                    <span className="text-sm font-semibold text-emerald-100">laporan</span>
+                                    <span className="text-sm font-semibold text-emerald-100">
+                                        laporan
+                                    </span>
                                 </div>
 
                                 <Link
                                     href={reportsIndex().url}
-                                    className="text-xs font-semibold text-emerald-100/90 hover:text-white pt-3.5 border-t border-white/15 transition-colors relative z-10 block"
+                                    className="relative z-10 block border-t border-white/15 pt-3.5 text-xs font-semibold text-emerald-100/90 transition-colors hover:text-white"
                                 >
                                     Lihat seluruh rincian
                                 </Link>
                             </div>
 
                             {/* Card 2: Perlu Review Awal (Clean White Card) */}
-                            <div className="group rounded-2xl border border-neutral-200/90 bg-white p-7 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between">
+                            <div className="group flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="flex size-11 items-center justify-center rounded-xl bg-amber-50 text-amber-800 border border-amber-200/60">
+                                        <div className="flex size-11 items-center justify-center rounded-xl border border-amber-200/60 bg-amber-50 text-amber-800">
                                             <Clock className="size-5" />
                                         </div>
                                         <div>
@@ -767,33 +854,37 @@ export default function AdminDashboard({
                                 </div>
 
                                 <div className="my-6 flex items-baseline gap-2.5">
-                                    <span className="text-3xl lg:text-4xl font-extrabold tracking-tight text-neutral-900 tabular-nums">
+                                    <span className="text-3xl font-extrabold tracking-tight text-neutral-900 tabular-nums lg:text-4xl">
                                         {pendingReviewTotal}
                                     </span>
                                     <span className="text-sm font-semibold text-neutral-500">
                                         laporan
                                     </span>
                                     {statusCounts.submitted > 0 && (
-                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70 ml-1">
-                                            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                        <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-emerald-200/70 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
+                                            <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
                                             {statusCounts.submitted} baru
                                         </span>
                                     )}
                                 </div>
 
                                 <Link
-                                    href={reportsIndex({ query: { status: 'SUBMITTED' } }).url}
-                                    className="text-xs font-semibold text-neutral-600 hover:text-neutral-900 pt-3.5 border-t border-neutral-100 transition-colors block"
+                                    href={
+                                        reportsIndex({
+                                            query: { status: 'SUBMITTED' },
+                                        }).url
+                                    }
+                                    className="block border-t border-neutral-100 pt-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:text-neutral-900"
                                 >
                                     Buka antrean telaah
                                 </Link>
                             </div>
 
                             {/* Card 3: Terverifikasi & OPD (Clean White Card) */}
-                            <div className="group rounded-2xl border border-neutral-200/90 bg-white p-7 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between">
+                            <div className="group flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                        <div className="flex size-11 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-50 text-emerald-800">
                                             <Send className="size-5" />
                                         </div>
                                         <div>
@@ -805,8 +896,9 @@ export default function AdminDashboard({
                                 </div>
 
                                 <div className="my-6 flex items-baseline gap-2.5">
-                                    <span className="text-3xl lg:text-4xl font-extrabold tracking-tight text-neutral-900 tabular-nums">
-                                        {statusCounts.verified + statusCounts.dispatched}
+                                    <span className="text-3xl font-extrabold tracking-tight text-neutral-900 tabular-nums lg:text-4xl">
+                                        {statusCounts.verified +
+                                            statusCounts.dispatched}
                                     </span>
                                     <span className="text-sm font-semibold text-neutral-500">
                                         laporan
@@ -815,7 +907,7 @@ export default function AdminDashboard({
 
                                 <Link
                                     href={agenciesIndex().url}
-                                    className="text-xs font-semibold text-neutral-600 hover:text-neutral-900 pt-3.5 border-t border-neutral-100 transition-colors block"
+                                    className="block border-t border-neutral-100 pt-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:text-neutral-900"
                                 >
                                     Pantau unit penanganan
                                 </Link>
@@ -826,24 +918,28 @@ export default function AdminDashboard({
                     {/* =========================================================================
                         2.5 INTEGRASI DATA & VISUALISASI GEOSPASIAL KEHUTANAN (GIS & KERUSAKAN/PEMULIHAN HUTAN)
                         ========================================================================= */}
-                    <section aria-label="Visualisasi Geospasial & Pemulihan Kehutanan" className="space-y-6 sm:space-y-7">
+                    <section
+                        aria-label="Visualisasi Geospasial & Pemulihan Kehutanan"
+                        className="space-y-6 sm:space-y-7"
+                    >
                         {/* Section Header */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200/80 pb-4">
+                        <div className="flex flex-col justify-between gap-4 border-b border-neutral-200/80 pb-4 sm:flex-row sm:items-center">
                             <div>
-                                <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
+                                <h2 className="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl">
                                     Data Geospasial & Pemulihan Hutan
                                 </h2>
-                                <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-                                    Pantauan luasan kebakaran, status pemulihan, dan sebaran titik api di Kalimantan.
+                                <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
+                                    Pantauan luasan kebakaran, status pemulihan,
+                                    dan sebaran titik api di Kalimantan.
                                 </p>
                             </div>
 
                             {/* View Switcher Tabs - Styled with Brand Deep Green (#0c4e33) */}
-                            <div className="flex items-center rounded-xl bg-neutral-100 p-1 border border-neutral-200/90 shrink-0 self-start sm:self-auto">
+                            <div className="flex shrink-0 items-center self-start rounded-xl border border-neutral-200/90 bg-neutral-100 p-1 sm:self-auto">
                                 <button
                                     type="button"
                                     onClick={() => setForestryTab('trend')}
-                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                                         forestryTab === 'trend'
                                             ? 'bg-[#0c4e33] text-white shadow-xs'
                                             : 'text-neutral-600 hover:text-neutral-900'
@@ -854,7 +950,7 @@ export default function AdminDashboard({
                                 <button
                                     type="button"
                                     onClick={() => setForestryTab('ecosystem')}
-                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                                         forestryTab === 'ecosystem'
                                             ? 'bg-[#0c4e33] text-white shadow-xs'
                                             : 'text-neutral-600 hover:text-neutral-900'
@@ -865,7 +961,7 @@ export default function AdminDashboard({
                                 <button
                                     type="button"
                                     onClick={() => setForestryTab('provinces')}
-                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                    className={`cursor-pointer rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                                         forestryTab === 'provinces'
                                             ? 'bg-[#0c4e33] text-white shadow-xs'
                                             : 'text-neutral-600 hover:text-neutral-900'
@@ -877,98 +973,131 @@ export default function AdminDashboard({
                         </div>
 
                         {/* Forestry Executive Metrics Strip (4 Clean Cards without AI Icon Boxes) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
                             {/* Card 1: Luas Terdampak */}
-                            <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs">
                                 <div>
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block">
+                                    <span className="block text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
                                         Estimasi Luas Terdampak
                                     </span>
                                     <div className="mt-3 flex items-baseline gap-1.5">
-                                        <span className="text-3xl font-extrabold text-neutral-900 tracking-tight tabular-nums">
-                                            {metrics.summary.total_damaged_hectares}
+                                        <span className="text-3xl font-extrabold tracking-tight text-neutral-900 tabular-nums">
+                                            {
+                                                metrics.summary
+                                                    .total_damaged_hectares
+                                            }
                                         </span>
-                                        <span className="text-sm font-semibold text-neutral-500">Ha</span>
+                                        <span className="text-sm font-semibold text-neutral-500">
+                                            Ha
+                                        </span>
                                     </div>
-                                    <p className="text-xs text-neutral-500 mt-1">
+                                    <p className="mt-1 text-xs text-neutral-500">
                                         Total estimasi area terbakar
                                     </p>
                                 </div>
-                                <div className="pt-3 mt-4 border-t border-neutral-100 flex items-center justify-between text-xs">
-                                    <span className="text-neutral-500 font-medium">Titik Pantau</span>
+                                <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
+                                    <span className="font-medium text-neutral-500">
+                                        Titik Pantau
+                                    </span>
                                     <span className="font-semibold text-neutral-800">
-                                        {metrics.summary.active_hotspots_count} Titik
+                                        {metrics.summary.active_hotspots_count}{' '}
+                                        Titik
                                     </span>
                                 </div>
                             </div>
 
                             {/* Card 2: Luas Terpulihkan (Highlighted with Website Core Forest Green #0c4e33) */}
-                            <div className="rounded-2xl border border-[#0c4e33]/30 bg-gradient-to-br from-emerald-50/50 via-white to-white p-5 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-[#0c4e33]/30 bg-gradient-to-br from-emerald-50/50 via-white to-white p-5 shadow-xs">
                                 <div>
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#0c4e33] block">
+                                    <span className="block text-[11px] font-bold tracking-wider text-[#0c4e33] uppercase">
                                         Luas Terpulihkan
                                     </span>
                                     <div className="mt-3 flex items-baseline gap-1.5">
-                                        <span className="text-3xl font-extrabold text-[#0c4e33] tracking-tight tabular-nums">
-                                            {metrics.summary.total_recovered_hectares}
+                                        <span className="text-3xl font-extrabold tracking-tight text-[#0c4e33] tabular-nums">
+                                            {
+                                                metrics.summary
+                                                    .total_recovered_hectares
+                                            }
                                         </span>
-                                        <span className="text-sm font-semibold text-emerald-700">Ha</span>
+                                        <span className="text-sm font-semibold text-emerald-700">
+                                            Ha
+                                        </span>
                                     </div>
-                                    <p className="text-xs text-neutral-600 mt-1">
+                                    <p className="mt-1 text-xs text-neutral-600">
                                         Tuntas dipadamkan & disekat
                                     </p>
                                 </div>
-                                <div className="pt-3 mt-4 border-t border-emerald-100 flex items-center justify-between text-xs">
-                                    <span className="text-neutral-600 font-medium">Tingkat Pemulihan</span>
-                                    <span className="font-bold text-[#0c4e33] bg-emerald-100/80 px-2 py-0.5 rounded-md text-[11px]">
-                                        {metrics.summary.recovery_rate_percentage}%
+                                <div className="mt-4 flex items-center justify-between border-t border-emerald-100 pt-3 text-xs">
+                                    <span className="font-medium text-neutral-600">
+                                        Tingkat Pemulihan
+                                    </span>
+                                    <span className="rounded-md bg-emerald-100/80 px-2 py-0.5 text-[11px] font-bold text-[#0c4e33]">
+                                        {
+                                            metrics.summary
+                                                .recovery_rate_percentage
+                                        }
+                                        %
                                     </span>
                                 </div>
                             </div>
 
                             {/* Card 3: Kawasan Api Aktif (Guaranteed Clean Line with NO text overlap) */}
-                            <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs">
                                 <div>
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block">
+                                    <span className="block text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
                                         Kawasan Api Aktif
                                     </span>
                                     <div className="mt-3 flex items-baseline gap-1.5">
-                                        <span className="text-3xl font-extrabold text-neutral-900 tracking-tight tabular-nums">
-                                            {metrics.summary.active_burning_hectares}
+                                        <span className="text-3xl font-extrabold tracking-tight text-neutral-900 tabular-nums">
+                                            {
+                                                metrics.summary
+                                                    .active_burning_hectares
+                                            }
                                         </span>
-                                        <span className="text-sm font-semibold text-neutral-500">Ha</span>
+                                        <span className="text-sm font-semibold text-neutral-500">
+                                            Ha
+                                        </span>
                                     </div>
-                                    <p className="text-xs text-neutral-500 mt-1">
+                                    <p className="mt-1 text-xs text-neutral-500">
                                         Operasi pemadaman satgas
                                     </p>
                                 </div>
-                                <div className="pt-3 mt-4 border-t border-neutral-100 flex items-center justify-between text-xs">
-                                    <span className="text-neutral-500 font-medium">Status</span>
-                                    <span className="font-bold text-amber-900 bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 rounded-full text-[11px] whitespace-nowrap">
+                                <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
+                                    <span className="font-medium text-neutral-500">
+                                        Status
+                                    </span>
+                                    <span className="rounded-full border border-amber-200/80 bg-amber-50 px-2.5 py-0.5 text-[11px] font-bold whitespace-nowrap text-amber-900">
                                         Dalam Penanganan
                                     </span>
                                 </div>
                             </div>
 
                             {/* Card 4: Sekat Kanal Gambut */}
-                            <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs">
                                 <div>
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block">
+                                    <span className="block text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
                                         Sekat Kanal Gambut
                                     </span>
                                     <div className="mt-3 flex items-baseline gap-1.5">
-                                        <span className="text-3xl font-extrabold text-neutral-900 tracking-tight tabular-nums">
-                                            {metrics.summary.peat_canal_blocks_active}
+                                        <span className="text-3xl font-extrabold tracking-tight text-neutral-900 tabular-nums">
+                                            {
+                                                metrics.summary
+                                                    .peat_canal_blocks_active
+                                            }
                                         </span>
-                                        <span className="text-sm font-semibold text-neutral-500">Unit</span>
+                                        <span className="text-sm font-semibold text-neutral-500">
+                                            Unit
+                                        </span>
                                     </div>
-                                    <p className="text-xs text-neutral-500 mt-1">
+                                    <p className="mt-1 text-xs text-neutral-500">
                                         Infrastruktur pembasahan gambut
                                     </p>
                                 </div>
-                                <div className="pt-3 mt-4 border-t border-neutral-100 flex items-center justify-between text-xs">
-                                    <span className="text-neutral-500 font-medium">Kondisi</span>
-                                    <span className="font-bold text-[#0c4e33] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md text-[11px] whitespace-nowrap">
+                                <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
+                                    <span className="font-medium text-neutral-500">
+                                        Kondisi
+                                    </span>
+                                    <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-bold whitespace-nowrap text-[#0c4e33]">
                                         Aktif Terawat
                                     </span>
                                 </div>
@@ -980,49 +1109,70 @@ export default function AdminDashboard({
                             Left: Full Interactive GIS Leaflet Map with Forestry Filters (7 cols)
                             Right: Dual Damage vs Recovery Visualizer Charts (5 cols)
                             ========================================================================= */}
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7 items-stretch">
+                        <div className="grid grid-cols-1 items-stretch gap-6 sm:gap-7 lg:grid-cols-12">
                             {/* LEFT COLUMN: Peta Geospasial Interaktif GIS Kehutanan (7 Cols) */}
-                            <div className="lg:col-span-7 rounded-2xl border border-neutral-200/90 bg-white p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs sm:p-6 lg:col-span-7">
                                 <div>
                                     {/* Map Header & Controls */}
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3">
+                                    <div className="flex flex-col justify-between gap-3 pb-3 sm:flex-row sm:items-center">
                                         <div>
                                             <div className="flex items-center gap-2">
                                                 <span className="relative flex size-2">
-                                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                                                    <span className="relative inline-flex rounded-full size-2 bg-[#0c4e33]" />
+                                                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                                                    <span className="relative inline-flex size-2 rounded-full bg-[#0c4e33]" />
                                                 </span>
                                                 <h3 className="text-base font-bold text-neutral-900">
-                                                    Peta Sebaran Titik Api & Lahan
+                                                    Peta Sebaran Titik Api &
+                                                    Lahan
                                                 </h3>
                                             </div>
-                                            <p className="text-xs text-neutral-500 mt-0.5">
-                                                Koordinat kejadian lapangan dan pantauan BMKG
+                                            <p className="mt-0.5 text-xs text-neutral-500">
+                                                Koordinat kejadian lapangan dan
+                                                pantauan BMKG
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center gap-2 shrink-0">
+                                        <div className="flex shrink-0 items-center gap-2">
                                             {/* Province Filter Dropdown */}
                                             <select
                                                 value={selectedForestProvince}
-                                                onChange={(e) => setSelectedForestProvince(e.target.value)}
-                                                className="h-8 px-2.5 text-xs font-semibold rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-white text-neutral-800 focus:outline-none focus:ring-2 focus:ring-[#0c4e33] cursor-pointer transition-colors"
+                                                onChange={(e) =>
+                                                    setSelectedForestProvince(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="h-8 cursor-pointer rounded-xl border border-neutral-200 bg-neutral-50 px-2.5 text-xs font-semibold text-neutral-800 transition-colors hover:bg-white focus:ring-2 focus:ring-[#0c4e33] focus:outline-none"
                                             >
-                                                <option value="">Semua Wilayah</option>
-                                                <option value="Kalimantan Barat">Kalbar</option>
-                                                <option value="Kalimantan Tengah">Kalteng</option>
-                                                <option value="Kalimantan Selatan">Kalsel</option>
-                                                <option value="Kalimantan Timur">Kaltim</option>
-                                                <option value="Kalimantan Utara">Kaltara</option>
+                                                <option value="">
+                                                    Semua Wilayah
+                                                </option>
+                                                <option value="Kalimantan Barat">
+                                                    Kalbar
+                                                </option>
+                                                <option value="Kalimantan Tengah">
+                                                    Kalteng
+                                                </option>
+                                                <option value="Kalimantan Selatan">
+                                                    Kalsel
+                                                </option>
+                                                <option value="Kalimantan Timur">
+                                                    Kaltim
+                                                </option>
+                                                <option value="Kalimantan Utara">
+                                                    Kaltara
+                                                </option>
                                             </select>
 
                                             <Button
                                                 asChild
                                                 size="sm"
                                                 variant="outline"
-                                                className="h-8 rounded-xl border border-neutral-200 text-xs font-semibold text-neutral-800 hover:bg-neutral-50 shadow-2xs"
+                                                className="h-8 rounded-xl border border-neutral-200 text-xs font-semibold text-neutral-800 shadow-2xs hover:bg-neutral-50"
                                             >
-                                                <Link href="/admin/map" className="flex items-center gap-1.5">
+                                                <Link
+                                                    href="/admin/map"
+                                                    className="flex items-center gap-1.5"
+                                                >
                                                     <Maximize2 className="size-3 text-[#0c4e33]" />
                                                     <span>Layar Penuh</span>
                                                 </Link>
@@ -1031,11 +1181,13 @@ export default function AdminDashboard({
                                     </div>
 
                                     {/* Quick Layer Filter Buttons - Matching Brand Forest Green */}
-                                    <div className="flex flex-wrap items-center gap-2 py-2.5 border-t border-neutral-100">
+                                    <div className="flex flex-wrap items-center gap-2 border-t border-neutral-100 py-2.5">
                                         <button
                                             type="button"
-                                            onClick={() => setSelectedLayer('all')}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                            onClick={() =>
+                                                setSelectedLayer('all')
+                                            }
+                                            className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                                                 selectedLayer === 'all'
                                                     ? 'bg-[#0c4e33] text-white shadow-xs'
                                                     : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70'
@@ -1045,8 +1197,10 @@ export default function AdminDashboard({
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => setSelectedLayer('gambut')}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                            onClick={() =>
+                                                setSelectedLayer('gambut')
+                                            }
+                                            className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                                                 selectedLayer === 'gambut'
                                                     ? 'bg-[#0c4e33] text-white shadow-xs'
                                                     : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70'
@@ -1056,8 +1210,10 @@ export default function AdminDashboard({
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => setSelectedLayer('lindung')}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                            onClick={() =>
+                                                setSelectedLayer('lindung')
+                                            }
+                                            className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                                                 selectedLayer === 'lindung'
                                                     ? 'bg-[#0c4e33] text-white shadow-xs'
                                                     : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70'
@@ -1067,8 +1223,10 @@ export default function AdminDashboard({
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => setSelectedLayer('satelit')}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                            onClick={() =>
+                                                setSelectedLayer('satelit')
+                                            }
+                                            className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                                                 selectedLayer === 'satelit'
                                                     ? 'bg-[#0c4e33] text-white shadow-xs'
                                                     : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70'
@@ -1078,8 +1236,10 @@ export default function AdminDashboard({
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => setSelectedLayer('padam')}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                            onClick={() =>
+                                                setSelectedLayer('padam')
+                                            }
+                                            className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                                                 selectedLayer === 'padam'
                                                     ? 'bg-[#0c4e33] text-white shadow-xs'
                                                     : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200/70'
@@ -1090,27 +1250,82 @@ export default function AdminDashboard({
                                     </div>
 
                                     {/* Leaflet Interactive Map View with Clean Spacing */}
-                                    <div className="mt-3.5 rounded-xl overflow-hidden border border-neutral-200/80 shadow-2xs relative">
+                                    <div className="relative mt-3.5 overflow-hidden rounded-xl border border-neutral-200/80 shadow-2xs">
                                         <KarhutlaMap
-                                            reports={effectiveMapReports.filter((r) => {
-                                                if (selectedForestProvince && r.province !== selectedForestProvince) return false;
-                                                if (selectedLayer === 'gambut') return r.category?.name?.toLowerCase().includes('gambut');
-                                                if (selectedLayer === 'lindung') return r.category?.name?.toLowerCase().includes('lindung');
-                                                if (selectedLayer === 'satelit') {
-                                                    const src = (r.fire_condition_source || '').toLowerCase();
-                                                    return src.includes('satelit') || src.includes('bmkg') || src.includes('nasa') || r.is_simulated;
-                                                }
-                                                if (selectedLayer === 'padam') {
-                                                    return (
-                                                        r.report_status === 'RESOLVED_VERIFIED' ||
-                                                        r.fire_condition === 'OBSERVED_EXTINGUISHED' ||
-                                                        r.fire_condition === 'OBSERVED_CONTAINED'
-                                                    );
-                                                }
-                                                return true;
-                                            })}
-                                            observations={(selectedLayer === 'padam' || selectedLayer === 'gambut' || selectedLayer === 'lindung' ? [] : effectiveMapObservations).filter((o) => {
-                                                if (selectedForestProvince && o.province !== selectedForestProvince) return false;
+                                            reports={effectiveMapReports.filter(
+                                                (r) => {
+                                                    if (
+                                                        selectedForestProvince &&
+                                                        r.province !==
+                                                            selectedForestProvince
+                                                    )
+                                                        return false;
+                                                    if (
+                                                        selectedLayer ===
+                                                        'gambut'
+                                                    )
+                                                        return r.category?.name
+                                                            ?.toLowerCase()
+                                                            .includes('gambut');
+                                                    if (
+                                                        selectedLayer ===
+                                                        'lindung'
+                                                    )
+                                                        return r.category?.name
+                                                            ?.toLowerCase()
+                                                            .includes(
+                                                                'lindung',
+                                                            );
+                                                    if (
+                                                        selectedLayer ===
+                                                        'satelit'
+                                                    ) {
+                                                        const src = (
+                                                            r.fire_condition_source ||
+                                                            ''
+                                                        ).toLowerCase();
+                                                        return (
+                                                            src.includes(
+                                                                'satelit',
+                                                            ) ||
+                                                            src.includes(
+                                                                'bmkg',
+                                                            ) ||
+                                                            src.includes(
+                                                                'nasa',
+                                                            ) ||
+                                                            r.is_simulated
+                                                        );
+                                                    }
+                                                    if (
+                                                        selectedLayer ===
+                                                        'padam'
+                                                    ) {
+                                                        return (
+                                                            r.report_status ===
+                                                                'RESOLVED_VERIFIED' ||
+                                                            r.fire_condition ===
+                                                                'OBSERVED_EXTINGUISHED' ||
+                                                            r.fire_condition ===
+                                                                'OBSERVED_CONTAINED'
+                                                        );
+                                                    }
+                                                    return true;
+                                                },
+                                            )}
+                                            observations={(selectedLayer ===
+                                                'padam' ||
+                                            selectedLayer === 'gambut' ||
+                                            selectedLayer === 'lindung'
+                                                ? []
+                                                : effectiveMapObservations
+                                            ).filter((o) => {
+                                                if (
+                                                    selectedForestProvince &&
+                                                    o.province !==
+                                                        selectedForestProvince
+                                                )
+                                                    return false;
                                                 return true;
                                             })}
                                             reportUrlPrefix="/admin/reports"
@@ -1124,29 +1339,29 @@ export default function AdminDashboard({
                                 </div>
 
                                 {/* GIS Map Footer & Color Legend */}
-                                <div className="mt-4 pt-3.5 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-500 font-sans">
+                                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-3.5 font-sans text-xs text-neutral-500">
                                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-                                        <span className="inline-flex items-center gap-1.5 font-medium text-neutral-700 whitespace-nowrap">
-                                            <span className="size-2 rounded-full bg-red-600 inline-block shrink-0" />
+                                        <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap text-neutral-700">
+                                            <span className="inline-block size-2 shrink-0 rounded-full bg-red-600" />
                                             <span>Api Aktif</span>
                                         </span>
-                                        <span className="inline-flex items-center gap-1.5 font-medium text-neutral-700 whitespace-nowrap">
-                                            <span className="size-2 rounded-full bg-amber-500 inline-block shrink-0" />
+                                        <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap text-neutral-700">
+                                            <span className="inline-block size-2 shrink-0 rounded-full bg-amber-500" />
                                             <span>Sekat Parit</span>
                                         </span>
-                                        <span className="inline-flex items-center gap-1.5 font-medium text-neutral-700 whitespace-nowrap">
-                                            <span className="size-2 rounded-full bg-[#0c4e33] inline-block shrink-0" />
+                                        <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap text-neutral-700">
+                                            <span className="inline-block size-2 shrink-0 rounded-full bg-[#0c4e33]" />
                                             <span>Padam</span>
                                         </span>
-                                        <span className="inline-flex items-center gap-1.5 font-medium text-neutral-700 whitespace-nowrap">
-                                            <span className="size-2 rounded-full bg-[#f97316] inline-block shrink-0" />
+                                        <span className="inline-flex items-center gap-1.5 font-medium whitespace-nowrap text-neutral-700">
+                                            <span className="inline-block size-2 shrink-0 rounded-full bg-[#f97316]" />
                                             <span>Satelit Hotspot</span>
                                         </span>
                                     </div>
 
                                     <Link
                                         href="/admin/map"
-                                        className="font-bold text-[#0c4e33] hover:underline flex items-center gap-1 shrink-0 whitespace-nowrap"
+                                        className="flex shrink-0 items-center gap-1 font-bold whitespace-nowrap text-[#0c4e33] hover:underline"
                                     >
                                         <span>Buka Peta Lengkap</span>
                                         <ArrowUpRight className="size-3.5" />
@@ -1155,55 +1370,95 @@ export default function AdminDashboard({
                             </div>
 
                             {/* RIGHT COLUMN: Visualisasi Statistik Kerusakan & Pemulihan Hutan (5 Cols) */}
-                            <div className="lg:col-span-5 rounded-2xl border border-neutral-200/90 bg-white p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+                            <div className="flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs sm:p-6 lg:col-span-5">
                                 <div>
                                     {/* Tab View 1: Tren Kerusakan vs Pemulihan Bulanan */}
                                     {forestryTab === 'trend' && (
                                         <div className="space-y-4">
-                                            <div className="flex items-center justify-between border-b border-neutral-100 pb-3 gap-2">
+                                            <div className="flex items-center justify-between gap-2 border-b border-neutral-100 pb-3">
                                                 <div className="min-w-0">
-                                                    <h3 className="text-base font-bold text-neutral-900 tracking-tight">
-                                                        Tren Kerusakan vs Pemulihan
+                                                    <h3 className="text-base font-bold tracking-tight text-neutral-900">
+                                                        Tren Kerusakan vs
+                                                        Pemulihan
                                                     </h3>
-                                                    <p className="text-xs text-neutral-500 mt-0.5 truncate">Perbandingan luas per bulan (Ha)</p>
+                                                    <p className="mt-0.5 truncate text-xs text-neutral-500">
+                                                        Perbandingan luas per
+                                                        bulan (Ha)
+                                                    </p>
                                                 </div>
-                                                <div className="flex items-center gap-3 text-xs font-semibold shrink-0">
-                                                    <span className="inline-flex items-center gap-1.5 text-neutral-700 whitespace-nowrap">
-                                                        <span className="size-2.5 rounded-xs bg-neutral-800 shrink-0" />
+                                                <div className="flex shrink-0 items-center gap-3 text-xs font-semibold">
+                                                    <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-neutral-700">
+                                                        <span className="size-2.5 shrink-0 rounded-xs bg-neutral-800" />
                                                         <span>Terbakar</span>
                                                     </span>
-                                                    <span className="inline-flex items-center gap-1.5 text-[#0c4e33] whitespace-nowrap">
-                                                        <span className="size-2.5 rounded-xs bg-[#0c4e33] shrink-0" />
+                                                    <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[#0c4e33]">
+                                                        <span className="size-2.5 shrink-0 rounded-xs bg-[#0c4e33]" />
                                                         <span>Pulih</span>
                                                     </span>
                                                 </div>
                                             </div>
 
                                             {/* Selected Month Spotlight Card */}
-                                            {metrics.monthly_trend[selectedMonthIndex] && (
-                                                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 flex items-center justify-between gap-3">
+                                            {metrics.monthly_trend[
+                                                selectedMonthIndex
+                                            ] && (
+                                                <div className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200/80 bg-neutral-50 p-3.5">
                                                     <div className="min-w-0">
-                                                        <div className="text-xs font-bold text-neutral-800 truncate">
-                                                            {metrics.monthly_trend[selectedMonthIndex].month} 2026
+                                                        <div className="truncate text-xs font-bold text-neutral-800">
+                                                            {
+                                                                metrics
+                                                                    .monthly_trend[
+                                                                    selectedMonthIndex
+                                                                ].month
+                                                            }{' '}
+                                                            2026
                                                         </div>
-                                                        <div className="text-[11px] text-neutral-500 mt-0.5 truncate">
-                                                            {metrics.monthly_trend[selectedMonthIndex].incidents} kejadian terdata
+                                                        <div className="mt-0.5 truncate text-[11px] text-neutral-500">
+                                                            {
+                                                                metrics
+                                                                    .monthly_trend[
+                                                                    selectedMonthIndex
+                                                                ].incidents
+                                                            }{' '}
+                                                            kejadian terdata
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-4 text-right shrink-0">
+                                                    <div className="flex shrink-0 items-center gap-4 text-right">
                                                         <div>
-                                                            <div className="text-xs font-bold text-neutral-900 tabular-nums whitespace-nowrap">
-                                                                {metrics.monthly_trend[selectedMonthIndex].damaged_ha} Ha
+                                                            <div className="text-xs font-bold whitespace-nowrap text-neutral-900 tabular-nums">
+                                                                {
+                                                                    metrics
+                                                                        .monthly_trend[
+                                                                        selectedMonthIndex
+                                                                    ].damaged_ha
+                                                                }{' '}
+                                                                Ha
                                                             </div>
-                                                            <div className="text-[10px] text-neutral-400 whitespace-nowrap">Terbakar</div>
+                                                            <div className="text-[10px] whitespace-nowrap text-neutral-400">
+                                                                Terbakar
+                                                            </div>
                                                         </div>
-                                                        <div className="h-6 w-px bg-neutral-200 shrink-0" />
+                                                        <div className="h-6 w-px shrink-0 bg-neutral-200" />
                                                         <div>
-                                                            <div className="text-xs font-black text-[#0c4e33] tabular-nums whitespace-nowrap">
-                                                                {metrics.monthly_trend[selectedMonthIndex].recovered_ha} Ha
+                                                            <div className="text-xs font-black whitespace-nowrap text-[#0c4e33] tabular-nums">
+                                                                {
+                                                                    metrics
+                                                                        .monthly_trend[
+                                                                        selectedMonthIndex
+                                                                    ]
+                                                                        .recovered_ha
+                                                                }{' '}
+                                                                Ha
                                                             </div>
-                                                            <div className="text-[10px] text-[#0c4e33] font-bold whitespace-nowrap">
-                                                                {metrics.monthly_trend[selectedMonthIndex].recovery_rate}% Pulih
+                                                            <div className="text-[10px] font-bold whitespace-nowrap text-[#0c4e33]">
+                                                                {
+                                                                    metrics
+                                                                        .monthly_trend[
+                                                                        selectedMonthIndex
+                                                                    ]
+                                                                        .recovery_rate
+                                                                }
+                                                                % Pulih
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1215,90 +1470,140 @@ export default function AdminDashboard({
                                                 {/* Chart Plot Area (176px tall with perfect 60 Ha ceiling) */}
                                                 <div className="relative h-44 w-full">
                                                     {/* Background Grid Lines & Non-Wrapping Y-Axis Labels */}
-                                                    <div className="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] text-neutral-400">
+                                                    <div className="pointer-events-none absolute inset-0 flex flex-col justify-between text-[10px] text-neutral-400">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="w-12 text-right shrink-0 whitespace-nowrap tabular-nums font-mono">60 Ha</span>
+                                                            <span className="w-12 shrink-0 text-right font-mono whitespace-nowrap tabular-nums">
+                                                                60 Ha
+                                                            </span>
                                                             <div className="flex-1 border-b border-dashed border-neutral-200" />
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="w-12 text-right shrink-0 whitespace-nowrap tabular-nums font-mono">40 Ha</span>
+                                                            <span className="w-12 shrink-0 text-right font-mono whitespace-nowrap tabular-nums">
+                                                                40 Ha
+                                                            </span>
                                                             <div className="flex-1 border-b border-dashed border-neutral-200" />
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="w-12 text-right shrink-0 whitespace-nowrap tabular-nums font-mono">20 Ha</span>
+                                                            <span className="w-12 shrink-0 text-right font-mono whitespace-nowrap tabular-nums">
+                                                                20 Ha
+                                                            </span>
                                                             <div className="flex-1 border-b border-dashed border-neutral-200" />
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="w-12 text-right shrink-0 whitespace-nowrap tabular-nums font-mono">0 Ha</span>
+                                                            <span className="w-12 shrink-0 text-right font-mono whitespace-nowrap tabular-nums">
+                                                                0 Ha
+                                                            </span>
                                                             <div className="flex-1 border-b border-neutral-300" />
                                                         </div>
                                                     </div>
 
                                                     {/* Comparative Bars Aligned 1:1 with Grid Lines */}
-                                                    <div className="relative h-full flex items-end justify-between pl-14 pr-1">
-                                                        {metrics.monthly_trend.map((m, idx) => {
-                                                            const isSelected = selectedMonthIndex === idx;
-                                                            const damagedPct = Math.min(Math.round((m.damaged_ha / 60) * 100), 100);
-                                                            const recoveredPct = Math.min(Math.round((m.recovered_ha / 60) * 100), 100);
+                                                    <div className="relative flex h-full items-end justify-between pr-1 pl-14">
+                                                        {metrics.monthly_trend.map(
+                                                            (m, idx) => {
+                                                                const isSelected =
+                                                                    selectedMonthIndex ===
+                                                                    idx;
+                                                                const damagedPct =
+                                                                    Math.min(
+                                                                        Math.round(
+                                                                            (m.damaged_ha /
+                                                                                60) *
+                                                                                100,
+                                                                        ),
+                                                                        100,
+                                                                    );
+                                                                const recoveredPct =
+                                                                    Math.min(
+                                                                        Math.round(
+                                                                            (m.recovered_ha /
+                                                                                60) *
+                                                                                100,
+                                                                        ),
+                                                                        100,
+                                                                    );
 
-                                                            return (
-                                                                <div
-                                                                    key={m.month}
-                                                                    onClick={() => setSelectedMonthIndex(idx)}
-                                                                    className={`flex flex-col items-center flex-1 h-full justify-end cursor-pointer group px-0.5 rounded-lg transition-colors ${
-                                                                        isSelected ? 'bg-neutral-100/90 ring-1 ring-[#0c4e33]/25' : 'hover:bg-neutral-50'
-                                                                    }`}
-                                                                >
-                                                                    <div className="flex items-end justify-center gap-1 sm:gap-1.5 w-full h-full pb-0.5">
-                                                                        {/* Damaged Area Bar */}
-                                                                        <div
-                                                                            style={{ height: `${damagedPct}%` }}
-                                                                            className={`w-2.5 sm:w-3.5 rounded-t-xs transition-all duration-300 ${
-                                                                                isSelected
-                                                                                    ? 'bg-neutral-900 shadow-xs'
-                                                                                    : 'bg-neutral-300 group-hover:bg-neutral-400'
-                                                                            }`}
-                                                                            title={`Terbakar: ${m.damaged_ha} Ha`}
-                                                                        />
-                                                                        {/* Recovered Area Bar */}
-                                                                        <div
-                                                                            style={{ height: `${recoveredPct}%` }}
-                                                                            className={`w-2.5 sm:w-3.5 rounded-t-xs transition-all duration-300 ${
-                                                                                isSelected
-                                                                                    ? 'bg-[#0c4e33] shadow-xs ring-1 ring-[#10e57a]'
-                                                                                    : 'bg-emerald-400 group-hover:bg-emerald-500'
-                                                                            }`}
-                                                                            title={`Terpulihkan: ${m.recovered_ha} Ha`}
-                                                                        />
+                                                                return (
+                                                                    <div
+                                                                        key={
+                                                                            m.month
+                                                                        }
+                                                                        onClick={() =>
+                                                                            setSelectedMonthIndex(
+                                                                                idx,
+                                                                            )
+                                                                        }
+                                                                        className={`group flex h-full flex-1 cursor-pointer flex-col items-center justify-end rounded-lg px-0.5 transition-colors ${
+                                                                            isSelected
+                                                                                ? 'bg-neutral-100/90 ring-1 ring-[#0c4e33]/25'
+                                                                                : 'hover:bg-neutral-50'
+                                                                        }`}
+                                                                    >
+                                                                        <div className="flex h-full w-full items-end justify-center gap-1 pb-0.5 sm:gap-1.5">
+                                                                            {/* Damaged Area Bar */}
+                                                                            <div
+                                                                                style={{
+                                                                                    height: `${damagedPct}%`,
+                                                                                }}
+                                                                                className={`w-2.5 rounded-t-xs transition-all duration-300 sm:w-3.5 ${
+                                                                                    isSelected
+                                                                                        ? 'bg-neutral-900 shadow-xs'
+                                                                                        : 'bg-neutral-300 group-hover:bg-neutral-400'
+                                                                                }`}
+                                                                                title={`Terbakar: ${m.damaged_ha} Ha`}
+                                                                            />
+                                                                            {/* Recovered Area Bar */}
+                                                                            <div
+                                                                                style={{
+                                                                                    height: `${recoveredPct}%`,
+                                                                                }}
+                                                                                className={`w-2.5 rounded-t-xs transition-all duration-300 sm:w-3.5 ${
+                                                                                    isSelected
+                                                                                        ? 'bg-[#0c4e33] shadow-xs ring-1 ring-[#10e57a]'
+                                                                                        : 'bg-emerald-400 group-hover:bg-emerald-500'
+                                                                                }`}
+                                                                                title={`Terpulihkan: ${m.recovered_ha} Ha`}
+                                                                            />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                                );
+                                                            },
+                                                        )}
                                                     </div>
                                                 </div>
 
                                                 {/* X-Axis Month Labels Row Sitting Cleanly Below 0 Ha Grid Line */}
-                                                <div className="flex items-center justify-between pl-14 pr-1 pt-2">
-                                                    {metrics.monthly_trend.map((m, idx) => {
-                                                        const isSelected = selectedMonthIndex === idx;
-                                                        return (
-                                                            <div
-                                                                key={`month-label-${m.month}`}
-                                                                onClick={() => setSelectedMonthIndex(idx)}
-                                                                className="flex-1 text-center cursor-pointer"
-                                                            >
-                                                                <span
-                                                                    className={`text-[11px] block transition-colors ${
-                                                                        isSelected
-                                                                            ? 'font-bold text-[#0c4e33]'
-                                                                            : 'font-medium text-neutral-400 hover:text-neutral-700'
-                                                                    }`}
+                                                <div className="flex items-center justify-between pt-2 pr-1 pl-14">
+                                                    {metrics.monthly_trend.map(
+                                                        (m, idx) => {
+                                                            const isSelected =
+                                                                selectedMonthIndex ===
+                                                                idx;
+                                                            return (
+                                                                <div
+                                                                    key={`month-label-${m.month}`}
+                                                                    onClick={() =>
+                                                                        setSelectedMonthIndex(
+                                                                            idx,
+                                                                        )
+                                                                    }
+                                                                    className="flex-1 cursor-pointer text-center"
                                                                 >
-                                                                    {m.month}
-                                                                </span>
-                                                            </div>
-                                                        );
-                                                    })}
+                                                                    <span
+                                                                        className={`block text-[11px] transition-colors ${
+                                                                            isSelected
+                                                                                ? 'font-bold text-[#0c4e33]'
+                                                                                : 'font-medium text-neutral-400 hover:text-neutral-700'
+                                                                        }`}
+                                                                    >
+                                                                        {
+                                                                            m.month
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            );
+                                                        },
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -1308,45 +1613,66 @@ export default function AdminDashboard({
                                     {forestryTab === 'ecosystem' && (
                                         <div className="space-y-3.5">
                                             <div className="border-b border-neutral-100 pb-2.5">
-                                                <h3 className="text-base font-bold text-neutral-900 tracking-tight">
-                                                    Kerusakan Berdasarkan Tutupan Lahan
+                                                <h3 className="text-base font-bold tracking-tight text-neutral-900">
+                                                    Kerusakan Berdasarkan
+                                                    Tutupan Lahan
                                                 </h3>
-                                                <p className="text-xs text-neutral-500 mt-0.5">Klasifikasi area terdampak karhutla</p>
+                                                <p className="mt-0.5 text-xs text-neutral-500">
+                                                    Klasifikasi area terdampak
+                                                    karhutla
+                                                </p>
                                             </div>
 
                                             <div className="space-y-2.5">
-                                                {metrics.ecosystem_breakdown.map((eco) => (
-                                                    <div
-                                                        key={eco.slug}
-                                                        className="p-3 rounded-xl border border-neutral-200/80 bg-neutral-50/70 hover:bg-neutral-100/80 transition-all space-y-1.5"
-                                                    >
-                                                        <div className="flex items-center justify-between">
-                                                            <span className="font-bold text-xs text-neutral-900">
-                                                                {eco.name}
-                                                            </span>
-                                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200 whitespace-nowrap">
-                                                                {eco.carbon_risk}
-                                                            </span>
-                                                        </div>
+                                                {metrics.ecosystem_breakdown.map(
+                                                    (eco) => (
+                                                        <div
+                                                            key={eco.slug}
+                                                            className="space-y-1.5 rounded-xl border border-neutral-200/80 bg-neutral-50/70 p-3 transition-all hover:bg-neutral-100/80"
+                                                        >
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-bold text-neutral-900">
+                                                                    {eco.name}
+                                                                </span>
+                                                                <span className="rounded-full border border-neutral-200 bg-neutral-100 px-2 py-0.5 text-[10px] font-bold whitespace-nowrap text-neutral-700">
+                                                                    {
+                                                                        eco.carbon_risk
+                                                                    }
+                                                                </span>
+                                                            </div>
 
-                                                        <div className="flex items-center justify-between text-xs text-neutral-600">
-                                                            <span className="text-[11px] whitespace-nowrap">
-                                                                {eco.damaged_ha} Ha Terbakar • {eco.recovered_ha} Ha Pulih
-                                                            </span>
-                                                            <span className="font-bold text-[#0c4e33] tabular-nums whitespace-nowrap">
-                                                                {eco.recovery_rate}%
-                                                            </span>
-                                                        </div>
+                                                            <div className="flex items-center justify-between text-xs text-neutral-600">
+                                                                <span className="text-[11px] whitespace-nowrap">
+                                                                    {
+                                                                        eco.damaged_ha
+                                                                    }{' '}
+                                                                    Ha Terbakar
+                                                                    •{' '}
+                                                                    {
+                                                                        eco.recovered_ha
+                                                                    }{' '}
+                                                                    Ha Pulih
+                                                                </span>
+                                                                <span className="font-bold whitespace-nowrap text-[#0c4e33] tabular-nums">
+                                                                    {
+                                                                        eco.recovery_rate
+                                                                    }
+                                                                    %
+                                                                </span>
+                                                            </div>
 
-                                                        {/* Progress recovery bar with Brand Forest Green */}
-                                                        <div className="h-1.5 w-full rounded-full bg-neutral-200 overflow-hidden">
-                                                            <div
-                                                                className="h-full rounded-full bg-[#0c4e33] transition-all duration-500"
-                                                                style={{ width: `${eco.recovery_rate}%` }}
-                                                            />
+                                                            {/* Progress recovery bar with Brand Forest Green */}
+                                                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200">
+                                                                <div
+                                                                    className="h-full rounded-full bg-[#0c4e33] transition-all duration-500"
+                                                                    style={{
+                                                                        width: `${eco.recovery_rate}%`,
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ),
+                                                )}
                                             </div>
                                         </div>
                                     )}
@@ -1355,58 +1681,82 @@ export default function AdminDashboard({
                                     {forestryTab === 'provinces' && (
                                         <div className="space-y-3">
                                             <div className="border-b border-neutral-100 pb-2.5">
-                                                <h3 className="text-base font-bold text-neutral-900 tracking-tight">
-                                                    Matriks 5 Provinsi Kalimantan
+                                                <h3 className="text-base font-bold tracking-tight text-neutral-900">
+                                                    Matriks 5 Provinsi
+                                                    Kalimantan
                                                 </h3>
-                                                <p className="text-xs text-neutral-500 mt-0.5">Distribusi wilayah dan progres pemadaman</p>
+                                                <p className="mt-0.5 text-xs text-neutral-500">
+                                                    Distribusi wilayah dan
+                                                    progres pemadaman
+                                                </p>
                                             </div>
 
-                                            <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
-                                                {metrics.provincial_gis.map((prov) => (
-                                                    <div
-                                                        key={prov.province}
-                                                        className="p-3 rounded-xl border border-neutral-200/80 bg-neutral-50/70 space-y-1.5"
-                                                    >
-                                                        <div className="flex items-center justify-between">
-                                                            <span className="font-bold text-xs text-neutral-900">
-                                                                {prov.province}
-                                                            </span>
-                                                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${
-                                                                prov.risk_status === 'PRIORITAS TINGGI'
-                                                                    ? 'bg-red-50 text-red-700 border border-red-200'
-                                                                    : prov.risk_status === 'WASPADA'
-                                                                    ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                                                    : 'bg-emerald-50 text-[#0c4e33] border border-emerald-200'
-                                                            }`}>
-                                                                {prov.risk_status}
-                                                            </span>
+                                            <div className="max-h-[300px] space-y-2.5 overflow-y-auto pr-1">
+                                                {metrics.provincial_gis.map(
+                                                    (prov) => (
+                                                        <div
+                                                            key={prov.province}
+                                                            className="space-y-1.5 rounded-xl border border-neutral-200/80 bg-neutral-50/70 p-3"
+                                                        >
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-bold text-neutral-900">
+                                                                    {
+                                                                        prov.province
+                                                                    }
+                                                                </span>
+                                                                <span
+                                                                    className={`rounded-full px-2 py-0.5 text-[9px] font-bold whitespace-nowrap ${
+                                                                        prov.risk_status ===
+                                                                        'PRIORITAS TINGGI'
+                                                                            ? 'border border-red-200 bg-red-50 text-red-700'
+                                                                            : prov.risk_status ===
+                                                                                'WASPADA'
+                                                                              ? 'border border-amber-200 bg-amber-50 text-amber-800'
+                                                                              : 'border border-emerald-200 bg-emerald-50 text-[#0c4e33]'
+                                                                    }`}
+                                                                >
+                                                                    {
+                                                                        prov.risk_status
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="truncate text-[11px] text-neutral-500">
+                                                                {prov.key_zones}
+                                                            </div>
+                                                            <div className="flex items-center justify-between pt-1 text-xs">
+                                                                <span className="text-[11px] whitespace-nowrap text-neutral-500">
+                                                                    {
+                                                                        prov.damaged_ha
+                                                                    }{' '}
+                                                                    Ha (Pulih{' '}
+                                                                    {
+                                                                        prov.recovered_ha
+                                                                    }{' '}
+                                                                    Ha)
+                                                                </span>
+                                                                <span className="font-bold whitespace-nowrap text-[#0c4e33] tabular-nums">
+                                                                    {
+                                                                        prov.recovery_rate
+                                                                    }
+                                                                    % Selesai
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div className="text-[11px] text-neutral-500 truncate">
-                                                            {prov.key_zones}
-                                                        </div>
-                                                        <div className="flex items-center justify-between text-xs pt-1">
-                                                            <span className="text-neutral-500 text-[11px] whitespace-nowrap">
-                                                                {prov.damaged_ha} Ha (Pulih {prov.recovered_ha} Ha)
-                                                            </span>
-                                                            <span className="font-bold text-[#0c4e33] tabular-nums whitespace-nowrap">
-                                                                {prov.recovery_rate}% Selesai
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                ))}
+                                                    ),
+                                                )}
                                             </div>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Right Column Footer */}
-                                <div className="mt-4 pt-3.5 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
-                                    <span className="text-neutral-400 text-[11px] whitespace-nowrap">
+                                <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3.5 text-xs text-neutral-500">
+                                    <span className="text-[11px] whitespace-nowrap text-neutral-400">
                                         Data terintegrasi BPBD & Satelit
                                     </span>
                                     <Link
                                         href={reportsIndex().url}
-                                        className="font-bold text-[#0c4e33] hover:underline whitespace-nowrap"
+                                        className="font-bold whitespace-nowrap text-[#0c4e33] hover:underline"
                                     >
                                         Buka Register Terbuka
                                     </Link>
@@ -1423,11 +1773,11 @@ export default function AdminDashboard({
                         className="rounded-2xl border border-neutral-200/90 bg-white p-7 shadow-xs"
                     >
                         {/* Table Header Controls */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-neutral-100">
+                        <div className="flex flex-col justify-between gap-4 border-b border-neutral-100 pb-5 sm:flex-row sm:items-center">
                             <div>
                                 <h2
                                     id="recent-activities-heading"
-                                    className="text-base sm:text-lg font-bold text-neutral-900"
+                                    className="text-base font-bold text-neutral-900 sm:text-lg"
                                 >
                                     Laporan Terbaru
                                 </h2>
@@ -1436,13 +1786,15 @@ export default function AdminDashboard({
                             <div className="flex items-center gap-2.5">
                                 {/* Search Input */}
                                 <div className="relative">
-                                    <Search className="size-3.5 absolute left-3 top-2.5 text-neutral-400" />
+                                    <Search className="absolute top-2.5 left-3 size-3.5 text-neutral-400" />
                                     <input
                                         type="text"
                                         value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
                                         placeholder="Cari kode atau lokasi..."
-                                        className="h-9 rounded-xl border border-neutral-200 bg-neutral-50 pl-8 pr-3 text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all w-52 sm:w-64"
+                                        className="h-9 w-52 rounded-xl border border-neutral-200 bg-neutral-50 pr-3 pl-8 text-xs text-neutral-800 transition-all placeholder:text-neutral-400 focus:ring-1 focus:ring-emerald-500/50 focus:outline-none sm:w-64"
                                     />
                                 </div>
                             </div>
@@ -1451,116 +1803,215 @@ export default function AdminDashboard({
                         {/* Recent Reports Table */}
                         {filteredReports.length === 0 ? (
                             <div className="py-12 text-center">
-                                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-800 mb-3">
+                                <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-800">
                                     <CheckCircle2 className="size-6" />
                                 </div>
                                 <h3 className="text-sm font-bold text-neutral-900">
                                     Tidak Ada Laporan Ditemukan
                                 </h3>
-                                <p className="text-xs text-neutral-500 mt-1 max-w-sm mx-auto">
+                                <p className="mx-auto mt-1 max-w-sm text-xs text-neutral-500">
                                     {searchQuery
                                         ? 'Coba ubah kata kunci pencarian.'
                                         : 'Seluruh laporan yang masuk saat ini telah diproses tuntas.'}
                                 </p>
                             </div>
                         ) : (
-                            <div className="overflow-x-auto -mx-2 sm:mx-0">
-                                <table className="w-full min-w-[960px] text-center text-xs">
-                                    <thead>
-                                        <tr className="border-b border-neutral-100 text-neutral-500 text-[11px] font-semibold">
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[260px] text-center">Laporan</th>
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[150px] text-center">Kode Laporan</th>
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[150px] text-center">Tanggal & Waktu</th>
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[220px] text-center">Lokasi / Wilayah</th>
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[140px] text-center">Status</th>
-                                            <th className="py-3.5 px-4 whitespace-nowrap min-w-[100px] text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-neutral-100">
-                                        {filteredReports.map((report) => {
-                                            const code =
-                                                report.tracking_code ||
-                                                report.report_number ||
-                                                `JGN-2026-${String(report.id).padStart(3, '0')}`;
-                                            return (
-                                                <tr
-                                                    key={report.id}
-                                                    className="group hover:bg-[#fafbfa] transition-colors"
+                            <>
+                                {/* Mobile Card Layout (< md) */}
+                                <div className="space-y-3 md:hidden">
+                                    {filteredReports.map((report) => {
+                                        const code =
+                                            report.tracking_code ||
+                                            report.report_number ||
+                                            `JGN-2026-${String(report.id).padStart(3, '0')}`;
+                                        return (
+                                            <div
+                                                key={report.id}
+                                                className="space-y-2.5 rounded-xl border border-neutral-200 bg-neutral-50/50 p-4"
+                                            >
+                                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                                    <span className="rounded-md border border-neutral-200 bg-white px-2 py-0.5 font-mono text-[11px] font-bold text-neutral-800">
+                                                        {code}
+                                                    </span>
+                                                    <StatusBadge
+                                                        status={
+                                                            report.report_status as any
+                                                        }
+                                                        variant="neutral"
+                                                    />
+                                                </div>
+                                                <Link
+                                                    href={reportShow(report.id).url}
+                                                    className="block text-sm font-bold text-neutral-900 hover:text-[#0c4e33]"
                                                 >
-                                                    <td className="py-4 px-4 min-w-[260px] text-center">
-                                                        <div className="inline-flex items-center gap-3 text-left">
-                                                            <div className="size-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 border border-emerald-200/60">
-                                                                <Flame className="size-4.5" />
+                                                    {report.title.replace(
+                                                        /^\[(BERAT|SEDANG|RINGAN)\]\s*/i,
+                                                        '',
+                                                    )}
+                                                </Link>
+                                                <div className="flex items-start gap-1.5 text-xs text-neutral-600">
+                                                    <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-700" />
+                                                    <span>
+                                                        {report.location_description ||
+                                                            report.regency_city ||
+                                                            'Kalimantan Barat'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between border-t border-neutral-200/70 pt-2">
+                                                    <span className="font-mono text-[11px] text-neutral-500">
+                                                        {formatDate(report.created_at)}
+                                                    </span>
+                                                    <Button
+                                                        asChild
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="h-8 rounded-lg border-emerald-200 px-3 text-xs font-semibold text-[#0c4e33]"
+                                                    >
+                                                        <Link href={reportShow(report.id).url}>
+                                                            Tinjau
+                                                        </Link>
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Desktop Table View (>= md) */}
+                                <div className="hidden overflow-x-auto md:block">
+                                    <table className="w-full text-center text-xs">
+                                        <thead>
+                                            <tr className="border-b border-neutral-100 text-[11px] font-semibold text-neutral-500">
+                                                <th className="px-3 py-3.5 text-left whitespace-nowrap">
+                                                    Laporan
+                                                </th>
+                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                    Kode Laporan
+                                                </th>
+                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                    Tanggal & Waktu
+                                                </th>
+                                                <th className="px-3 py-3.5 text-left whitespace-nowrap">
+                                                    Lokasi / Wilayah
+                                                </th>
+                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                    Status
+                                                </th>
+                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                    Aksi
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-neutral-100">
+                                            {filteredReports.map((report) => {
+                                                const code =
+                                                    report.tracking_code ||
+                                                    report.report_number ||
+                                                    `JGN-2026-${String(report.id).padStart(3, '0')}`;
+                                                return (
+                                                    <tr
+                                                        key={report.id}
+                                                        className="group transition-colors hover:bg-[#fafbfa]"
+                                                    >
+                                                        <td className="max-w-[260px] px-3 py-4 text-left">
+                                                            <div className="flex items-center gap-2.5 text-left">
+                                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-50 text-emerald-800">
+                                                                    <Flame className="size-4" />
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <Link
+                                                                        href={
+                                                                            reportShow(
+                                                                                report.id,
+                                                                            ).url
+                                                                        }
+                                                                        className="line-clamp-2 block leading-snug font-bold text-neutral-900 transition-colors hover:text-[#0c4e33]"
+                                                                    >
+                                                                        {report.title.replace(
+                                                                            /^\[(BERAT|SEDANG|RINGAN)\]\s*/i,
+                                                                            '',
+                                                                        )}
+                                                                    </Link>
+                                                                    <span className="mt-0.5 block text-[11px] font-medium text-neutral-400">
+                                                                        {report
+                                                                            .category
+                                                                            ?.name ||
+                                                                            'Kebakaran Lahan'}
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div className="min-w-0">
-                                                                <Link
-                                                                    href={reportShow(report.id).url}
-                                                                    className="font-bold text-neutral-900 hover:text-[#0c4e33] transition-colors leading-snug block"
-                                                                >
-                                                                    {report.title.replace(/^\[(BERAT|SEDANG|RINGAN)\]\s*/i, '')}
-                                                                </Link>
-                                                                <span className="text-[11px] text-neutral-400 font-medium mt-0.5 block">
-                                                                    {report.category?.name || 'Kebakaran Lahan'}
+                                                        </td>
+                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                            <span className="inline-block rounded-md border border-neutral-200/70 bg-neutral-100 px-2 py-1 font-mono text-[11px] font-bold tracking-tight whitespace-nowrap text-neutral-800">
+                                                                {code}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 py-4 text-center whitespace-nowrap text-neutral-500">
+                                                            {formatDate(
+                                                                report.created_at,
+                                                            )}
+                                                        </td>
+                                                        <td className="max-w-[220px] px-3 py-4 text-left text-neutral-700">
+                                                            <div className="flex items-start gap-1.5 text-left leading-snug">
+                                                                <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-700" />
+                                                                <span className="line-clamp-2 text-xs">
+                                                                    {report.location_description ||
+                                                                        report.regency_city ||
+                                                                        'Kalimantan Barat'}
                                                                 </span>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 px-4 whitespace-nowrap text-center">
-                                                        <span className="font-mono font-bold text-neutral-800 bg-neutral-100 border border-neutral-200/70 px-2.5 py-1 rounded-md text-[11px] whitespace-nowrap inline-block tracking-tight">
-                                                            {code}
-                                                        </span>
-                                                    </td>
-                                                    <td className="py-4 px-4 text-neutral-500 whitespace-nowrap text-center">
-                                                        {formatDate(report.created_at)}
-                                                    </td>
-                                                    <td className="py-4 px-4 text-neutral-700 min-w-[220px] text-center">
-                                                        <div className="inline-flex items-start justify-center gap-1.5 leading-snug text-left">
-                                                            <MapPin className="size-3.5 text-emerald-700 shrink-0 mt-0.5" />
-                                                            <span className="text-xs">
-                                                                {report.location_description || report.regency_city || 'Kalimantan Barat'}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 px-4 whitespace-nowrap text-center">
-                                                        <div className="flex justify-center">
-                                                            <StatusBadge
-                                                                status={report.report_status as any}
-                                                                variant="neutral"
-                                                            />
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 px-4 whitespace-nowrap text-center">
-                                                        <div className="flex justify-center">
-                                                            <Button
-                                                                asChild
-                                                                size="sm"
-                                                                variant="outline"
-                                                                className="h-8 px-3.5 rounded-lg text-xs font-semibold text-[#0c4e33] border-emerald-200 hover:bg-emerald-50 hover:text-[#073623] shadow-2xs"
-                                                            >
-                                                                <Link href={reportShow(report.id).url}>
-                                                                    Tinjau
-                                                                </Link>
-                                                            </Button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
+                                                        </td>
+                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                            <div className="flex justify-center">
+                                                                <StatusBadge
+                                                                    status={
+                                                                        report.report_status as any
+                                                                    }
+                                                                    variant="neutral"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                            <div className="flex justify-center">
+                                                                <Button
+                                                                    asChild
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                    className="h-8 rounded-lg border-emerald-200 px-3 text-xs font-semibold text-[#0c4e33] shadow-2xs hover:bg-emerald-50 hover:text-[#073623]"
+                                                                >
+                                                                    <Link
+                                                                        href={
+                                                                            reportShow(
+                                                                                report.id,
+                                                                            ).url
+                                                                        }
+                                                                    >
+                                                                        Tinjau
+                                                                    </Link>
+                                                                </Button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </>
                         )}
 
                         {/* Table Footer */}
-                        <div className="pt-4 mt-2 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
+                        <div className="mt-2 flex items-center justify-between border-t border-neutral-100 pt-4 text-xs text-neutral-500">
                             <span>
-                                Menampilkan {filteredReports.length} dari {priorityQueue.length} laporan antrean
+                                Menampilkan {filteredReports.length} dari{' '}
+                                {priorityQueue.length} laporan antrean
                             </span>
                             <Link
                                 href={reportsIndex().url}
                                 className="font-bold text-[#0c4e33] hover:underline"
                             >
-                                Buka Seluruh Arsip Laporan ({statusCounts.total})
+                                Buka Seluruh Arsip Laporan ({statusCounts.total}
+                                )
                             </Link>
                         </div>
                     </section>

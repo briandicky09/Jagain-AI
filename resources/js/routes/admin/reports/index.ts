@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import ai from './ai'
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::index
  * @see app/Http/Controllers/Admin/AdminReportController.php:26
@@ -181,7 +182,7 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 export const transition = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -196,7 +197,7 @@ transition.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 transition.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -229,7 +230,7 @@ transition.url = (args: { report: number | { id: number } } | [report: number | 
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
 transition.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -239,7 +240,7 @@ transition.post = (args: { report: number | { id: number } } | [report: number |
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
     const transitionForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -249,7 +250,7 @@ transition.post = (args: { report: number | { id: number } } | [report: number |
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
- * @see app/Http/Controllers/Admin/AdminReportController.php:168
+ * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
  */
         transitionForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -260,7 +261,7 @@ transition.post = (args: { report: number | { id: number } } | [report: number |
     transition.form = transitionForm
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 export const assign = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -275,7 +276,7 @@ assign.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 assign.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -308,7 +309,7 @@ assign.url = (args: { report: number | { id: number } } | [report: number | { id
 
 /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
 assign.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -318,7 +319,7 @@ assign.post = (args: { report: number | { id: number } } | [report: number | { i
 
     /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
     const assignForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -328,7 +329,7 @@ assign.post = (args: { report: number | { id: number } } | [report: number | { i
 
             /**
 * @see \App\Http\Controllers\Admin\AdminReportController::assign
- * @see app/Http/Controllers/Admin/AdminReportController.php:198
+ * @see app/Http/Controllers/Admin/AdminReportController.php:213
  * @route '/admin/reports/{report}/assignments'
  */
         assignForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -342,6 +343,7 @@ const reports = {
 show: Object.assign(show, show),
 transition: Object.assign(transition, transition),
 assign: Object.assign(assign, assign),
+ai: Object.assign(ai, ai),
 }
 
 export default reports

@@ -84,14 +84,30 @@ class AuditLogService
             'two_factor_recovery_codes',
             'remember_token',
             'reporter_phone',
+            'reporter_name',
+            'nik',
+            'email',
+            'secret',
+            'token',
+            'api_key',
+            'service_secret',
+            'ai_service_secret',
+            'authorization',
+            'x-ai-service-secret',
         ];
 
-        foreach ($redactedKeys as $key) {
-            if (array_key_exists($key, $data)) {
-                $data[$key] = '[REDACTED]';
+        $sanitized = [];
+        foreach ($data as $key => $value) {
+            $normalizedKey = strtolower($key);
+            if (in_array($normalizedKey, $redactedKeys, true)) {
+                $sanitized[$key] = '[REDACTED]';
+            } elseif (is_array($value)) {
+                $sanitized[$key] = $this->sanitizeSnapshot($value);
+            } else {
+                $sanitized[$key] = $value;
             }
         }
 
-        return $data;
+        return $sanitized;
     }
 }

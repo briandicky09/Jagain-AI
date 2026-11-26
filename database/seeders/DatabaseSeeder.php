@@ -185,8 +185,9 @@ class DatabaseSeeder extends Seeder
 
         // 4. Data Sources
         $dsCommunity = DataSource::firstOrCreate(
-            ['name' => 'Laporan Masyarakat JAGAIN'],
+            ['code' => 'COMMUNITY_JAGAIN'],
             [
+                'name' => 'Laporan Masyarakat JAGAIN',
                 'source_type' => 'COMMUNITY',
                 'attribution_text' => 'Pelaporan langsung oleh warga terverifikasi melalui aplikasi JAGAIN',
                 'integration_status' => 'ACTIVE',
@@ -194,8 +195,9 @@ class DatabaseSeeder extends Seeder
         );
 
         $dsNasa = DataSource::firstOrCreate(
-            ['name' => 'NASA FIRMS Hotspots Ingest (Simulasi)'],
+            ['code' => 'NASA_FIRMS_SIM'],
             [
+                'name' => 'NASA FIRMS Hotspots Ingest (Simulasi)',
                 'source_type' => 'SATELLITE',
                 'attribution_text' => 'Dataset Hotspot Satelit MODIS & VIIRS (Simulasi Kalbar/Kalteng)',
                 'integration_status' => 'ACTIVE',
@@ -312,6 +314,13 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subHours(6),
             ]);
 
+            $sampleImageSource = public_path('images/karhutla-gambut.jpg');
+            $sampleImageDest = storage_path('app/public/evidence/sample_karhutla_1.jpg');
+            if (is_file($sampleImageSource) && ! is_file($sampleImageDest)) {
+                @mkdir(dirname($sampleImageDest), 0755, true);
+                @copy($sampleImageSource, $sampleImageDest);
+            }
+
             Evidence::create([
                 'report_id' => $report1->id,
                 'uploaded_by_user_id' => $citizen->id,
@@ -319,7 +328,7 @@ class DatabaseSeeder extends Seeder
                 'storage_key' => 'evidence/sample_karhutla_1.jpg',
                 'original_filename' => 'foto_lapangan_gambut.jpg',
                 'media_type' => 'image/jpeg',
-                'size_bytes' => 1024 * 450,
+                'size_bytes' => is_file($sampleImageDest) ? (int) filesize($sampleImageDest) : 1024 * 450,
                 'caption' => 'Kondisi asap tebal merambat di atas lahan gambut',
                 'visibility' => 'PUBLIC',
                 'captured_at' => now()->subHours(8),

@@ -134,15 +134,15 @@ export default function OpdAssignmentsIndex({
                 {/* Desktop Table View (>= md) */}
                 <div className="hidden md:block bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-xs">
                     <div className="overflow-x-auto">
-                        <table className="w-full min-w-[850px] text-xs">
+                        <table className="w-full text-xs">
                             <thead className="bg-[#F3F7F4] dark:bg-neutral-800/70 border-b border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 uppercase tracking-wider text-[11px] font-bold">
                                 <tr>
-                                    <th scope="col" className="py-3.5 px-4 text-center w-[160px] whitespace-nowrap">Kode Lacak Laporan</th>
-                                    <th scope="col" className="py-3.5 px-4 text-center min-w-[280px]">Judul Kejadian</th>
-                                    <th scope="col" className="py-3.5 px-4 text-center min-w-[200px]">Wilayah Operasi</th>
-                                    <th scope="col" className="py-3.5 px-4 text-center w-[170px] whitespace-nowrap">Status Penugasan</th>
-                                    <th scope="col" className="py-3.5 px-4 text-center w-[170px] whitespace-nowrap">Waktu Ditugaskan</th>
-                                    <th scope="col" className="py-3.5 px-4 text-center w-[140px] whitespace-nowrap">Aksi</th>
+                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Kode Lacak</th>
+                                    <th scope="col" className="py-3.5 px-3 text-left">Judul Kejadian</th>
+                                    <th scope="col" className="py-3.5 px-3 text-left">Wilayah Operasi</th>
+                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Status</th>
+                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Ditugaskan</th>
+                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">

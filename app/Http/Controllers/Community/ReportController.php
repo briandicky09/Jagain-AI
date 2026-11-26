@@ -10,6 +10,7 @@ use App\Http\Requests\SubmitAdditionalInfoRequest;
 use App\Models\Evidence;
 use App\Models\Report;
 use App\Models\ReportStatusHistory;
+use App\Services\Ai\ReportAiOrchestrator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -127,7 +128,8 @@ class ReportController extends Controller
             // Handle evidence file upload securely
             if ($request->hasFile('evidence')) {
                 $file = $request->file('evidence');
-                $extension = $file->getClientOriginalExtension();
+                $detectedExt = strtolower((string) ($file->extension() ?: $file->guessExtension() ?: 'jpg'));
+                $extension = in_array($detectedExt, ['jpg', 'jpeg', 'png', 'webp'], true) ? $detectedExt : 'jpg';
                 $safeName = Str::uuid().'.'.$extension;
                 $path = $file->storeAs('evidence', $safeName, 'public');
 
@@ -135,8 +137,8 @@ class ReportController extends Controller
                     'report_id' => $report->id,
                     'uploaded_by_user_id' => $user->id,
                     'storage_key' => $path,
-                    'original_filename' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$extension,
-                    'media_type' => $file->getClientMimeType() ?: 'image/jpeg',
+                    'original_filename' => basename(pathinfo((string) $file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$extension,
+                    'media_type' => $file->getMimeType() ?: 'image/jpeg',
                     'size_bytes' => $file->getSize(),
                     'visibility' => 'PRIVATE',
                 ]);
@@ -144,6 +146,14 @@ class ReportController extends Controller
 
             return $report;
         });
+
+        if (config('ai.enabled') && config('ai.auto_analyze_on_submit')) {
+            try {
+                app(ReportAiOrchestrator::class)->analyzeReport($report, $user);
+            } catch (\Throwable) {
+                // AI analysis failure must never fail community report submission
+            }
+        }
 
         return redirect()->route('reports.show', $report)
             ->with('success', "Laporan Anda berhasil dibuat dengan nomor {$report->report_number}.");
@@ -239,7 +249,8 @@ class ReportController extends Controller
             // Save additional evidence file if provided
             if ($request->hasFile('evidence')) {
                 $file = $request->file('evidence');
-                $extension = $file->getClientOriginalExtension();
+                $detectedExt = strtolower((string) ($file->extension() ?: $file->guessExtension() ?: 'jpg'));
+                $extension = in_array($detectedExt, ['jpg', 'jpeg', 'png', 'webp'], true) ? $detectedExt : 'jpg';
                 $safeName = Str::uuid().'.'.$extension;
                 $path = $file->storeAs('evidence', $safeName, 'public');
 
@@ -247,14 +258,20 @@ class ReportController extends Controller
                     'report_id' => $report->id,
                     'uploaded_by_user_id' => $user->id,
                     'storage_key' => $path,
-                    'original_filename' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$extension,
-                    'media_type' => $file->getClientMimeType() ?: 'image/jpeg',
+                    'original_filename' => basename(pathinfo((string) $file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$extension,
+                    'media_type' => $file->getMimeType() ?: 'image/jpeg',
                     'size_bytes' => $file->getSize(),
                     'caption' => 'Bukti susulan dari pelapor',
                     'visibility' => 'PRIVATE',
                 ]);
             }
         });
+
+        try {
+            app(ReportAiOrchestrator::class)->runPrivacyGuardrail($report->fresh() ?? $report);
+        } catch (\Throwable) {
+            // Privacy fallback remains active in Report::toPublicArray()
+        }
 
         return redirect()->route('reports.show', $report)
             ->with('success', 'Informasi tambahan berhasil dikirim. Laporan Anda sedang ditinjau kembali oleh tim verifikator.');

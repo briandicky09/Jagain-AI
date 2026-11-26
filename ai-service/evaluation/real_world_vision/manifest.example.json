@@ -1,0 +1,35 @@
+{
+  "dataset_name": "JAGAIN Real-World Indonesian Wildfire Vision Validation Set",
+  "version": "1.0.0",
+  "is_simulated": false,
+  "license_policy": "Only properly licensed (CC0/CC-BY/official agency permission) manually labeled photographs.",
+  "cases": [
+    {
+      "id": "RW-001",
+      "image_path": "images/example_active_peat_flame.jpg",
+      "expected_label": "FLAME",
+      "license": "CC-BY-4.0",
+      "source_url": "https://example.org/licensed-wildfire-photo-1",
+      "lighting_condition": "daylight",
+      "notes": "Visible orange flames at edge of dry scrubland"
+    },
+    {
+      "id": "RW-002",
+      "image_path": "images/example_smoke_plume.jpg",
+      "expected_label": "SMOKE",
+      "license": "CC0",
+      "source_url": "https://example.org/licensed-smoke-photo-2",
+      "lighting_condition": "daylight",
+      "notes": "White-gray smoke plume rising above plantation canopy"
+    },
+    {
+      "id": "RW-003",
+      "image_path": "images/example_morning_fog_negative.jpg",
+      "expected_label": "NON_FIRE_ENV",
+      "license": "CC0",
+      "source_url": "https://example.org/licensed-fog-negative-3",
+      "lighting_condition": "overcast",
+      "notes": "Hard negative control: morning mist over tropical forest"
+    }
+  ]
+}
