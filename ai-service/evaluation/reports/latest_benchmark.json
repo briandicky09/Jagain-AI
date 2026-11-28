@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "run_uuid": "f48a3e2c-b89e-4bcf-8de2-1cc53a45a185",
-  "executed_at": "2026-11-26T02:14:06.036481+00:00",
+  "run_uuid": "76b70351-1a6f-4750-95de-fd74a7bbc727",
+  "executed_at": "2026-11-28T03:01:02.362716+00:00",
   "dataset_name": "JAGAIN Curated Multimodal & PII Benchmark Suite",
   "dataset_version": "1.0.0",
   "is_simulated_dataset": true,
@@ -124,7 +124,7 @@
       "latency": {
         "avg_ms": 0.12,
         "median_ms": 0.11,
-        "p95_ms": 0.14
+        "p95_ms": 0.15
       }
     },
     "deduplication": {
@@ -133,7 +133,7 @@
       "is_simulated": true,
       "is_pretrained_ml": true,
       "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-      "model_load_time_ms": 30.4,
+      "model_load_time_ms": 33966.44,
       "precision_at_1": 1.0,
       "recall_at_1": 1.0,
       "f1_score": 1.0,
@@ -147,9 +147,9 @@
       },
       "error_rate": 0.0,
       "latency": {
-        "avg_ms": 92.79,
-        "median_ms": 91.15,
-        "p95_ms": 104.09
+        "avg_ms": 51.68,
+        "median_ms": 51.38,
+        "p95_ms": 61.05
       }
     },
     "privacy": {
@@ -168,9 +168,9 @@
         "fn": 0
       },
       "latency": {
-        "avg_ms": 0.11,
-        "median_ms": 0.1,
-        "p95_ms": 0.15
+        "avg_ms": 0.1,
+        "median_ms": 0.09,
+        "p95_ms": 0.13
       }
     },
     "vision": {
@@ -179,14 +179,14 @@
       "is_simulated": true,
       "is_synthetic_images": true,
       "model_name": "openai/clip-vit-base-patch32",
-      "model_load_time_ms": 0.01,
+      "model_load_time_ms": 735.79,
       "precision": 0.375,
       "recall": 0.5,
       "f1_score": 0.4167,
       "latency": {
-        "avg_ms": 229.93,
-        "median_ms": 229.99,
-        "p95_ms": 230.76
+        "avg_ms": 628.01,
+        "median_ms": 237.94,
+        "p95_ms": 244.67
       },
       "note": "Evaluated on synthetic smoke/flame/forest/unrelated images; real-world wildfire photograph benchmark still required."
     }

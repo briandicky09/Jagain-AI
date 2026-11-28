@@ -148,83 +148,147 @@ export default function CategoriesIndex({ categories, filters }: CategoriesIndex
                             />
                         </div>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full min-w-[850px] text-sm">
-                                <thead className="border-b border-[#DDE3DE] bg-[#F3F7F4] text-xs font-semibold uppercase tracking-wider text-[#343B36] dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-300">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-4 text-center">Nama Kategori</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Slug</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Deskripsi</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Jumlah Laporan</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Status</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-[#DDE3DE] dark:divide-neutral-800">
-                                    {categories.data.map((cat) => (
-                                        <tr
-                                            key={cat.id}
-                                            className="transition-colors hover:bg-[#F3F7F4]/40 dark:hover:bg-neutral-800/40"
-                                        >
-                                            <td className="px-6 py-5 align-middle text-center">
-                                                <div className="inline-flex items-center gap-2.5 font-semibold text-[#171C19] dark:text-white">
-                                                    <Flame className="size-4 text-[#216B49] dark:text-emerald-400" />
+                        <>
+                            {/* Desktop Table View (>= lg) */}
+                            <div className="hidden lg:block w-full">
+                                <table className="w-full text-sm">
+                                    <thead className="border-b border-[#DDE3DE] bg-[#F3F7F4] text-xs font-semibold uppercase tracking-wider text-[#343B36] dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-300">
+                                        <tr>
+                                            <th scope="col" className="w-[20%] px-3 py-3.5 text-left">Nama Kategori</th>
+                                            <th scope="col" className="w-[15%] px-3 py-3.5 text-left">Slug</th>
+                                            <th scope="col" className="w-[31%] px-3 py-3.5 text-left">Deskripsi</th>
+                                            <th scope="col" className="w-[10%] px-2.5 py-3.5 text-center">Laporan</th>
+                                            <th scope="col" className="w-[10%] px-2.5 py-3.5 text-center">Status</th>
+                                            <th scope="col" className="w-[14%] px-3 py-3.5 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-[#DDE3DE] dark:divide-neutral-800">
+                                        {categories.data.map((cat) => (
+                                            <tr
+                                                key={cat.id}
+                                                className="transition-colors hover:bg-[#F3F7F4]/40 dark:hover:bg-neutral-800/40"
+                                            >
+                                                <td className="px-3 py-4 align-middle text-left break-words">
+                                                    <div className="inline-flex items-center gap-2 font-semibold text-[#171C19] dark:text-white">
+                                                        <Flame className="size-4 shrink-0 text-[#216B49] dark:text-emerald-400" />
+                                                        <span className="leading-snug">{cat.name}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-3 py-4 align-middle text-left font-mono text-xs text-[#68716B] dark:text-neutral-400 break-all">
+                                                    {cat.slug}
+                                                </td>
+                                                <td className="px-3 py-4 align-middle text-left text-xs text-[#68716B] leading-relaxed dark:text-neutral-400 break-words">
+                                                    {cat.description ?? '-'}
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center text-xs text-[#68716B] dark:text-neutral-400">
+                                                    <span className="font-semibold text-[#171C19] dark:text-white">
+                                                        {cat.reports_count ?? 0}
+                                                    </span>{' '}
+                                                    laporan
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center">
+                                                    {cat.is_active ? (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F1EB] px-2.5 py-1 text-xs font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300 whitespace-nowrap">
+                                                            <CheckCircle2 className="size-3.5" />
+                                                            <span>Aktif</span>
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400 whitespace-nowrap">
+                                                            <span>Nonaktif</span>
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-4 align-middle text-center">
+                                                    <div className="flex flex-wrap items-center justify-center gap-1.5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openEditModal(cat)}
+                                                            className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2 py-1 text-[11px] font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 whitespace-nowrap"
+                                                        >
+                                                            <Edit2 className="size-3" />
+                                                            <span>Ubah</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleToggleStatus(cat)}
+                                                            className={`inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] font-medium transition whitespace-nowrap ${
+                                                                cat.is_active
+                                                                    ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
+                                                                    : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
+                                                            }`}
+                                                        >
+                                                            <Power className="size-3" />
+                                                            <span>{cat.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Tablet & Mobile Stacked Cards (< lg) */}
+                            <div className="block lg:hidden divide-y divide-[#DDE3DE] dark:divide-neutral-800">
+                                {categories.data.map((cat) => (
+                                    <div key={cat.id} className="p-4 space-y-2.5">
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div>
+                                                <div className="inline-flex items-center gap-2 font-bold text-sm text-[#171C19] dark:text-white">
+                                                    <Flame className="size-4 shrink-0 text-[#216B49] dark:text-emerald-400" />
                                                     <span>{cat.name}</span>
                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center font-mono text-xs text-[#68716B] dark:text-neutral-400">
-                                                {cat.slug}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center text-xs text-[#68716B] max-w-sm leading-relaxed dark:text-neutral-400">
-                                                {cat.description ?? '-'}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center text-xs text-[#68716B] dark:text-neutral-400">
-                                                <span className="font-semibold text-[#171C19] dark:text-white">
-                                                    {cat.reports_count ?? 0}
-                                                </span>{' '}
-                                                laporan
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center whitespace-nowrap">
-                                                {cat.is_active ? (
-                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E8F1EB] px-3 py-1 text-xs font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300">
-                                                        <CheckCircle2 className="size-3.5" />
-                                                        <span>Aktif</span>
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                                                        <span>Nonaktif</span>
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center whitespace-nowrap">
-                                                <div className="flex items-center justify-center gap-2">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => openEditModal(cat)}
-                                                        className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2.5 py-1 text-xs font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                                                    >
-                                                        <Edit2 className="size-3" />
-                                                        <span>Ubah</span>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleToggleStatus(cat)}
-                                                        className={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-xs font-medium transition ${
-                                                            cat.is_active
-                                                                ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
-                                                                : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
-                                                        }`}
-                                                    >
-                                                        <Power className="size-3" />
-                                                        <span>{cat.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
-                                                    </button>
+                                                <div className="font-mono text-[11px] text-[#68716B] dark:text-neutral-400 mt-0.5 break-all">
+                                                    {cat.slug}
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                            </div>
+                                            {cat.is_active ? (
+                                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#E8F1EB] px-2.5 py-0.5 text-[11px] font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300">
+                                                    <CheckCircle2 className="size-3" />
+                                                    <span>Aktif</span>
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                                    <span>Nonaktif</span>
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <p className="text-xs text-[#68716B] dark:text-neutral-400 leading-relaxed">
+                                            {cat.description ?? '-'}
+                                        </p>
+
+                                        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#DDE3DE]/70 dark:border-neutral-800">
+                                            <span className="text-xs text-[#68716B] dark:text-neutral-400">
+                                                Jumlah laporan: <strong className="text-[#171C19] dark:text-white">{cat.reports_count ?? 0}</strong>
+                                            </span>
+                                            <div className="flex flex-wrap items-center gap-1.5">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => openEditModal(cat)}
+                                                    className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2.5 py-1.5 text-xs font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300"
+                                                >
+                                                    <Edit2 className="size-3" />
+                                                    <span>Ubah</span>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleToggleStatus(cat)}
+                                                    className={`inline-flex items-center gap-1 rounded px-2.5 py-1.5 text-xs font-medium transition ${
+                                                        cat.is_active
+                                                            ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
+                                                            : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
+                                                    }`}
+                                                >
+                                                    <Power className="size-3" />
+                                                    <span>{cat.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

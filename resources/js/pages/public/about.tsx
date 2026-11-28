@@ -154,7 +154,7 @@ export default function AboutPage() {
                         <p className="text-xs text-neutral-800 leading-relaxed text-justify mb-3">
                             Platform JAGAIN beroperasi berlandaskan komitmen keterbukaan tata kelola pemerintahan dan partisipasi warga negara, merujuk pada ketentuan perundang-undangan berikut:
                         </p>
-                        <div className="border border-neutral-300 rounded-sm overflow-hidden text-xs">
+                        <div className="hidden sm:block border border-neutral-300 rounded-sm overflow-hidden text-xs">
                             <table className="w-full text-left">
                                 <thead className="bg-neutral-100 border-b border-neutral-300 font-bold text-neutral-900">
                                     <tr>
@@ -164,39 +164,57 @@ export default function AboutPage() {
                                 </thead>
                                 <tbody className="divide-y divide-neutral-200 text-neutral-800">
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">
                                             UU No. 14 Tahun 2008 (KIP)
                                         </td>
-                                        <td className="p-2.5 leading-snug">
+                                        <td className="p-2.5 leading-snug break-words">
                                             Menjamin hak masyarakat untuk mengakses informasi publik mengenai potensi bahaya kebakaran lingkungan hidup secara berkala, serta-merta, dan tanpa diskriminasi.
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">
                                             UU No. 32 Tahun 2009 (PPLH)
                                         </td>
-                                        <td className="p-2.5 leading-snug">
+                                        <td className="p-2.5 leading-snug break-words">
                                             Setiap orang berhak atas lingkungan hidup yang baik dan sehat serta berhak mendapatkan pendidikan lingkungan, akses informasi, dan akses partisipasi.
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">
                                             UU No. 27 Tahun 2022 (PDP)
                                         </td>
-                                        <td className="p-2.5 leading-snug">
+                                        <td className="p-2.5 leading-snug break-words">
                                             Kewajiban pelindungan data pribadi warga negara. Nomor telepon, email, dan nama asli pelapor wajib disamarkan pada tampilan publik.
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">
                                             UU No. 1 Tahun 2024 (ITE)
                                         </td>
-                                        <td className="p-2.5 leading-snug">
+                                        <td className="p-2.5 leading-snug break-words">
                                             Keutuhan catatan elektronik melalui riwayat pencatatan permanen yang dapat dipertanggungjawabkan.
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="block sm:hidden space-y-2.5 text-xs">
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900 text-[11px]">UU No. 14 Tahun 2008 (KIP)</div>
+                                <p className="text-neutral-700 leading-snug">Menjamin hak masyarakat untuk mengakses informasi publik mengenai potensi bahaya kebakaran lingkungan hidup secara berkala, serta-merta, dan tanpa diskriminasi.</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900 text-[11px]">UU No. 32 Tahun 2009 (PPLH)</div>
+                                <p className="text-neutral-700 leading-snug">Setiap orang berhak atas lingkungan hidup yang baik dan sehat serta berhak mendapatkan pendidikan lingkungan, akses informasi, dan akses partisipasi.</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900 text-[11px]">UU No. 27 Tahun 2022 (PDP)</div>
+                                <p className="text-neutral-700 leading-snug">Kewajiban pelindungan data pribadi warga negara. Nomor telepon, email, dan nama asli pelapor wajib disamarkan pada tampilan publik.</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900 text-[11px]">UU No. 1 Tahun 2024 (ITE)</div>
+                                <p className="text-neutral-700 leading-snug">Keutuhan catatan elektronik melalui riwayat pencatatan permanen yang dapat dipertanggungjawabkan.</p>
+                            </div>
                         </div>
                     </section>
 
@@ -261,38 +279,60 @@ export default function AboutPage() {
                         <p className="text-xs text-neutral-800 leading-relaxed text-justify mb-3">
                             Selain laporan warga langsung, peta publik JAGAIN menggabungkan data titik panas dari satelit NASA FIRMS (Fire Information for Resource Management System) dengan rincian berikut:
                         </p>
-                        <div className="border border-neutral-300 rounded-sm overflow-hidden text-xs">
+                        <div className="hidden sm:block border border-neutral-300 rounded-sm overflow-hidden text-xs">
                             <table className="w-full text-left">
                                 <thead className="bg-neutral-100 border-b border-neutral-300 font-bold text-neutral-900">
                                     <tr>
-                                        <th className="p-2.5 border-r border-neutral-300">Jenis Sensor</th>
-                                        <th className="p-2.5 border-r border-neutral-300">Keterangan Satelit</th>
-                                        <th className="p-2.5">Kegunaan</th>
+                                        <th className="p-2.5 border-r border-neutral-300 w-[24%]">Jenis Sensor</th>
+                                        <th className="p-2.5 border-r border-neutral-300 w-[34%]">Keterangan Satelit</th>
+                                        <th className="p-2.5 w-[42%]">Kegunaan</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-neutral-200 text-neutral-800">
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Sensor VIIRS</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Suomi-NPP &amp; NOAA-20 (Resolusi 375m)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Deteksi titik panas resolusi tinggi, mampu mendeteksi kebakaran lahan skala kecil.</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">Sensor VIIRS</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px] break-words">Suomi-NPP &amp; NOAA-20 (Resolusi 375m)</td>
+                                        <td className="p-2.5 text-[11px] leading-snug break-words">Deteksi titik panas resolusi tinggi, mampu mendeteksi kebakaran lahan skala kecil.</td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Sensor MODIS</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Terra &amp; Aqua (Resolusi 1km)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Data historis dan perbandingan energi panas api (FRP MW).</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">Sensor MODIS</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px] break-words">Terra &amp; Aqua (Resolusi 1km)</td>
+                                        <td className="p-2.5 text-[11px] leading-snug break-words">Data historis dan perbandingan energi panas api (FRP MW).</td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Waktu Pembaruan Data</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">± 1,5 s/d 3 Jam Setelah Satelit Melintas</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Diperlukan waktu pengiriman data dari stasiun bumi sebelum tampil di sistem.</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">Waktu Pembaruan Data</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px] break-words">± 1,5 s/d 3 Jam Setelah Satelit Melintas</td>
+                                        <td className="p-2.5 text-[11px] leading-snug break-words">Diperlukan waktu pengiriman data dari stasiun bumi sebelum tampil di sistem.</td>
                                     </tr>
                                     <tr>
-                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px]">Tingkat Keyakinan Satelit</td>
-                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px]">Tinggi (&ge; 80%), Sedang (50-79%), Rendah (&lt; 50%)</td>
-                                        <td className="p-2.5 text-[11px] leading-snug">Menunjukkan keyakinan satelit bahwa titik panas benar-benar api, bukan pantulan matahari atau atap seng.</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-semibold font-mono text-[11px] break-words">Tingkat Keyakinan Satelit</td>
+                                        <td className="p-2.5 border-r border-neutral-300 font-mono text-[11px] break-words">Tinggi (&ge; 80%), Sedang (50-79%), Rendah (&lt; 50%)</td>
+                                        <td className="p-2.5 text-[11px] leading-snug break-words">Menunjukkan keyakinan satelit bahwa titik panas benar-benar api, bukan pantulan matahari atau atap seng.</td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="block sm:hidden space-y-2.5 text-xs">
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900">Sensor VIIRS</div>
+                                <div className="font-mono text-[11px] text-emerald-800">Suomi-NPP &amp; NOAA-20 (Resolusi 375m)</div>
+                                <p className="text-[11px] text-neutral-700 leading-snug">Deteksi titik panas resolusi tinggi, mampu mendeteksi kebakaran lahan skala kecil.</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900">Sensor MODIS</div>
+                                <div className="font-mono text-[11px] text-emerald-800">Terra &amp; Aqua (Resolusi 1km)</div>
+                                <p className="text-[11px] text-neutral-700 leading-snug">Data historis dan perbandingan energi panas api (FRP MW).</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900">Waktu Pembaruan Data</div>
+                                <div className="font-mono text-[11px] text-emerald-800">± 1,5 s/d 3 Jam Setelah Satelit Melintas</div>
+                                <p className="text-[11px] text-neutral-700 leading-snug">Diperlukan waktu pengiriman data dari stasiun bumi sebelum tampil di sistem.</p>
+                            </div>
+                            <div className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                <div className="font-mono font-bold text-neutral-900">Tingkat Keyakinan Satelit</div>
+                                <div className="font-mono text-[11px] text-emerald-800">Tinggi (&ge; 80%), Sedang (50-79%), Rendah (&lt; 50%)</div>
+                                <p className="text-[11px] text-neutral-700 leading-snug">Menunjukkan keyakinan satelit bahwa titik panas benar-benar api, bukan pantulan matahari atau atap seng.</p>
+                            </div>
                         </div>
                     </section>
 

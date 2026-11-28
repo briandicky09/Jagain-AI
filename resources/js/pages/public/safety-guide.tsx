@@ -269,7 +269,7 @@ export default function SafetyGuide() {
                             Tingkat bahaya pencemaran udara akibat kabut asap karhutla mengacu pada Keputusan Menteri LHK dan wajib dipatuhi dengan ketentuan sebagai berikut:
                         </p>
 
-                        <div className="border border-neutral-400 overflow-x-auto">
+                        <div className="hidden sm:block border border-neutral-400">
                             <table className="w-full text-left text-xs border-collapse">
                                 <thead>
                                     <tr className="bg-neutral-100 border-b border-neutral-400 font-bold text-neutral-900">
@@ -285,21 +285,38 @@ export default function SafetyGuide() {
                                             <td className="p-2.5 border-r border-neutral-300 font-mono font-bold whitespace-nowrap">
                                                 {lvl.range}
                                             </td>
-                                            <td className="p-2.5 border-r border-neutral-300 font-bold whitespace-nowrap">
+                                            <td className="p-2.5 border-r border-neutral-300 font-bold">
                                                 <span className={`inline-block px-2 py-0.5 rounded text-[11px] border ${lvl.badgeBg}`}>
                                                     {lvl.category}
                                                 </span>
                                             </td>
-                                            <td className="p-2.5 border-r border-neutral-300 leading-snug">
+                                            <td className="p-2.5 border-r border-neutral-300 leading-snug break-words">
                                                 {lvl.description}
                                             </td>
-                                            <td className="p-2.5 leading-snug font-medium text-neutral-900">
+                                            <td className="p-2.5 leading-snug font-medium text-neutral-900 break-words">
                                                 {lvl.action}
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div className="block sm:hidden space-y-2.5">
+                            {ispuLevels.map((lvl) => (
+                                <div key={lvl.range} className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1.5 text-xs">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="font-mono font-bold text-neutral-900">ISPU {lvl.range}</span>
+                                        <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold border ${lvl.badgeBg}`}>
+                                            {lvl.category}
+                                        </span>
+                                    </div>
+                                    <p className="text-neutral-700 leading-snug">{lvl.description}</p>
+                                    <p className="text-neutral-900 font-medium leading-snug">
+                                        <span className="font-bold">Tindakan: </span>{lvl.action}
+                                    </p>
+                                </div>
+                            ))}
                         </div>
                     </section>
 
@@ -389,29 +406,29 @@ export default function SafetyGuide() {
                             Berikut adalah kontak resmi pusat kendali operasi kebencanaan daerah untuk koordinasi tanggap darurat dan perbantuan evakuasi medis darurat:
                         </p>
 
-                        <div className="border border-neutral-400 overflow-x-auto">
+                        <div className="hidden sm:block border border-neutral-400">
                             <table className="w-full text-left text-xs border-collapse">
                                 <thead>
                                     <tr className="bg-neutral-100 border-b border-neutral-400 font-bold text-neutral-900">
-                                        <th className="p-2.5 border-r border-neutral-400 w-36">Wilayah</th>
-                                        <th className="p-2.5 border-r border-neutral-400">Instansi / Posko</th>
-                                        <th className="p-2.5 border-r border-neutral-400 w-36">Hotline / Telepon</th>
-                                        <th className="p-2.5">Alamat Operasional</th>
+                                        <th className="p-2.5 border-r border-neutral-400 w-[22%]">Wilayah</th>
+                                        <th className="p-2.5 border-r border-neutral-400 w-[28%]">Instansi / Posko</th>
+                                        <th className="p-2.5 border-r border-neutral-400 w-[20%]">Hotline / Telepon</th>
+                                        <th className="p-2.5 w-[30%]">Alamat Operasional</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-neutral-300 text-neutral-800 font-medium">
                                     {provincialContacts.map((c) => (
                                         <tr key={c.province} className="hover:bg-neutral-50/80">
-                                            <td className="p-2.5 border-r border-neutral-300 font-bold text-neutral-900 whitespace-nowrap">
+                                            <td className="p-2.5 border-r border-neutral-300 font-bold text-neutral-900 break-words">
                                                 {c.province}
                                             </td>
-                                            <td className="p-2.5 border-r border-neutral-300">
+                                            <td className="p-2.5 border-r border-neutral-300 break-words">
                                                 {c.posko}
                                             </td>
-                                            <td className="p-2.5 border-r border-neutral-300 font-mono font-bold text-emerald-800 whitespace-nowrap">
+                                            <td className="p-2.5 border-r border-neutral-300 font-mono font-bold text-emerald-800 break-words">
                                                 {c.phone}
                                             </td>
-                                            <td className="p-2.5 text-neutral-600">
+                                            <td className="p-2.5 text-neutral-600 break-words">
                                                 {c.address}
                                             </td>
                                         </tr>
@@ -432,6 +449,27 @@ export default function SafetyGuide() {
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div className="block sm:hidden space-y-2.5 text-xs">
+                            {provincialContacts.map((c) => (
+                                <div key={c.province} className="border border-neutral-300 rounded-sm p-3 bg-neutral-50/60 space-y-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="font-bold text-neutral-900">{c.province}</span>
+                                        <span className="font-mono font-bold text-emerald-800">{c.phone}</span>
+                                    </div>
+                                    <div className="font-medium text-neutral-800">{c.posko}</div>
+                                    <div className="text-neutral-600 leading-snug">{c.address}</div>
+                                </div>
+                            ))}
+                            <div className="border border-emerald-400 rounded-sm p-3 bg-emerald-50/60 space-y-1 font-bold text-emerald-950">
+                                <div className="flex items-center justify-between gap-2">
+                                    <span>Nasional</span>
+                                    <span className="font-mono text-base font-black text-emerald-900">112</span>
+                                </div>
+                                <div>Panggilan Darurat Terpadu Pemda (NTE)</div>
+                                <div className="font-normal text-neutral-700">Layanan bebas pulsa 24 jam seluruh operator</div>
+                            </div>
                         </div>
                     </section>
 

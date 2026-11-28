@@ -331,17 +331,17 @@ export default function AuditLogsIndex({
                         </div>
                     ) : (
                         <>
-                            {/* Desktop Table View (>= md) */}
-                            <div className="hidden md:block w-full overflow-hidden">
-                                <table className="w-full table-fixed text-left text-xs">
+                            {/* Desktop Table View (>= lg) */}
+                            <div className="hidden lg:block w-full">
+                                <table className="w-full text-left text-xs">
                                     <thead className="border-b border-[#DDE3DE] bg-[#F3F7F4] text-[11px] font-bold uppercase tracking-wider text-[#343B36] dark:border-neutral-800 dark:bg-neutral-800/70 dark:text-neutral-300">
                                         <tr>
-                                            <th scope="col" className="w-[17%] px-3 py-3 text-center">WAKTU</th>
-                                            <th scope="col" className="w-[13%] px-2.5 py-3 text-center">AKTIVITAS</th>
-                                            <th scope="col" className="w-[15%] px-2.5 py-3 text-center">PELAKSANA</th>
-                                            <th scope="col" className="w-[22%] px-3 py-3 text-center">OBJEK TERKAIT</th>
-                                            <th scope="col" className="w-[24%] px-3 py-3 text-center">KETERANGAN</th>
-                                            <th scope="col" className="w-[9%] px-2 py-3 text-center">RINCIAN</th>
+                                            <th scope="col" className="w-[16%] px-3 py-3 text-left">WAKTU</th>
+                                            <th scope="col" className="w-[16%] px-2.5 py-3 text-center">AKTIVITAS</th>
+                                            <th scope="col" className="w-[15%] px-2.5 py-3 text-left">PELAKSANA</th>
+                                            <th scope="col" className="w-[22%] px-3 py-3 text-left">OBJEK TERKAIT</th>
+                                            <th scope="col" className="w-[22%] px-3 py-3 text-left">KETERANGAN</th>
+                                            <th scope="col" className="w-[9%] px-3 py-3 text-center">RINCIAN</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-[#DDE3DE] dark:divide-neutral-800">
@@ -352,13 +352,13 @@ export default function AuditLogsIndex({
                                             >
                                                 {/* Waktu Pencatatan */}
                                                 <td className="px-3 py-3 align-middle text-xs text-[#171C19] dark:text-neutral-200">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <Clock className="size-3.5 text-[#216B49] dark:text-emerald-400 shrink-0" />
-                                                        <div className="min-w-0">
-                                                            <div className="font-semibold truncate">
+                                                    <div className="flex items-start gap-1.5">
+                                                        <Clock className="size-3.5 text-[#216B49] dark:text-emerald-400 shrink-0 mt-0.5" />
+                                                        <div className="min-w-0 leading-snug">
+                                                            <div className="font-semibold break-words">
                                                                 {log.created_at_formatted}
                                                             </div>
-                                                            <div className="text-[11px] text-neutral-400 dark:text-neutral-500 truncate">
+                                                            <div className="text-[11px] text-neutral-400 dark:text-neutral-500">
                                                                 {log.created_at_human}
                                                             </div>
                                                         </div>
@@ -366,19 +366,19 @@ export default function AuditLogsIndex({
                                                 </td>
 
                                                 {/* Aktivitas (Action Badge) */}
-                                                <td className="px-2.5 py-3 align-middle">
-                                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border shadow-2xs whitespace-nowrap ${log.action_badge_class}`}>
+                                                <td className="px-2.5 py-3 align-middle text-center">
+                                                    <span className={`inline-flex items-center justify-center text-center px-2 py-0.5 rounded-md text-[11px] font-semibold border shadow-2xs leading-snug whitespace-normal break-words ${log.action_badge_class}`}>
                                                         {log.action_label}
                                                     </span>
                                                 </td>
 
                                                 {/* Pelaksana / Aktor */}
                                                 <td className="px-2.5 py-3 align-middle text-xs">
-                                                    <div className="flex items-center gap-1.5 min-w-0" title={log.actor_name}>
-                                                        <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
+                                                    <div className="flex items-start gap-1.5 min-w-0" title={log.actor_name}>
+                                                        <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400 mt-0.5">
                                                             <UserIcon className="size-2.5" />
                                                         </div>
-                                                        <span className="font-semibold text-[#171C19] dark:text-white truncate">
+                                                        <span className="font-semibold text-[#171C19] dark:text-white leading-snug break-words">
                                                             {log.actor_name}
                                                         </span>
                                                     </div>
@@ -387,8 +387,8 @@ export default function AuditLogsIndex({
                                                 {/* Objek Terkait */}
                                                 <td className="px-3 py-3 align-middle text-xs">
                                                     {log.entity_summary ? (
-                                                        <div className="min-w-0">
-                                                            <div className="truncate font-semibold">
+                                                        <div className="min-w-0 space-y-0.5 leading-snug">
+                                                            <div className="font-semibold break-words">
                                                                 {log.entity_summary.url ? (
                                                                     <Link
                                                                         href={log.entity_summary.url}
@@ -405,7 +405,7 @@ export default function AuditLogsIndex({
                                                             </div>
                                                             {log.entity_summary.subtext && (
                                                                 <div
-                                                                    className="text-[11px] text-neutral-500 truncate dark:text-neutral-400 mt-0.5"
+                                                                    className="text-[11px] text-neutral-500 dark:text-neutral-400 break-words"
                                                                     title={log.entity_summary.subtext}
                                                                 >
                                                                     {log.entity_summary.subtext}
@@ -413,7 +413,7 @@ export default function AuditLogsIndex({
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <span className="font-semibold text-[#171C19] dark:text-white truncate">
+                                                        <span className="font-semibold text-[#171C19] dark:text-white leading-snug break-words">
                                                             {log.entity_type_label}
                                                         </span>
                                                     )}
@@ -422,7 +422,7 @@ export default function AuditLogsIndex({
                                                 {/* Catatan / Keterangan */}
                                                 <td className="px-3 py-3 align-middle text-xs text-neutral-600 dark:text-neutral-300">
                                                     <div
-                                                        className="leading-snug break-words line-clamp-2"
+                                                        className="leading-snug break-words"
                                                         title={log.reason ?? ''}
                                                     >
                                                         {log.reason || (
@@ -432,7 +432,7 @@ export default function AuditLogsIndex({
                                                 </td>
 
                                                 {/* Rincian Data */}
-                                                <td className="px-2 py-3 align-middle text-center">
+                                                <td className="px-3 py-3 align-middle text-center">
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -451,8 +451,8 @@ export default function AuditLogsIndex({
                                 </table>
                             </div>
 
-                            {/* Mobile Card List View (< md) */}
-                            <div className="block md:hidden divide-y divide-[#DDE3DE] dark:divide-neutral-800">
+                            {/* Tablet & Mobile Card List View (< lg) */}
+                            <div className="block lg:hidden divide-y divide-[#DDE3DE] dark:divide-neutral-800">
                                 {auditLogs.data.map((log) => (
                                     <div key={log.id} className="p-4 space-y-3">
                                         <div className="flex items-center justify-between gap-2">
@@ -660,8 +660,8 @@ export default function AuditLogsIndex({
                                     <div className="pt-3">
                                         {diffKeys.length > 0 ? (
                                             /* Side-by-Side Diff Table */
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full text-xs text-left">
+                                            <div className="w-full">
+                                                <table className="w-full table-fixed text-xs text-left">
                                                     <thead>
                                                         <tr className="border-b border-neutral-100 text-neutral-400 uppercase text-[10px] font-bold dark:border-neutral-800">
                                                             <th className="py-2.5 px-3 w-1/3">Data / Atribut</th>

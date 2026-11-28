@@ -131,18 +131,18 @@ export default function OpdAssignmentsIndex({
                     })}
                 </div>
 
-                {/* Desktop Table View (>= md) */}
-                <div className="hidden md:block bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-xs">
-                    <div className="overflow-x-auto">
+                {/* Desktop Table View (>= lg) */}
+                <div className="hidden lg:block bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-xs">
+                    <div className="w-full">
                         <table className="w-full text-xs">
                             <thead className="bg-[#F3F7F4] dark:bg-neutral-800/70 border-b border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 uppercase tracking-wider text-[11px] font-bold">
                                 <tr>
-                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Kode Lacak</th>
-                                    <th scope="col" className="py-3.5 px-3 text-left">Judul Kejadian</th>
-                                    <th scope="col" className="py-3.5 px-3 text-left">Wilayah Operasi</th>
-                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Status</th>
-                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Ditugaskan</th>
-                                    <th scope="col" className="py-3.5 px-3 text-center whitespace-nowrap">Aksi</th>
+                                    <th scope="col" className="w-[15%] py-3.5 px-3 text-center">Kode Lacak</th>
+                                    <th scope="col" className="w-[29%] py-3.5 px-3 text-left">Judul Kejadian</th>
+                                    <th scope="col" className="w-[21%] py-3.5 px-3 text-left">Wilayah Operasi</th>
+                                    <th scope="col" className="w-[12%] py-3.5 px-2.5 text-center">Status</th>
+                                    <th scope="col" className="w-[11%] py-3.5 px-2.5 text-center">Ditugaskan</th>
+                                    <th scope="col" className="w-[12%] py-3.5 px-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
@@ -155,49 +155,49 @@ export default function OpdAssignmentsIndex({
                                 ) : (
                                     assignments.data.map((asg) => (
                                         <tr key={asg.id} className="hover:bg-neutral-50/70 dark:hover:bg-neutral-800/50 transition-colors">
-                                            <td className="py-4 px-4 align-middle text-center font-mono whitespace-nowrap">
-                                                <span className="inline-block px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 text-xs font-mono font-semibold tracking-wide select-all">
+                                            <td className="py-3.5 px-3 align-middle text-center font-mono">
+                                                <span className="inline-block px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 text-[11px] font-mono font-semibold tracking-wide select-all break-all">
                                                     {asg.report.tracking_code}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-4 align-middle text-center">
-                                                <div className="space-y-1 max-w-md mx-auto text-center">
+                                            <td className="py-3.5 px-3 align-middle text-left break-words">
+                                                <div className="space-y-1">
                                                     <div className="font-semibold text-xs text-neutral-900 dark:text-white leading-snug">
                                                         {asg.report.title}
                                                     </div>
                                                     {asg.notes && (
-                                                        <div className="text-[11px] text-neutral-600 dark:text-neutral-300 leading-relaxed bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2.5 py-1.5 mt-1 inline-block text-center">
+                                                        <div className="text-[11px] text-neutral-600 dark:text-neutral-300 leading-relaxed bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2.5 py-1.5 mt-1">
                                                             <span className="font-semibold text-neutral-800 dark:text-white">Instruksi: </span>
                                                             <span>{asg.notes}</span>
                                                         </div>
                                                     )}
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-4 align-middle text-center">
+                                            <td className="py-3.5 px-3 align-middle text-left break-words">
                                                 {(() => {
                                                     const region = [asg.report.regency_city, asg.report.province].filter(Boolean).join(', ');
                                                     const desc = asg.report.location_description;
                                                     if (region && desc) {
                                                         return (
-                                                            <div className="space-y-0.5 max-w-[240px] mx-auto text-center">
+                                                            <div className="space-y-0.5">
                                                                 <div className="font-medium text-xs text-neutral-900 dark:text-neutral-100">{region}</div>
                                                                 <div className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">{desc}</div>
                                                             </div>
                                                         );
                                                     }
                                                     return (
-                                                        <div className="text-xs text-neutral-900 dark:text-neutral-100 font-medium leading-snug text-center">
+                                                        <div className="text-xs text-neutral-900 dark:text-neutral-100 font-medium leading-snug">
                                                             {region || desc || 'Wilayah Terdata Lapangan'}
                                                         </div>
                                                     );
                                                 })()}
                                             </td>
-                                            <td className="py-4 px-4 align-middle text-center whitespace-nowrap">
+                                            <td className="py-3.5 px-2.5 align-middle text-center">
                                                 <div className="inline-flex justify-center">
                                                     <StatusBadge status={asg.assignment_status} size="sm" />
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-4 align-middle text-center whitespace-nowrap font-mono text-xs text-neutral-900 dark:text-neutral-100">
+                                            <td className="py-3.5 px-2.5 align-middle text-center font-mono text-xs text-neutral-900 dark:text-neutral-100">
                                                 <div className="font-medium">
                                                     {new Date(asg.assigned_at).toLocaleDateString('id-ID', {
                                                         day: '2-digit',
@@ -213,10 +213,10 @@ export default function OpdAssignmentsIndex({
                                                     WIB
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-4 align-middle text-center whitespace-nowrap">
+                                            <td className="py-3.5 px-3 align-middle text-center whitespace-nowrap">
                                                 <Link
                                                     href={`/opd/tugas/${asg.id}`}
-                                                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-[#216B49] hover:text-white hover:border-[#216B49] text-xs font-semibold text-neutral-800 dark:text-neutral-200 shadow-2xs transition-all"
+                                                    className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-[#216B49] hover:text-white hover:border-[#216B49] text-xs font-semibold text-neutral-800 dark:text-neutral-200 shadow-2xs transition-all"
                                                 >
                                                     <span>Tindak Lanjut</span>
                                                     <ArrowRight className="size-3.5" />
@@ -230,8 +230,8 @@ export default function OpdAssignmentsIndex({
                     </div>
                 </div>
 
-                {/* Mobile Cards View (< md) */}
-                <div className="block md:hidden space-y-3">
+                {/* Tablet & Mobile Cards View (< lg) */}
+                <div className="block lg:hidden space-y-3">
                     {assignments.data.length === 0 ? (
                         <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-8 text-center text-neutral-500 dark:text-neutral-400 text-xs shadow-xs">
                             Tidak ada penugasan yang sesuai dengan kriteria filter ini.

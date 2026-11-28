@@ -1817,8 +1817,8 @@ export default function AdminDashboard({
                             </div>
                         ) : (
                             <>
-                                {/* Mobile Card Layout (< md) */}
-                                <div className="space-y-3 md:hidden">
+                                {/* Mobile & Tablet Card Layout (< lg) */}
+                                <div className="space-y-3 lg:hidden">
                                     {filteredReports.map((report) => {
                                         const code =
                                             report.tracking_code ||
@@ -1877,27 +1877,27 @@ export default function AdminDashboard({
                                     })}
                                 </div>
 
-                                {/* Desktop Table View (>= md) */}
-                                <div className="hidden overflow-x-auto md:block">
+                                {/* Desktop Table View (>= lg) */}
+                                <div className="hidden w-full lg:block">
                                     <table className="w-full text-center text-xs">
                                         <thead>
                                             <tr className="border-b border-neutral-100 text-[11px] font-semibold text-neutral-500">
-                                                <th className="px-3 py-3.5 text-left whitespace-nowrap">
+                                                <th className="w-[26%] px-2.5 py-3.5 text-left">
                                                     Laporan
                                                 </th>
-                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                <th className="w-[15%] px-2.5 py-3.5 text-center">
                                                     Kode Laporan
                                                 </th>
-                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
-                                                    Tanggal & Waktu
+                                                <th className="w-[15%] px-2.5 py-3.5 text-center">
+                                                    Tanggal &amp; Waktu
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left whitespace-nowrap">
+                                                <th className="w-[22%] px-2.5 py-3.5 text-left">
                                                     Lokasi / Wilayah
                                                 </th>
-                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                <th className="w-[12%] px-2.5 py-3.5 text-center">
                                                     Status
                                                 </th>
-                                                <th className="px-3 py-3.5 text-center whitespace-nowrap">
+                                                <th className="w-[10%] px-2.5 py-3.5 text-center">
                                                     Aksi
                                                 </th>
                                             </tr>
@@ -1913,9 +1913,9 @@ export default function AdminDashboard({
                                                         key={report.id}
                                                         className="group transition-colors hover:bg-[#fafbfa]"
                                                     >
-                                                        <td className="max-w-[260px] px-3 py-4 text-left">
-                                                            <div className="flex items-center gap-2.5 text-left">
-                                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-50 text-emerald-800">
+                                                        <td className="px-2.5 py-3.5 text-left break-words">
+                                                            <div className="flex items-start gap-2.5 text-left">
+                                                                <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-emerald-200/60 bg-emerald-50 text-emerald-800 mt-0.5">
                                                                     <Flame className="size-4" />
                                                                 </div>
                                                                 <div className="min-w-0">
@@ -1925,7 +1925,7 @@ export default function AdminDashboard({
                                                                                 report.id,
                                                                             ).url
                                                                         }
-                                                                        className="line-clamp-2 block leading-snug font-bold text-neutral-900 transition-colors hover:text-[#0c4e33]"
+                                                                        className="block leading-snug font-bold text-neutral-900 transition-colors hover:text-[#0c4e33]"
                                                                     >
                                                                         {report.title.replace(
                                                                             /^\[(BERAT|SEDANG|RINGAN)\]\s*/i,
@@ -1941,27 +1941,27 @@ export default function AdminDashboard({
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
-                                                            <span className="inline-block rounded-md border border-neutral-200/70 bg-neutral-100 px-2 py-1 font-mono text-[11px] font-bold tracking-tight whitespace-nowrap text-neutral-800">
+                                                        <td className="px-2.5 py-3.5 text-center">
+                                                            <span className="inline-block rounded-md border border-neutral-200/70 bg-neutral-100 px-2 py-1 font-mono text-[11px] font-bold tracking-tight break-all text-neutral-800">
                                                                 {code}
                                                             </span>
                                                         </td>
-                                                        <td className="px-3 py-4 text-center whitespace-nowrap text-neutral-500">
+                                                        <td className="px-2.5 py-3.5 text-center text-neutral-500 leading-snug">
                                                             {formatDate(
                                                                 report.created_at,
                                                             )}
                                                         </td>
-                                                        <td className="max-w-[220px] px-3 py-4 text-left text-neutral-700">
+                                                        <td className="px-2.5 py-3.5 text-left text-neutral-700 break-words">
                                                             <div className="flex items-start gap-1.5 text-left leading-snug">
                                                                 <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-700" />
-                                                                <span className="line-clamp-2 text-xs">
+                                                                <span className="text-xs">
                                                                     {report.location_description ||
                                                                         report.regency_city ||
                                                                         'Kalimantan Barat'}
                                                                 </span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                        <td className="px-2.5 py-3.5 text-center">
                                                             <div className="flex justify-center">
                                                                 <StatusBadge
                                                                     status={
@@ -1971,13 +1971,13 @@ export default function AdminDashboard({
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                        <td className="px-2.5 py-3.5 text-center whitespace-nowrap">
                                                             <div className="flex justify-center">
                                                                 <Button
                                                                     asChild
                                                                     size="sm"
                                                                     variant="outline"
-                                                                    className="h-8 rounded-lg border-emerald-200 px-3 text-xs font-semibold text-[#0c4e33] shadow-2xs hover:bg-emerald-50 hover:text-[#073623]"
+                                                                    className="h-8 rounded-lg border-emerald-200 px-2.5 text-xs font-semibold text-[#0c4e33] shadow-2xs hover:bg-emerald-50 hover:text-[#073623]"
                                                                 >
                                                                     <Link
                                                                         href={

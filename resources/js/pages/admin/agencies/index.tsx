@@ -221,125 +221,222 @@ export default function AgenciesIndex({ agencies, allAgenciesList, filters }: Ag
                             />
                         </div>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full min-w-[850px] text-sm">
-                                <thead className="border-b border-[#DDE3DE] bg-[#F3F7F4] text-xs font-semibold uppercase tracking-wider text-[#343B36] dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-300">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-4 text-center">Nama Instansi</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Tipe Organisasi</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Wilayah Tugas</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Tugas Diterima</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Status</th>
-                                        <th scope="col" className="px-6 py-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-[#DDE3DE] dark:divide-neutral-800">
-                                    {agencies.data.map((agency) => (
-                                        <tr
-                                            key={agency.id}
-                                            className="transition-colors hover:bg-[#F3F7F4]/40 dark:hover:bg-neutral-800/40"
-                                        >
-                                            <td className="px-6 py-5 align-middle text-left font-semibold text-[#171C19] dark:text-white">
-                                                <div className="text-sm font-bold text-[#171C19] dark:text-white">
+                        <>
+                            {/* Desktop Table View (>= lg) */}
+                            <div className="hidden lg:block w-full">
+                                <table className="w-full text-sm">
+                                    <thead className="border-b border-[#DDE3DE] bg-[#F3F7F4] text-xs font-semibold uppercase tracking-wider text-[#343B36] dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-300">
+                                        <tr>
+                                            <th scope="col" className="w-[32%] px-3 py-3.5 text-left">Nama Instansi</th>
+                                            <th scope="col" className="w-[10%] px-2.5 py-3.5 text-center">Tipe</th>
+                                            <th scope="col" className="w-[16%] px-2.5 py-3.5 text-center">Wilayah Tugas</th>
+                                            <th scope="col" className="w-[11%] px-2.5 py-3.5 text-center">Tugas</th>
+                                            <th scope="col" className="w-[10%] px-2.5 py-3.5 text-center">Status</th>
+                                            <th scope="col" className="w-[21%] px-3 py-3.5 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-[#DDE3DE] dark:divide-neutral-800">
+                                        {agencies.data.map((agency) => (
+                                            <tr
+                                                key={agency.id}
+                                                className="transition-colors hover:bg-[#F3F7F4]/40 dark:hover:bg-neutral-800/40"
+                                            >
+                                                <td className="px-3 py-4 align-middle text-left font-semibold text-[#171C19] dark:text-white break-words">
+                                                    <div className="text-sm font-bold text-[#171C19] dark:text-white leading-snug">
+                                                        {agency.name}
+                                                    </div>
+                                                    {agency.code && (
+                                                        <div className="font-mono text-[10px] text-[#68716B] dark:text-neutral-400 font-normal mt-0.5">
+                                                            Kode: <span className="font-semibold">{agency.code}</span>
+                                                        </div>
+                                                    )}
+                                                    {agency.agency_memberships && agency.agency_memberships.length > 0 ? (
+                                                        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                                                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200/70 dark:border-emerald-800/70">
+                                                                <Users className="size-3" />
+                                                                <span>{agency.agency_memberships.length} Akun Petugas</span>
+                                                            </span>
+                                                            {agency.agency_memberships.slice(0, 2).map((m) => (
+                                                                <span
+                                                                    key={m.id}
+                                                                    className="text-[10px] text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono break-all"
+                                                                    title={`${m.user?.name} (${m.user?.email})`}
+                                                                >
+                                                                    {m.user?.email}
+                                                                </span>
+                                                            ))}
+                                                            {agency.agency_memberships.length > 2 && (
+                                                                <span className="text-[10px] text-neutral-400 font-mono">
+                                                                    +{agency.agency_memberships.length - 2} lagi
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mt-1 flex items-center gap-1 text-[11px] font-normal text-amber-600 dark:text-amber-400">
+                                                            <span className="size-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                                                            <span>Belum ada akun login petugas</span>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center">
+                                                    <span className="inline-block rounded bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200">
+                                                        {agency.agency_type}
+                                                    </span>
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center text-xs font-medium text-[#343B36] dark:text-neutral-300 break-words">
+                                                    {agency.jurisdiction}
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center text-xs text-[#68716B] dark:text-neutral-400">
+                                                    <span className="font-semibold text-[#171C19] dark:text-white">
+                                                        {agency.assignments_count ?? 0}
+                                                    </span>{' '}
+                                                    penugasan
+                                                </td>
+                                                <td className="px-2.5 py-4 align-middle text-center">
+                                                    {agency.is_active ? (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F1EB] px-2.5 py-1 text-xs font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300 whitespace-nowrap">
+                                                            <CheckCircle2 className="size-3.5" />
+                                                            <span>Aktif</span>
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400 whitespace-nowrap">
+                                                            <span>Nonaktif</span>
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-4 align-middle text-center">
+                                                    <div className="flex flex-wrap items-center justify-center gap-1.5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openCreateUserModal(agency)}
+                                                            className="inline-flex items-center gap-1 rounded border border-[#216B49] bg-[#E8F1EB] px-2 py-1 text-[11px] font-semibold text-[#216B49] hover:bg-[#216B49] hover:text-white transition shadow-2xs dark:bg-emerald-950/70 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-800 whitespace-nowrap"
+                                                            title={`Buat akun petugas login untuk ${agency.name}`}
+                                                        >
+                                                            <UserPlus className="size-3" />
+                                                            <span>Buat Akun</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openEditModal(agency)}
+                                                            className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2 py-1 text-[11px] font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 whitespace-nowrap"
+                                                        >
+                                                            <Edit2 className="size-3" />
+                                                            <span>Ubah</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleToggleStatus(agency)}
+                                                            className={`inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] font-medium transition whitespace-nowrap ${
+                                                                agency.is_active
+                                                                    ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
+                                                                    : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
+                                                            }`}
+                                                        >
+                                                            <Power className="size-3" />
+                                                            <span>{agency.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Tablet & Mobile Stacked Cards (< lg) */}
+                            <div className="block lg:hidden divide-y divide-[#DDE3DE] dark:divide-neutral-800">
+                                {agencies.data.map((agency) => (
+                                    <div key={agency.id} className="p-4 space-y-3">
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div>
+                                                <div className="text-sm font-bold text-[#171C19] dark:text-white leading-snug">
                                                     {agency.name}
                                                 </div>
                                                 {agency.code && (
-                                                    <div className="font-mono text-[10px] text-[#68716B] dark:text-neutral-400 font-normal mt-0.5">
+                                                    <div className="font-mono text-[10px] text-[#68716B] dark:text-neutral-400 mt-0.5">
                                                         Kode: <span className="font-semibold">{agency.code}</span>
                                                     </div>
                                                 )}
-                                                {agency.agency_memberships && agency.agency_memberships.length > 0 ? (
-                                                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                                                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200/70 dark:border-emerald-800/70">
-                                                            <Users className="size-3" />
-                                                            <span>{agency.agency_memberships.length} Akun Petugas</span>
-                                                        </span>
-                                                        {agency.agency_memberships.slice(0, 2).map((m) => (
-                                                            <span
-                                                                key={m.id}
-                                                                className="text-[10px] text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono truncate max-w-[150px]"
-                                                                title={`${m.user?.name} (${m.user?.email})`}
-                                                            >
-                                                                {m.user?.email}
-                                                            </span>
-                                                        ))}
-                                                        {agency.agency_memberships.length > 2 && (
-                                                            <span className="text-[10px] text-neutral-400 font-mono">
-                                                                +{agency.agency_memberships.length - 2} lagi
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                ) : (
-                                                    <div className="mt-1 flex items-center gap-1 text-[11px] font-normal text-amber-600 dark:text-amber-400">
-                                                        <span className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                                        <span>Belum ada akun login petugas</span>
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center">
-                                                <span className="rounded bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200">
-                                                    {agency.agency_type}
+                                            </div>
+                                            {agency.is_active ? (
+                                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#E8F1EB] px-2.5 py-0.5 text-[11px] font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300">
+                                                    <CheckCircle2 className="size-3" />
+                                                    <span>Aktif</span>
                                                 </span>
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center text-xs font-medium text-[#343B36] dark:text-neutral-300">
-                                                {agency.jurisdiction}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center text-xs text-[#68716B] dark:text-neutral-400">
-                                                <span className="font-semibold text-[#171C19] dark:text-white">
-                                                    {agency.assignments_count ?? 0}
-                                                </span>{' '}
-                                                penugasan
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center whitespace-nowrap">
-                                                {agency.is_active ? (
-                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E8F1EB] px-3 py-1 text-xs font-medium text-[#216B49] dark:bg-emerald-950/70 dark:text-emerald-300">
-                                                        <CheckCircle2 className="size-3.5" />
-                                                        <span>Aktif</span>
+                                            ) : (
+                                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                                    <span>Nonaktif</span>
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#68716B] dark:text-neutral-400">
+                                            <span>Tipe: <strong className="text-[#171C19] dark:text-white">{agency.agency_type}</strong></span>
+                                            <span>Wilayah: <strong className="text-[#171C19] dark:text-white">{agency.jurisdiction}</strong></span>
+                                            <span>Tugas: <strong className="text-[#171C19] dark:text-white">{agency.assignments_count ?? 0} penugasan</strong></span>
+                                        </div>
+
+                                        {agency.agency_memberships && agency.agency_memberships.length > 0 ? (
+                                            <div className="flex flex-wrap items-center gap-1.5">
+                                                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200/70 dark:border-emerald-800/70">
+                                                    <Users className="size-3" />
+                                                    <span>{agency.agency_memberships.length} Akun Petugas</span>
+                                                </span>
+                                                {agency.agency_memberships.slice(0, 2).map((m) => (
+                                                    <span
+                                                        key={m.id}
+                                                        className="text-[10px] text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono break-all"
+                                                    >
+                                                        {m.user?.email}
                                                     </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                                                        <span>Nonaktif</span>
+                                                ))}
+                                                {agency.agency_memberships.length > 2 && (
+                                                    <span className="text-[10px] text-neutral-400 font-mono">
+                                                        +{agency.agency_memberships.length - 2} lagi
                                                     </span>
                                                 )}
-                                            </td>
-                                            <td className="px-6 py-5 align-middle text-center whitespace-nowrap">
-                                                <div className="flex items-center justify-center gap-1.5">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => openCreateUserModal(agency)}
-                                                        className="inline-flex items-center gap-1 rounded border border-[#216B49] bg-[#E8F1EB] px-2.5 py-1 text-xs font-semibold text-[#216B49] hover:bg-[#216B49] hover:text-white transition shadow-2xs dark:bg-emerald-950/70 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-800"
-                                                        title={`Buat akun petugas login untuk ${agency.name}`}
-                                                    >
-                                                        <UserPlus className="size-3" />
-                                                        <span>Buat Akun</span>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => openEditModal(agency)}
-                                                        className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2.5 py-1 text-xs font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                                                    >
-                                                        <Edit2 className="size-3" />
-                                                        <span>Ubah</span>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleToggleStatus(agency)}
-                                                        className={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-xs font-medium transition ${
-                                                            agency.is_active
-                                                                ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
-                                                                : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
-                                                        }`}
-                                                    >
-                                                        <Power className="size-3" />
-                                                        <span>{agency.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400">
+                                                <span className="size-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                                                <span>Belum ada akun login petugas</span>
+                                            </div>
+                                        )}
+
+                                        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#DDE3DE]/70 dark:border-neutral-800">
+                                            <button
+                                                type="button"
+                                                onClick={() => openCreateUserModal(agency)}
+                                                className="inline-flex items-center gap-1 rounded border border-[#216B49] bg-[#E8F1EB] px-2.5 py-1.5 text-xs font-semibold text-[#216B49] hover:bg-[#216B49] hover:text-white transition shadow-2xs dark:bg-emerald-950/70 dark:border-emerald-800 dark:text-emerald-300"
+                                            >
+                                                <UserPlus className="size-3" />
+                                                <span>Buat Akun</span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => openEditModal(agency)}
+                                                className="inline-flex items-center gap-1 rounded border border-[#DDE3DE] px-2.5 py-1.5 text-xs font-medium text-[#343B36] hover:bg-[#F3F7F4] dark:border-neutral-700 dark:text-neutral-300"
+                                            >
+                                                <Edit2 className="size-3" />
+                                                <span>Ubah</span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleToggleStatus(agency)}
+                                                className={`inline-flex items-center gap-1 rounded px-2.5 py-1.5 text-xs font-medium transition ${
+                                                    agency.is_active
+                                                        ? 'border border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-900 dark:text-rose-300'
+                                                        : 'border border-[#216B49] text-[#216B49] hover:bg-[#E8F1EB] dark:text-emerald-400'
+                                                }`}
+                                            >
+                                                <Power className="size-3" />
+                                                <span>{agency.is_active ? 'Nonaktifkan' : 'Aktifkan'}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
