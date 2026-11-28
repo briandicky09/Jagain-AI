@@ -181,6 +181,108 @@ show.head = (args: { report: number | { id: number } } | [report: number | { id:
     
     show.form = showForm
 /**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+export const print = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: print.url(args, options),
+    method: 'get',
+})
+
+print.definition = {
+    methods: ["get","head"],
+    url: '/admin/reports/{report}/print',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+print.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { report: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { report: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    report: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        report: typeof args.report === 'object'
+                ? args.report.id
+                : args.report,
+                }
+
+    return print.definition.url
+            .replace('{report}', parsedArgs.report.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+print.get = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: print.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+print.head = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: print.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+    const printForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: print.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+        printForm.get = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: print.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Admin\AdminReportController::print
+ * @see app/Http/Controllers/Admin/AdminReportController.php:243
+ * @route '/admin/reports/{report}/print'
+ */
+        printForm.head = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: print.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    print.form = printForm
+/**
 * @see \App\Http\Controllers\Admin\AdminReportController::transition
  * @see app/Http/Controllers/Admin/AdminReportController.php:183
  * @route '/admin/reports/{report}/transitions'
@@ -341,6 +443,7 @@ assign.post = (args: { report: number | { id: number } } | [report: number | { i
 const reports = {
     index: Object.assign(index, index),
 show: Object.assign(show, show),
+print: Object.assign(print, print),
 transition: Object.assign(transition, transition),
 assign: Object.assign(assign, assign),
 ai: Object.assign(ai, ai),

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\AssignmentStatus;
 use App\Enums\FireCondition;
 use App\Enums\ReportStatus;
+use App\Enums\UserRole;
 use App\Models\Agency;
 use App\Models\Assignment;
 use App\Models\AssignmentHistory;
@@ -12,7 +13,9 @@ use App\Models\OperationalUpdate;
 use App\Models\Report;
 use App\Models\ReportStatusHistory;
 use App\Models\User;
+use App\Notifications\ReportWorkflowNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 
 class AssignmentService
@@ -55,7 +58,7 @@ class AssignmentService
             ]);
         }
 
-        return DB::transaction(function () use ($report, $agency, $actor, $note, $statusStr) {
+        $assignment = DB::transaction(function () use ($report, $agency, $actor, $note, $statusStr) {
             $assignment = Assignment::create([
                 'report_id' => $report->id,
                 'agency_id' => $agency->id,
@@ -111,6 +114,24 @@ class AssignmentService
 
             return $assignment;
         });
+
+        try {
+            $agencyUsers = $agency->members()->where('users.id', '!=', $actor->id)->get();
+            if ($agencyUsers->isNotEmpty()) {
+                Notification::send($agencyUsers, new ReportWorkflowNotification(
+                    eventType: 'AGENCY_ASSIGNED',
+                    title: "Penugasan Baru OPD ({$report->tracking_code})",
+                    message: "Laporan \"{$report->title}\" ditugaskan ke {$agency->name}. Mohon konfirmasi penerimaan.",
+                    url: "/opd/tugas/{$assignment->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: 'warning',
+                ));
+            }
+        } catch (\Throwable) {
+            // Notification errors must not fail assignment
+        }
+
+        return $assignment;
     }
 
     /**
@@ -143,7 +164,7 @@ class AssignmentService
             $accepted = $statusVal === 'RECEIVED_BY_AGENCY';
         }
 
-        return DB::transaction(function () use ($assignment, $actor, $accepted, $declineReason) {
+        $updatedAssignment = DB::transaction(function () use ($assignment, $actor, $accepted, $declineReason) {
             $fromStatus = $assignment->assignment_status instanceof AssignmentStatus
                 ? $assignment->assignment_status
                 : AssignmentStatus::tryFrom((string) $assignment->assignment_status) ?? AssignmentStatus::ASSIGNED;
@@ -186,6 +207,28 @@ class AssignmentService
 
             return $assignment;
         });
+
+        try {
+            $report = $updatedAssignment->report;
+            $agencyName = $updatedAssignment->agency?->name ?? 'OPD';
+            $admins = User::where('role', UserRole::ADMIN->value)->where('id', '!=', $actor->id)->get();
+            if ($report && $admins->isNotEmpty()) {
+                Notification::send($admins, new ReportWorkflowNotification(
+                    eventType: 'OPD_RESPONSE',
+                    title: $accepted ? "Tugas Diterima {$agencyName}" : "Tugas Ditolak {$agencyName}",
+                    message: $accepted
+                        ? "{$agencyName} telah menerima penugasan untuk laporan {$report->tracking_code}."
+                        : "{$agencyName} menolak penugasan {$report->tracking_code}. Alasan: ".($declineReason ?? '-'),
+                    url: "/admin/reports/{$report->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: $accepted ? 'info' : 'warning',
+                ));
+            }
+        } catch (\Throwable) {
+            // Ignore notification errors
+        }
+
+        return $updatedAssignment;
     }
 
     /**
@@ -199,7 +242,7 @@ class AssignmentService
         ?FireCondition $fireConditionObserved = null,
         ?string $evidencePath = null
     ): OperationalUpdate {
-        return DB::transaction(function () use ($assignment, $actor, $updateType, $note, $fireConditionObserved, $evidencePath) {
+        $update = DB::transaction(function () use ($assignment, $actor, $updateType, $note, $fireConditionObserved, $evidencePath) {
             $currentStatus = $assignment->assignment_status instanceof AssignmentStatus
                 ? $assignment->assignment_status->value
                 : (string) $assignment->assignment_status;
@@ -253,6 +296,26 @@ class AssignmentService
 
             return $update;
         });
+
+        try {
+            $report = $assignment->report;
+            $agencyName = $assignment->agency?->name ?? 'OPD';
+            $admins = User::where('role', UserRole::ADMIN->value)->where('id', '!=', $actor->id)->get();
+            if ($report && $admins->isNotEmpty()) {
+                Notification::send($admins, new ReportWorkflowNotification(
+                    eventType: 'OPD_PROGRESS_UPDATE',
+                    title: "Pembaruan Lapangan ({$report->tracking_code})",
+                    message: "{$agencyName} menambahkan catatan penanganan lapangan untuk laporan {$report->tracking_code}.",
+                    url: "/admin/reports/{$report->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: 'info',
+                ));
+            }
+        } catch (\Throwable) {
+            // Ignore notification errors
+        }
+
+        return $update;
     }
 
     /**
@@ -263,7 +326,7 @@ class AssignmentService
         User $actor,
         string $summary
     ): Assignment {
-        return DB::transaction(function () use ($assignment, $actor, $summary) {
+        $submittedAssignment = DB::transaction(function () use ($assignment, $actor, $summary) {
             $fromStatus = $assignment->assignment_status instanceof AssignmentStatus
                 ? $assignment->assignment_status->value
                 : (string) $assignment->assignment_status;
@@ -316,5 +379,25 @@ class AssignmentService
 
             return $assignment;
         });
+
+        try {
+            $report = $submittedAssignment->report;
+            $agencyName = $submittedAssignment->agency?->name ?? 'OPD';
+            $admins = User::where('role', UserRole::ADMIN->value)->where('id', '!=', $actor->id)->get();
+            if ($report && $admins->isNotEmpty()) {
+                Notification::send($admins, new ReportWorkflowNotification(
+                    eventType: 'OPD_SUBMITTED_FOR_REVIEW',
+                    title: "Pengajuan Selesai OPD ({$report->tracking_code})",
+                    message: "{$agencyName} mengajukan penyelesaian penanganan untuk laporan {$report->tracking_code}.",
+                    url: "/admin/reports/{$report->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: 'success',
+                ));
+            }
+        } catch (\Throwable) {
+            // Ignore notification errors
+        }
+
+        return $submittedAssignment;
     }
 }

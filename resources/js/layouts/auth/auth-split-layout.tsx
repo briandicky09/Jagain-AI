@@ -54,7 +54,7 @@ export default function AuthSplitLayout({
 
                 {/* Bottom Left Footer Info with Frosted Glass Pill */}
                 <div className="relative z-20 flex items-center justify-between text-xs text-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl bg-black/40 border border-white/15">
-                    <span>© 2026 Jagain Kalimantan. All rights reserved.</span>
+                    <span>© 2026 Jagain Kalimantan. Hak cipta dilindungi.</span>
                     <span className="font-mono text-[11px] text-[#10e57a]">
                         Integritas & Pemulihan Ekosistem
                     </span>

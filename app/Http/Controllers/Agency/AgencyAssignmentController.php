@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agency;
 
 use App\Enums\AssignmentStatus;
 use App\Enums\FireCondition;
+use App\Enums\ReportStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Services\AssignmentService;
@@ -11,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Inertia\Inertia;
 use Inertia\Response;
 use InvalidArgumentException;
@@ -214,5 +216,47 @@ class AgencyAssignmentController extends Controller
         );
 
         return back()->with('success', 'Hasil penanganan berhasil diajukan untuk ditinjau oleh Administrator.');
+    }
+
+    /**
+     * Render printable official report & assignment summary.
+     */
+    public function print(Assignment $assignment): View
+    {
+        Gate::authorize('view', $assignment);
+
+        $report = $assignment->report;
+        $report->load([
+            'category',
+            'creator',
+            'evidence',
+            'statusHistories.actor',
+            'statusHistories.actorUser',
+            'assignments.agency',
+            'assignments.operationalUpdates',
+            'aiAnalyses' => fn ($q) => $q->latest()->limit(1),
+        ]);
+
+        $latestAi = $report->aiAnalyses->first();
+        $severityMap = [
+            'CRITICAL' => 'Kritis',
+            'HIGH' => 'Tinggi',
+            'MEDIUM' => 'Sedang',
+            'LOW' => 'Rendah',
+            'UNKNOWN' => 'Belum Dapat Ditentukan',
+        ];
+
+        return view('reports.print', [
+            'report' => $report,
+            'reportStatusLabel' => $report->report_status instanceof ReportStatus
+                ? $report->report_status->label()
+                : (string) $report->report_status,
+            'fireConditionLabel' => $report->fire_condition instanceof FireCondition
+                ? $report->fire_condition->label()
+                : (string) $report->fire_condition,
+            'latestAi' => $latestAi,
+            'latestAiSeverityLabel' => $latestAi ? ($severityMap[$latestAi->severity_recommendation] ?? $latestAi->severity_recommendation) : null,
+            'actorContextLabel' => $assignment->agency?->name ?? 'Petugas OPD',
+        ]);
     }
 }

@@ -9,6 +9,8 @@ return [
     'retry_times' => (int) env('AI_SERVICE_RETRIES', 1),
     'retry_sleep_ms' => (int) env('AI_SERVICE_RETRY_SLEEP_MS', 200),
     'auto_analyze_on_submit' => (bool) env('AI_AUTO_ANALYZE_ON_SUBMIT', false),
+    'queue_enabled' => (bool) env('AI_QUEUE_ENABLED', false),
+    'async_manual_analyze' => (bool) env('AI_ASYNC_MANUAL_ANALYZE', false),
     'duplicate_window_hours' => (int) env('AI_DUPLICATE_WINDOW_HOURS', 72),
     'duplicate_radius_km' => (float) env('AI_DUPLICATE_RADIUS_KM', 25.0),
     'max_image_bytes' => (int) env('AI_MAX_IMAGE_BYTES', 5242880),

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,6 +38,37 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
+        $notifications = [];
+        $unreadNotificationsCount = 0;
+
+        if ($user) {
+            try {
+                if (Schema::hasTable('notifications')) {
+                    $unreadNotificationsCount = $user->unreadNotifications()->count();
+                    $notifications = $user->notifications()
+                        ->latest()
+                        ->limit(10)
+                        ->get()
+                        ->map(fn ($notification) => [
+                            'id' => $notification->id,
+                            'event_type' => $notification->data['event_type'] ?? 'INFO',
+                            'title' => $notification->data['title'] ?? 'Pemberitahuan Sistem',
+                            'message' => $notification->data['message'] ?? '',
+                            'url' => $notification->data['url'] ?? '/dashboard',
+                            'tracking_code' => $notification->data['tracking_code'] ?? null,
+                            'tone' => $notification->data['tone'] ?? 'info',
+                            'read_at' => $notification->read_at?->toIso8601String(),
+                            'created_at_human' => $notification->created_at?->locale('id')->diffForHumans() ?? '',
+                        ])
+                        ->values()
+                        ->all();
+                }
+            } catch (\Throwable) {
+                $notifications = [];
+                $unreadNotificationsCount = 0;
+            }
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -58,6 +90,8 @@ class HandleInertiaRequests extends Middleware
                         'jurisdiction' => $user->currentAgency()->jurisdiction,
                     ] : null,
                 ] : null,
+                'notifications' => $notifications,
+                'unread_notifications_count' => $unreadNotificationsCount,
             ],
             'flash' => [
                 'success' => $request->session()->get('success'),

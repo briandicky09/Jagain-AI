@@ -25,6 +25,7 @@ import {
   startOfDay,
   startOfMonth,
 } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
 import { atom, useAtom } from "jotai";
 import throttle from "lodash.throttle";
 import { PlusIcon, TrashIcon } from "lucide-react";
@@ -364,17 +365,22 @@ const DailyHeader: FC = () => {
             renderHeaderItem={(item: number) => (
               <div className="flex items-center justify-center gap-1">
                 <p>
-                  {format(addDays(new Date(year.year, index, 1), item), "d")}
+                  {format(addDays(new Date(year.year, index, 1), item), "d", {
+                    locale: idLocale,
+                  })}
                 </p>
                 <p className="text-muted-foreground">
                   {format(
                     addDays(new Date(year.year, index, 1), item),
-                    "EEEEE"
+                    "EEEEE",
+                    { locale: idLocale }
                   )}
                 </p>
               </div>
             )}
-            title={format(new Date(year.year, index, 1), "MMMM yyyy")}
+            title={format(new Date(year.year, index, 1), "MMMM yyyy", {
+              locale: idLocale,
+            })}
           />
           <GanttColumns
             columns={month.days}
@@ -397,7 +403,7 @@ const MonthlyHeader: FC = () => {
       <GanttContentHeader
         columns={year.quarters.flatMap((quarter) => quarter.months).length}
         renderHeaderItem={(item: number) => (
-          <p>{format(new Date(year.year, item, 1), "MMM")}</p>
+          <p>{format(new Date(year.year, item, 1), "MMM", { locale: idLocale })}</p>
         )}
         title={`${year.year}`}
       />
@@ -421,7 +427,9 @@ const QuarterlyHeader: FC = () => {
           columns={quarter.months.length}
           renderHeaderItem={(item: number) => (
             <p>
-              {format(new Date(year.year, quarterIndex * 3 + item, 1), "MMM")}
+              {format(new Date(year.year, quarterIndex * 3 + item, 1), "MMM", {
+                locale: idLocale,
+              })}
             </p>
           )}
           title={`Q${quarterIndex + 1} ${year.year}`}
@@ -533,8 +541,8 @@ export const GanttSidebarHeader: FC = () => (
     style={{ height: "var(--gantt-header-height)" }}
   >
     {/* <Checkbox className="shrink-0" /> */}
-    <p className="flex-1 truncate text-left">Issues</p>
-    <p className="shrink-0">Duration</p>
+    <p className="flex-1 truncate text-left">Tahapan</p>
+    <p className="shrink-0">Durasi</p>
   </div>
 );
 
@@ -796,7 +804,7 @@ export const GanttFeatureDragHelper: FC<GanttFeatureDragHelperProps> = ({
             isPressed && "block"
           )}
         >
-          {format(date, "MMM dd, yyyy")}
+          {format(date, "dd MMM yyyy", { locale: idLocale })}
         </div>
       )}
     </div>
@@ -1417,7 +1425,7 @@ export type GanttTodayProps = {
 };
 
 export const GanttToday: FC<GanttTodayProps> = ({ className }) => {
-  const label = "Today";
+  const label = "Hari Ini";
   const date = useMemo(() => new Date(), []);
   const gantt = useContext(GanttContext);
   const differenceIn = useMemo(

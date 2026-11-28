@@ -1,0 +1,23 @@
+{
+  "name": "JAGAIN AI — Pantau Karhutla Kalimantan",
+  "short_name": "JAGAIN AI",
+  "description": "Platform pelaporan kebakaran hutan dan lahan, pemantauan titik panas, serta koordinasi penanganan OPD di Kalimantan.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8faf9",
+  "theme_color": "#216B49",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

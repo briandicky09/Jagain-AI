@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Enums\FireCondition;
 use App\Enums\ReportStatus;
+use App\Enums\UserRole;
+use App\Jobs\AnalyzeReportJob;
 use App\Models\Evidence;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\ReportStatusHistory;
+use App\Models\User;
+use App\Notifications\ReportWorkflowNotification;
 use App\Services\Ai\ReportAiOrchestrator;
 use App\Services\AuditLogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -141,10 +146,30 @@ class CitizenReportController extends Controller
 
         if (config('ai.enabled') && config('ai.auto_analyze_on_submit')) {
             try {
-                app(ReportAiOrchestrator::class)->analyzeReport($report, $user);
+                if (config('ai.queue_enabled')) {
+                    AnalyzeReportJob::dispatch($report->id, $user->id);
+                } else {
+                    AnalyzeReportJob::dispatchSync($report->id, $user->id);
+                }
             } catch (\Throwable) {
                 // AI analysis failure must never fail citizen report submission
             }
+        }
+
+        try {
+            $admins = User::where('role', UserRole::ADMIN->value)->get();
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new ReportWorkflowNotification(
+                    eventType: 'NEW_REPORT',
+                    title: "Laporan Baru Masuk ({$report->tracking_code})",
+                    message: "Laporan baru \"{$report->title}\" dari {$report->province} menunggu pemeriksaan awal petugas.",
+                    url: "/admin/reports/{$report->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: 'warning',
+                ));
+            }
+        } catch (\Throwable) {
+            // Notification delivery failure must never break citizen submission
         }
 
         return redirect()->route('citizen.reports.show', ['tracking_code' => $report->tracking_code])
@@ -285,6 +310,22 @@ class CitizenReportController extends Controller
             app(ReportAiOrchestrator::class)->runPrivacyGuardrail($report->fresh() ?? $report);
         } catch (\Throwable) {
             // Privacy fallback remains active in Report::toPublicArray()
+        }
+
+        try {
+            $admins = User::where('role', UserRole::ADMIN->value)->get();
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new ReportWorkflowNotification(
+                    eventType: 'CITIZEN_CLARIFICATION',
+                    title: "Klarifikasi Warga ({$report->tracking_code})",
+                    message: "Pelapor telah melengkapi informasi tambahan untuk laporan {$report->tracking_code}.",
+                    url: "/admin/reports/{$report->id}",
+                    trackingCode: $report->tracking_code,
+                    tone: 'info',
+                ));
+            }
+        } catch (\Throwable) {
+            // Ignore notification errors
         }
 
         return back()->with('success', 'Informasi tambahan berhasil dikirim. Laporan kembali dalam antrean peninjauan petugas.');

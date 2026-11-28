@@ -180,6 +180,108 @@ show.head = (args: { assignment: number | { id: number } } | [assignment: number
     
     show.form = showForm
 /**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+export const print = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: print.url(args, options),
+    method: 'get',
+})
+
+print.definition = {
+    methods: ["get","head"],
+    url: '/opd/tugas/{assignment}/print',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+print.url = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { assignment: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { assignment: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    assignment: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        assignment: typeof args.assignment === 'object'
+                ? args.assignment.id
+                : args.assignment,
+                }
+
+    return print.definition.url
+            .replace('{assignment}', parsedArgs.assignment.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+print.get = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: print.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+print.head = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: print.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+    const printForm = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: print.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+        printForm.get = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: print.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Agency\AgencyAssignmentController::print
+ * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:222
+ * @route '/opd/tugas/{assignment}/print'
+ */
+        printForm.head = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: print.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    print.form = printForm
+/**
 * @see \App\Http\Controllers\Agency\AgencyAssignmentController::respond
  * @see app/Http/Controllers/Agency/AgencyAssignmentController.php:128
  * @route '/opd/tugas/{assignment}/respon'
@@ -416,6 +518,6 @@ submitReview.post = (args: { assignment: number | { id: number } } | [assignment
         })
     
     submitReview.form = submitReviewForm
-const AgencyAssignmentController = { index, show, respond, updateProgress, submitReview }
+const AgencyAssignmentController = { index, show, print, respond, updateProgress, submitReview }
 
 export default AgencyAssignmentController

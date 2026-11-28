@@ -14,6 +14,7 @@ import {
     FileText,
     History,
     MapPin,
+    Printer,
     Send,
     Shield,
     User as UserIcon,
@@ -233,6 +234,21 @@ export default function ReportShow({
                     </div>
 
                     <div className="flex shrink-0 items-center gap-2">
+                        <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="rounded-xl border-border-neutral bg-white text-xs font-semibold text-dark-neutral hover:bg-pale-green"
+                        >
+                            <a
+                                href={`/admin/reports/${report.id}/print`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <Printer className="size-3.5" />
+                                <span>Cetak / PDF</span>
+                            </a>
+                        </Button>
                         <Button
                             asChild
                             variant="outline"

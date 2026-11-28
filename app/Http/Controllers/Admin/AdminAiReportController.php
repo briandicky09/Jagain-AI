@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AnalyzeReportJob;
 use App\Models\AiAnalysis;
 use App\Models\AiDuplicateCandidate;
 use App\Models\AiDuplicateDecision;
@@ -23,6 +24,12 @@ class AdminAiReportController extends Controller
 
     public function analyze(Request $request, Report $report): RedirectResponse
     {
+        if (config('ai.async_manual_analyze') || $request->boolean('async')) {
+            AnalyzeReportJob::dispatch($report->id, $request->user()?->id);
+
+            return back()->with('info', 'Permintaan analisis AI telah dimasukkan ke antrean latar belakang.');
+        }
+
         $analysis = $this->orchestrator->analyzeReport($report, $request->user());
 
         if ($analysis->analysis_status === 'COMPLETED') {

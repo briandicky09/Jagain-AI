@@ -15,6 +15,7 @@ import {
     XCircle,
     Clock,
     MapPin,
+    Printer,
     Upload,
     Send,
     Shield,
@@ -128,7 +129,16 @@ export default function OpdAssignmentShow({
                     <ArrowLeft className="size-4" />
                     <span>Kembali ke Daftar Tugas OPD</span>
                 </Link>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                    <a
+                        href={`/opd/tugas/${assignment.id}/print`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#DDE3DE] dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-1.5 text-xs font-semibold text-[#171C19] dark:text-neutral-200 hover:bg-[#F3F7F4] transition-colors"
+                    >
+                        <Printer className="size-3.5" />
+                        <span>Cetak / PDF</span>
+                    </a>
                     <span className="text-xs font-sans text-[#68716B] dark:text-neutral-400">Kode Laporan:</span>
                     <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-md bg-[#E8F1EB] dark:bg-emerald-950/60 text-[#174B35] dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                         {report.tracking_code}

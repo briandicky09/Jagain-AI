@@ -14,6 +14,7 @@ use App\Http\Controllers\Agency\AgencyDashboardController;
 use App\Http\Controllers\CitizenReportController;
 use App\Http\Controllers\Community\DashboardController;
 use App\Http\Controllers\Community\ReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporan-saya/{tracking_code}/tambah-informasi', [CitizenReportController::class, 'provideInformation'])
         ->middleware('throttle:15,1')
         ->name('citizen.reports.provide-info');
+
+    // In-App Notifications
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
 });
 
 // Admin Route Group (Requires ADMIN role)
@@ -71,6 +78,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Reports Review & Management
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
+    Route::get('/reports/{report}/print', [AdminReportController::class, 'print'])->name('reports.print');
     Route::post('/reports/{report}/transitions', [AdminReportController::class, 'transition'])->name('reports.transition');
     Route::post('/reports/{report}/assignments', [AdminReportController::class, 'assign'])->name('reports.assign');
 
@@ -130,6 +138,7 @@ Route::middleware(['auth', 'role:AGENCY'])->prefix('opd')->name('agency.')->grou
     Route::get('/dashboard', [AgencyDashboardController::class, 'index'])->name('dashboard');
     Route::get('/tugas', [AgencyAssignmentController::class, 'index'])->name('assignments.index');
     Route::get('/tugas/{assignment}', [AgencyAssignmentController::class, 'show'])->name('assignments.show');
+    Route::get('/tugas/{assignment}/print', [AgencyAssignmentController::class, 'print'])->name('assignments.print');
     Route::post('/tugas/{assignment}/respon', [AgencyAssignmentController::class, 'respond'])->name('assignments.respond');
     Route::post('/tugas/{assignment}/progres', [AgencyAssignmentController::class, 'updateProgress'])->name('assignments.update-progress');
     Route::post('/tugas/{assignment}/ajukan-review', [AgencyAssignmentController::class, 'submitReview'])->name('assignments.submit-review');

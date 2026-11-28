@@ -119,6 +119,7 @@
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="manifest" href="/manifest.webmanifest">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,5 +139,12 @@
             <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;">JAGAIN AI</div>
         </div>
         <x-inertia::app />
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('/sw.js').catch(function () {});
+                });
+            }
+        </script>
     </body>
 </html>

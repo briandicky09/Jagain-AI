@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::analyze
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:24
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:25
  * @route '/admin/reports/{report}/ai/analyze'
  */
 export const analyze = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ analyze.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::analyze
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:24
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:25
  * @route '/admin/reports/{report}/ai/analyze'
  */
 analyze.url = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ analyze.url = (args: { report: number | { id: number } } | [report: number | { i
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::analyze
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:24
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:25
  * @route '/admin/reports/{report}/ai/analyze'
  */
 analyze.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ analyze.post = (args: { report: number | { id: number } } | [report: number | { 
 
     /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::analyze
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:24
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:25
  * @route '/admin/reports/{report}/ai/analyze'
  */
     const analyzeForm = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ analyze.post = (args: { report: number | { id: number } } | [report: number | { 
 
             /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::analyze
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:24
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:25
  * @route '/admin/reports/{report}/ai/analyze'
  */
         analyzeForm.post = (args: { report: number | { id: number } } | [report: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -80,7 +80,7 @@ analyze.post = (args: { report: number | { id: number } } | [report: number | { 
     analyze.form = analyzeForm
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::review
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:35
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:42
  * @route '/admin/reports/{report}/ai/analyses/{analysis}/review'
  */
 export const review = (args: { report: number | { id: number }, analysis: number | { id: number } } | [report: number | { id: number }, analysis: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -95,7 +95,7 @@ review.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::review
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:35
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:42
  * @route '/admin/reports/{report}/ai/analyses/{analysis}/review'
  */
 review.url = (args: { report: number | { id: number }, analysis: number | { id: number } } | [report: number | { id: number }, analysis: number | { id: number } ], options?: RouteQueryOptions) => {
@@ -125,7 +125,7 @@ review.url = (args: { report: number | { id: number }, analysis: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::review
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:35
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:42
  * @route '/admin/reports/{report}/ai/analyses/{analysis}/review'
  */
 review.post = (args: { report: number | { id: number }, analysis: number | { id: number } } | [report: number | { id: number }, analysis: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -135,7 +135,7 @@ review.post = (args: { report: number | { id: number }, analysis: number | { id:
 
     /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::review
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:35
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:42
  * @route '/admin/reports/{report}/ai/analyses/{analysis}/review'
  */
     const reviewForm = (args: { report: number | { id: number }, analysis: number | { id: number } } | [report: number | { id: number }, analysis: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -145,7 +145,7 @@ review.post = (args: { report: number | { id: number }, analysis: number | { id:
 
             /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::review
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:35
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:42
  * @route '/admin/reports/{report}/ai/analyses/{analysis}/review'
  */
         reviewForm.post = (args: { report: number | { id: number }, analysis: number | { id: number } } | [report: number | { id: number }, analysis: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -156,7 +156,7 @@ review.post = (args: { report: number | { id: number }, analysis: number | { id:
     review.form = reviewForm
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::duplicateDecision
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:85
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:92
  * @route '/admin/reports/{report}/ai/duplicates/{candidate}/decision'
  */
 export const duplicateDecision = (args: { report: number | { id: number }, candidate: number | { id: number } } | [report: number | { id: number }, candidate: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -171,7 +171,7 @@ duplicateDecision.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::duplicateDecision
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:85
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:92
  * @route '/admin/reports/{report}/ai/duplicates/{candidate}/decision'
  */
 duplicateDecision.url = (args: { report: number | { id: number }, candidate: number | { id: number } } | [report: number | { id: number }, candidate: number | { id: number } ], options?: RouteQueryOptions) => {
@@ -201,7 +201,7 @@ duplicateDecision.url = (args: { report: number | { id: number }, candidate: num
 
 /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::duplicateDecision
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:85
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:92
  * @route '/admin/reports/{report}/ai/duplicates/{candidate}/decision'
  */
 duplicateDecision.post = (args: { report: number | { id: number }, candidate: number | { id: number } } | [report: number | { id: number }, candidate: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -211,7 +211,7 @@ duplicateDecision.post = (args: { report: number | { id: number }, candidate: nu
 
     /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::duplicateDecision
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:85
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:92
  * @route '/admin/reports/{report}/ai/duplicates/{candidate}/decision'
  */
     const duplicateDecisionForm = (args: { report: number | { id: number }, candidate: number | { id: number } } | [report: number | { id: number }, candidate: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -221,7 +221,7 @@ duplicateDecision.post = (args: { report: number | { id: number }, candidate: nu
 
             /**
 * @see \App\Http\Controllers\Admin\AdminAiReportController::duplicateDecision
- * @see app/Http/Controllers/Admin/AdminAiReportController.php:85
+ * @see app/Http/Controllers/Admin/AdminAiReportController.php:92
  * @route '/admin/reports/{report}/ai/duplicates/{candidate}/decision'
  */
         duplicateDecisionForm.post = (args: { report: number | { id: number }, candidate: number | { id: number } } | [report: number | { id: number }, candidate: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

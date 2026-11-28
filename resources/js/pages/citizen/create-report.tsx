@@ -22,6 +22,7 @@ interface CreateReportProps {
     provinces: string[];
 }
 
+const DRAFT_STORAGE_KEY = 'jagain_report_draft_v1';
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 
 function formatFileSize(bytes: number): string {
@@ -42,6 +43,11 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
         message: null,
     });
 
+    const [isOffline, setIsOffline] = useState<boolean>(() =>
+        typeof navigator !== 'undefined' ? !navigator.onLine : false,
+    );
+    const [draftRestored, setDraftRestored] = useState(false);
+
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         description: '',
@@ -55,6 +61,93 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
         evidence_file: null as File | null,
         safety_acknowledged: false,
     });
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        try {
+            const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.title || parsed.description || parsed.location_description || parsed.regency_city)) {
+                    setData((prev) => ({
+                        ...prev,
+                        title: parsed.title ?? prev.title,
+                        description: parsed.description ?? prev.description,
+                        category_id: parsed.category_id ?? prev.category_id,
+                        latitude: typeof parsed.latitude === 'number' ? parsed.latitude : prev.latitude,
+                        longitude: typeof parsed.longitude === 'number' ? parsed.longitude : prev.longitude,
+                        province: parsed.province ?? prev.province,
+                        regency_city: parsed.regency_city ?? prev.regency_city,
+                        location_description: parsed.location_description ?? prev.location_description,
+                        reported_occurrence_at: parsed.reported_occurrence_at ?? prev.reported_occurrence_at,
+                    }));
+                    if (typeof parsed.latitude === 'number' && typeof parsed.longitude === 'number') {
+                        setSelectedCoords({ lat: parsed.latitude, lng: parsed.longitude });
+                    }
+                    setDraftRestored(true);
+                }
+            }
+        } catch {
+            // Ignore malformed localStorage draft
+        }
+
+        const handleOnline = () => setIsOffline(false);
+        const handleOffline = () => setIsOffline(true);
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const hasDraftContent = Boolean(
+            data.title.trim() ||
+                data.description.trim() ||
+                data.regency_city.trim() ||
+                data.location_description.trim(),
+        );
+        if (!hasDraftContent) return;
+        try {
+            localStorage.setItem(
+                DRAFT_STORAGE_KEY,
+                JSON.stringify({
+                    title: data.title,
+                    description: data.description,
+                    category_id: data.category_id,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    province: data.province,
+                    regency_city: data.regency_city,
+                    location_description: data.location_description,
+                    reported_occurrence_at: data.reported_occurrence_at,
+                }),
+            );
+        } catch {
+            // Ignore quota errors
+        }
+    }, [
+        data.title,
+        data.description,
+        data.category_id,
+        data.latitude,
+        data.longitude,
+        data.province,
+        data.regency_city,
+        data.location_description,
+        data.reported_occurrence_at,
+    ]);
+
+    const handleClearDraft = () => {
+        try {
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
+        } catch {
+            // Ignore storage errors
+        }
+        setDraftRestored(false);
+    };
 
     useEffect(() => {
         return () => {
@@ -160,8 +253,16 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (fileClientError) return;
-        post('/lapor');
+        if (fileClientError || isOffline) return;
+        post('/lapor', {
+            onSuccess: () => {
+                try {
+                    localStorage.removeItem(DRAFT_STORAGE_KEY);
+                } catch {
+                    // Ignore storage errors
+                }
+            },
+        });
     };
 
     return (
@@ -207,6 +308,31 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                         Jangan pernah mendekati lidah api aktif, menghirup asap pekat beracun, atau berjalan di atas lahan gambut berasap hanya untuk mengambil foto. Ambil dokumentasi dari kejauhan di posisi aman melawan arah angin. <strong className="font-bold text-[#171C19] dark:text-white">Jika api mengancam permukiman, segera evakuasi dan hubungi darurat 112.</strong>
                     </p>
                 </div>
+
+                {/* Offline & Draft Banners */}
+                {isOffline && (
+                    <div
+                        role="alert"
+                        className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs sm:text-sm text-amber-900 shadow-2xs"
+                    >
+                        <strong>Koneksi internet terputus</strong> — draf laporan Anda tersimpan otomatis di perangkat dan siap dikirim saat sinyal kembali.
+                    </div>
+                )}
+
+                {draftRestored && (
+                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#DDE3DE] bg-white p-3.5 text-xs text-[#343B36] shadow-2xs dark:border-neutral-800 dark:bg-[#141A16] dark:text-neutral-300">
+                        <span>
+                            Draf laporan sebelumnya dipulihkan. Jika ingin melampirkan foto, silakan pilih ulang foto bukti.
+                        </span>
+                        <button
+                            type="button"
+                            onClick={handleClearDraft}
+                            className="font-semibold text-rose-600 hover:underline cursor-pointer"
+                        >
+                            Hapus Draf
+                        </button>
+                    </div>
+                )}
 
                 {/* Main Form inside Clean Card */}
                 <div className="rounded-2xl border border-[#DDE3DE] bg-white p-5 sm:p-8 lg:p-10 shadow-sm dark:border-neutral-800 dark:bg-[#141A16]">
@@ -569,11 +695,17 @@ export default function CreateReport({ categories, provinces }: CreateReportProp
                         <div className="pt-2">
                             <button
                                 type="submit"
-                                disabled={processing || Boolean(fileClientError)}
+                                disabled={processing || Boolean(fileClientError) || isOffline}
                                 className="w-full py-4 px-6 text-sm sm:text-base font-bold bg-[#216B49] hover:bg-[#174B35] text-white rounded-xl shadow-[0_4px_16px_rgba(33,107,73,0.3)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-[0.99]"
                             >
                                 <Send className="size-4" />
-                                <span>{processing ? 'Sedang Mendaftarkan Laporan...' : 'Kirim Laporan Resmi Karhutla'}</span>
+                                <span>
+                                    {isOffline
+                                        ? 'Menunggu Koneksi Internet (Draf Tersimpan)'
+                                        : processing
+                                          ? 'Sedang Mendaftarkan Laporan...'
+                                          : 'Kirim Laporan Resmi Karhutla'}
+                                </span>
                             </button>
                         </div>
                     </form>

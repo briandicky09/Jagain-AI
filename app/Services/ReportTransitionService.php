@@ -9,6 +9,7 @@ use App\Models\AssignmentHistory;
 use App\Models\Report;
 use App\Models\ReportStatusHistory;
 use App\Models\User;
+use App\Notifications\ReportWorkflowNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -82,7 +83,7 @@ class ReportTransitionService
             ]);
         }
 
-        return DB::transaction(function () use (
+        $updatedReport = DB::transaction(function () use (
             $report,
             $currentStatusStr,
             $targetStatusStr,
@@ -236,5 +237,29 @@ class ReportTransitionService
 
             return $report;
         });
+
+        try {
+            $creator = $updatedReport->creator;
+            if ($creator && $creator->id !== $actor->id) {
+                $statusLabel = ReportStatus::tryFrom($targetStatusStr)?->label() ?? $targetStatusStr;
+                $isClarification = $targetStatusStr === 'NEEDS_INFORMATION';
+                $creator->notify(new ReportWorkflowNotification(
+                    eventType: $isClarification ? 'NEEDS_INFORMATION' : 'REPORT_STATUS_UPDATED',
+                    title: $isClarification
+                        ? "Permintaan Klarifikasi ({$updatedReport->tracking_code})"
+                        : "Status Laporan Diperbarui ({$updatedReport->tracking_code})",
+                    message: $isClarification
+                        ? "Petugas meminta informasi tambahan untuk laporan {$updatedReport->tracking_code}."
+                        : "Status laporan Anda ({$updatedReport->tracking_code}) kini: {$statusLabel}.",
+                    url: "/laporan-saya/{$updatedReport->tracking_code}",
+                    trackingCode: $updatedReport->tracking_code,
+                    tone: $isClarification ? 'warning' : 'success',
+                ));
+            }
+        } catch (\Throwable) {
+            // Notification errors must not revert validated report state transition
+        }
+
+        return $updatedReport;
     }
 }

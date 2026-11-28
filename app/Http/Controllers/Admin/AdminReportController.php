@@ -13,6 +13,7 @@ use App\Services\AssignmentService;
 use App\Services\ReportTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -235,5 +236,44 @@ class AdminReportController extends Controller
         );
 
         return back()->with('success', "Laporan berhasil ditugaskan kepada {$agency->name}.");
+    }
+
+    /**
+     * Render printable official report summary (Print / Save as PDF).
+     */
+    public function print(Report $report): View
+    {
+        $report->load([
+            'category',
+            'creator',
+            'evidence',
+            'statusHistories.actor',
+            'statusHistories.actorUser',
+            'assignments.agency',
+            'assignments.operationalUpdates',
+            'aiAnalyses' => fn ($q) => $q->latest()->limit(1),
+        ]);
+
+        $latestAi = $report->aiAnalyses->first();
+        $severityMap = [
+            'CRITICAL' => 'Kritis',
+            'HIGH' => 'Tinggi',
+            'MEDIUM' => 'Sedang',
+            'LOW' => 'Rendah',
+            'UNKNOWN' => 'Belum Dapat Ditentukan',
+        ];
+
+        return view('reports.print', [
+            'report' => $report,
+            'reportStatusLabel' => $report->report_status instanceof ReportStatus
+                ? $report->report_status->label()
+                : (string) $report->report_status,
+            'fireConditionLabel' => $report->fire_condition instanceof FireCondition
+                ? $report->fire_condition->label()
+                : (string) $report->fire_condition,
+            'latestAi' => $latestAi,
+            'latestAiSeverityLabel' => $latestAi ? ($severityMap[$latestAi->severity_recommendation] ?? $latestAi->severity_recommendation) : null,
+            'actorContextLabel' => $report->creator?->name ?? $report->reporter_name ?? 'Pelapor Masyarakat',
+        ]);
     }
 }
